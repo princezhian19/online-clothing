@@ -1,0 +1,248 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,400;0,500;1,300;1,400&display=swap');
+
+*{
+    font-family: 'Poppins', sans-serif ;
+    
+}
+
+body
+{
+  
+    background-color: #F0F2F5 !important;
+    overflow: hidden;
+   
+}
+
+.col-md-6 form
+{
+    position: relative;
+    top: 40px ;
+    background-color: white;
+    margin:8% ;
+    padding: 20px 30px 20px 30px ;
+    box-shadow: 0 1px 1px rgba(0,0,0,0.12), 
+             0 2px 2px rgba(0,0,0,0.12), 
+             0 4px 4px rgba(0,0,0,0.12), 
+             0 8px 8px rgba(0,0,0,0.12),
+             0 16px 16px rgba(0,0,0,0.12);
+    border-radius: 16px;
+}
+.container #logo
+{
+    position: relative;
+    top:140px;
+    left: 40px;   
+    color: #9A031E;
+     
+}
+.container #logo h1
+{
+    font-weight:bolder;   
+    color: #9A031E;
+}
+.container #quote
+{
+    position: relative;
+    top:25px;
+    font-weight:bolder;   
+    color: #9A031E;
+    font-size:15px;
+}
+.container .h1
+{
+    font-weight: bolder;
+    
+}
+.container .form-group
+{
+    padding:0 0 0 0; 
+}
+.container .form-group .form-control
+{
+    width:100%;
+    padding:15px 5px;
+    font-size:17px;
+    margin:0px 0;
+    border: none;
+    background-color: #eee;
+    resize: none;
+    outline: none; 
+    border-radius: 7px;
+}
+
+.container p
+{
+    color: rgb(216, 214, 214);
+}
+.container #log-button
+{  
+  font-weight: bolder;
+  padding: 10px;
+  border-radius: 8px;
+  border:none;
+  padding: 10px; 
+  color: rgb(255, 255, 255);
+  background-color: #9A031E;
+  position: relative;
+  width: 100%;
+  height: 100%;
+
+}
+.container #log-button:hover
+{
+    background-color: rgb(150, 46, 46)
+    
+}
+
+.container #showbtn
+{
+   
+    background:#e47712;
+    padding: 10px 30px ;
+    border-radius: 10px;
+    position: relative;
+    color:#fff;
+    font-weight: bold;    
+    width: 100%;
+    font-size: 13px; 
+}
+.container #showbtn:hover
+{
+   
+    background:#df8736;
+    cursor: pointer;
+  
+
+
+   
+}
+.container .register
+{
+
+ padding: 0 25% 20px;  
+}
+hr
+{
+   
+    top: -5px;
+    position: relative;
+
+}
+#signupCon
+{
+    position:relative;
+    z-index: 1;  
+    top:-280px;  
+    display:none;
+}
+.container .row #logo
+{
+    z-index: -1;
+}
+#signupCon form
+{
+    position: absolute;
+    top: 50%;
+    left:45%;
+    
+    background-color: white;
+    padding: 20px 20px 30px 20px ;
+    box-shadow: 0 1px 1px rgba(0,0,0,0.12), 
+             0 2px 2px rgba(0,0,0,0.12), 
+             0 4px 4px rgba(0,0,0,0.12), 
+             0 8px 8px rgba(0,0,0,0.12),
+             0 16px 16px rgba(0,0,0,0.12);
+    border-radius: 16px;
+    transform: translate(-50%, -50%);
+
+}
+#signupCon .form-group .form-control
+{
+    
+    padding:5px 30px 10px 5px;
+    font-size:19px;
+    margin:0px 0;
+    border: none;
+    background-color: #eee;
+    
+    outline: none; 
+    border-radius: 9px;
+}
+#signupCon #email
+{
+    position: relative;
+    width: 50%; 
+    float:right;
+    top:-24px;
+    
+}
+#signupCon #username
+{
+    position: relative;
+     width: 47%;
+     float: left;
+}
+#signupCon .form-group
+{
+     display: inline;
+    padding: 5px 10px 10px 10px;
+    
+} 
+#signupCon #regsub
+{
+    color: white;
+    font-weight: bolder;
+    background:#039C03;
+    width: 40%;
+    display: block;
+    margin: 0 auto;
+}
+#signupCon #regsub:hover
+{
+    background:#20c720;
+}
+#signupCon #iconx:hover
+{
+   cursor: pointer;
+}
+#signupCon #iconx
+{
+    
+    float:right;
+}
+
+.container#blur.active
+{    
+    background: #eee;
+    filter: opacity(50%);
+    pointer-events: none;
+}
+#signupCon #a2
+{
+    color:#9A031E;
+    display: none;
+}
+#countdown
+{
+    font-weight: bold;
+    font-size: 20px;
+}
+#accordionSidebar
+{
+   background:#a1142e;
+}
+#addbtn
+{
+    background:#ac1a35;
+}
+#addbtn:hover
+{
+    background:#c4334d;
+}
+#addbtn
+{
+    color:white;
+}
+#a{
+    text-decoration: none;
+}

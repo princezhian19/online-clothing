@@ -1,0 +1,23 @@
+
+#page-top .alert
+{
+    background: rgb(112, 219, 105);
+    padding:20px 40px;
+    min-width:420px;
+    position:absolute;
+    right:0px;
+    top:10px;
+    border-radius: 4px;
+    z-index:1;
+    color:white;
+}
+
+.alert{
+    display:none;
+}
+body{
+    overflow: auto;
+}
+footer{
+    position:static;
+}
