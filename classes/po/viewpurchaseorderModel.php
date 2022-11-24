@@ -38,6 +38,7 @@ class viewpurchaseorder extends connection
         $sql = "SELECT * FROM $table WHERE $ref = $id";
         $stmt = $this->connect()->prepare($sql);
         $stmt->execute();
+
         return $stmt;
     }
     function getSlug($table, $slug)

@@ -48,6 +48,8 @@ include "classes/viewsupplierModel.php";
     <link href="vendors/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
     <script src="https://kit.fontawesome.com/yourcode.js" crossorigin="anonymous"></script>
     <script src="script/addProduct.js"></script>
+    <script src="script/storage.js"></script>
+    <script src="script/table.js"></script>
     <script src="js/alertify.min.js"></script>
     <?php if(!defined('base_url')) define('base_url','http://localhost/online-clothing/'); ?>
     <script>
@@ -331,7 +333,7 @@ include "classes/viewsupplierModel.php";
 
                                 ?>
                     <!-- Page Heading -->
-                    <h1 class="h3 mb-2 text-gray-800">Add items</h1>
+                    <h1 class="h3 mb-2 text-gray-800">Purchase Order</h1>
                     <div class="card-body">
                         <form action="includes/addsupplieritemInclude.php" method="POST" onsubmit="addsuccess()">
                             <div class="row">
@@ -357,17 +359,17 @@ include "classes/viewsupplierModel.php";
                                     <select name="item" id="selectItemEl" class="custom-select selevt">     
                                     </select>
                                 </div>
-                                <div class="col-md-6">
+                                <div class="col-md-3">
                                     <label class="mb-0">Unit</label>
-                                    <input type="text" required name="unit" placeholder="Enter unit name" class="form-control mb-2">
+                                    <input type="text" required name="unit" id="unit" placeholder="Enter unit name" class="form-control mb-2">
                                 </div>
-                                <div class="col-md-6">
+                                <div class="col-md-3">
                                     <label class="mb-0">Quantity</label>
-                                    <input type="text" required name="quantity" placeholder="Enter quantity" class="form-control mb-2">
+                                    <input type="text" required name="quantity" id="quantity" placeholder="Enter quantity" class="form-control mb-2">
                                 </div>
-                                
-                                <div class="col-md-12">
-                                    <button type="submit" name="add_item_btn" class="btn btn-success" id="">Save</button>
+                                <div class="col-md-1">
+                                    <label for="" class="col-md-3 mb-0 invisible">l</label>
+                                    <button type="button" name="add_item_btn" class="form-control btn btn-success mb-2" onclick="add()">add</button>
                                 </div>
 
                             </div>
@@ -384,16 +386,22 @@ include "classes/viewsupplierModel.php";
                                 <table id="dataTable" class="table table-striped table-bordered" style="width:100%">
                                     <thead class="">
                                         <tr>
-                                            <th>ID</th>
-                                            <th>Name</th>
+                                            <th>Unit</th>
+                                            <th>Quantity</th>
+                                            <th>Item</th>
+                                            <th>Cost</th>
+                                            <th>Total</th>
                                         </tr>
                                     </thead>
                                     <tbody id="orders">
                                     </tbody>
                                     <tfoot>
                                         <tr>
-                                            <th>ID</th>
-                                            <th>Name</th>
+                                            <th>Unit</th>
+                                            <th>Quantity</th>
+                                            <th>Item</th>
+                                            <th>Cost</th>
+                                            <th>Total</th>
                                         </tr>
                                     </tfoot>
                                 </table>
@@ -489,6 +497,7 @@ include "classes/viewsupplierModel.php";
                     dataType: 'json',
                     success: (resp) => {
                         var selectItemEl = document.getElementById("selectItemEl");
+                        $('#selectItemEl').empty()
                         resp.map(item => {
                             console.log(item)
                             let newOption = new Option(item.name,item.id);
@@ -496,12 +505,58 @@ include "classes/viewsupplierModel.php";
                             selectItemEl.add(newOption,undefined);
                         })
                     }
-                })
+                    })
                 }
+                function addNewItem() {
+                    var ordersTable = document.getElementById("orders");
+                    var row = table.insertRow(0);
+                    var cell1 = row.insertCell(0);
+                    var cell2 = row.insertCell(1);
+                    cell1.innerHTML = "NEW CELL1";
+                    cell2.innerHTML = "NEW CELL2";
+                }
+                function add() {
+                    var selectSupplierEl = document.getElementById("select-supplier");
+                    var selectItemEl = document.getElementById("selectItemEl");
+                    var supplier_id = selectSupplierEl.value;
+                    var item_id = selectItemEl.value;
+                    var unit = document.getElementById("unit").value;
+                    var quantity = document.getElementById("quantity").value;
+                    console.log({
+                        supplier_id,item_id,unit,quantity
+                    })
+                    var itemList = storage.getItems('suppliers_items');
+                    var item = itemList.find(it => it.id == item_id);
+
+                    
+
+                    storage.addItem('tableItems',{
+                        item_id,
+                        supplier_id,
+                        item_id,unit,
+                        quantity,
+                        name: item.name, 
+                        cost: item.cost, 
+                        total: Number(quantity) * Number(item.cost)
+                    });
+                    loadTableItems();                    
+                } 
         </script>
         <script>
+            loadItems();
             function init() {
-                onSupplierChange()
+                onSupplierChange();
+                loadTableItems();
+            }
+            function loadTableItems() {
+                const currentOrders = storage.getItems('tableItems');
+                tbl.clear('orders');
+                currentOrders.map((item) => {
+                    tbl.addRow('orders', {
+                        item_id: item.item_id,
+                        unit: item.unit, quantity: item.quantity, name: item.name, cost: item.cost, total: item.total
+                    })
+                })
             }
         </script>
 
