@@ -33,6 +33,14 @@ class viewsuppliers extends connection
         $stmt->execute();
         return $stmt;
     }
+    
+    function getGroupbyCode($table)
+    {
+        $sql = "SELECT * FROM $table group by code";
+        $stmt = $this->connect()->prepare($sql);
+        $stmt->execute();
+        return $stmt;
+    }
     function getSlug($table, $slug)
     {
         $sql = "SELECT * FROM $table WHERE slug = '$slug'";

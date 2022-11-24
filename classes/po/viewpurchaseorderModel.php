@@ -3,8 +3,23 @@
 
 class viewpurchaseorder extends connection
 {
-
-
+    function generateRandomString($length = 5) {
+        $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        $charactersLength = strlen($characters);
+        $result = date("Y-m-d");
+        $randomString = 'PO-'.$result.'-';
+        for ($i = 0; $i < $length; $i++) {
+            $randomString .= $characters[rand(0, $charactersLength - 1)];
+        }
+        return $randomString;
+    }
+    function savePo($code,$supplier_id,$supplier_product_id,$unit,$cost,$discount,$tax,$quantity) {
+        $stmt = $this->connect()->prepare('INSERT INTO purchase_orders (code,supplier_id,supplier_product_id,unit,cost,discount,tax,quantity) VALUES (?,?,?,?,?,?,?,?);');
+        if (!$stmt->execute(array($code,$supplier_id,$supplier_product_id,$unit,$cost,$discount,$tax,$quantity))) {
+            return $stmt;
+        }
+        return 'success';
+    }
     function getAll($table)
     {
         $sql = "SELECT * FROM $table";

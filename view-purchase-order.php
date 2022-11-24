@@ -18,7 +18,9 @@ if ($_SESSION['userrole'] == 1) {
     $styleOrder = "style='display:none;'";
 }
 include "classes/connectiondb.php";
+// include "classes/viewpurchaseorder.php";
 include "classes/viewsupplierModel.php";
+include "classes/po/viewpurchaseorderModel.php";
 
 
 ?>
@@ -33,7 +35,7 @@ include "classes/viewsupplierModel.php";
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>View Suppliers</title>
+    <title>View Suppliers item</title>
 
     <!-- Custom fonts for this template -->
     <link href="vendors/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -41,7 +43,9 @@ include "classes/viewsupplierModel.php";
 
     <!-- Custom styles for this template -->
     <link href="dashboard/css/sb-admin-2.min.css" rel="stylesheet">
-
+    
+    <script src="script/storage.js"></script>
+    <script src="script/table.js"></script>
     <!-- Custom styles for this page -->
     <link href="vendors/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
     <script src="https://kit.fontawesome.com/yourcode.js" crossorigin="anonymous"></script>
@@ -195,8 +199,8 @@ include "classes/viewsupplierModel.php";
                     <!-- Topbar Navbar -->
                     <ul class="navbar-nav ml-auto">
                         <?php
-                        $views = new viewsuppliers();
-                        $prods = $views->getAllQuantity("suppliers");
+                        $views = new viewpurchaseorder();
+                        $prods = $views->getAllQuantity("purchase_orders");
                         $low = $prods->rowCount();
 
                         if ($low == 0) {
@@ -221,8 +225,8 @@ include "classes/viewsupplierModel.php";
                                     Alerts Center
                                 </h6>
                                 <?php
-                                $view = new viewsuppliers();
-                                $up = $view->getAllQuantity("suppliers");
+                                $view = new viewpurchaseorder();
+                                $up = $view->getAllQuantity("purchase_orders");
                                 
                                 echo "<h1> viewing</h1>";
                                 echo "<p>".json_encode($up)."</p>";
@@ -288,56 +292,57 @@ include "classes/viewsupplierModel.php";
                 <div class="container-fluid">
 
                     <!-- Page Heading -->
-                    <h1 class="h3 mb-2 text-gray-800">Suppliers</h1>
-                    <p class="mb-4">View Suppliers</p>
+                    <h1 class="h3 mb-2 text-gray-800">Purchase Orders </h1>
+                    <p class="mb-4">View Purchase orders</p>
 
                     <!-- DataTales Example -->
                     <div class="card shadow mb-4">
                         <div class="card-header py-3">
-                            <h6 class="m-0 font-weight-bold text-dark">Suppliers table</h6>
+                            <h6 class="m-0 font-weight-bold text-dark">Suppliers item  table</h6>
                         </div>
 
                         
                         <div class="card-body" id="products_table">
                             <div class="table-responsive">
+                            
+
+                            
                                 <table id="dataTable" class="table table-striped table-bordered" style="width:100%">
                                     <thead class="">
                                         <tr>
-                                            <th>ID</th>
+                                            <th>Code</th>
                                             <th>Name</th>
-                                            <th>Address</th>
-                                            <th>Contact Person</th>
-                                            <th>Contact Number</th>
-                                            <th>Status</th>
-                                            <th>Edit</th>
+                                            <th>Supplier</th>
+                                            <th>Cost</th>
+                                            <th>Total</th>
                                             <th>Delete</th>
                                         </tr>
                                     </thead>
                                     <tbody>
 
                                         <?php
-
+                                        
                                         include "includes/deleteproductInclude.php";
                                         $view = new viewsuppliers();
-                                        $prod = $view->getAll("suppliers");
+                                        $prod = $view->getGroupbyCode("purchase_orders");
                                         if ($prod->rowCount() > 0) {
                                             foreach ($prod as $items) {
+                                                $viewsuppliers = new viewsuppliers();
+                                                $supplier_product = $viewsuppliers->getbyId("suppliers",$items['supplier_id']);
+                                                $supplier = $supplier_product->fetch();
+
+                                                $supplier_items = $viewsuppliers->getbyId("supplier_products",$items['supplier_product_id']);
+                                                $item = $supplier_items->fetch();
                                         ?>
                                                 <tr>
-                                                    <td><?= $items['id']; ?> </td>
-                                                    <td><?= $items['name']; ?> </td>
-                                                    <td><?= $items['address']; ?></td>
-                                                    <td><?= $items['contact_person']; ?></td>
-                                                    <td><?= $items['contact_number']; ?></td>
-                                                    <td><?= $items['status']; ?></td>
+                                                    <td><?= $items['code']; ?> </td>
+                                                    <td><?= $item['name']; ?> </td>
+                                                    <td><?= $supplier['name']; ?> </td>
+                                                    <td><?= $items['cost']; ?></td>
+                                                    <td><?= $items['cost'] * $items['quantity']; ?></td>
                                                     <td>
-                                                        <a href="editSupplier.php?myid=<?= $items['id']; ?>" class="btn btn-sm btn-warning">Edit</a>
-                                                    </td>
-                                                    <td>
-
                                                         <input type="hidden" name="supid" value="<?= $items['id']; ?> ">
-                                                        <button name="delete_Supplier" type="button" class="btn btn-sm btn-danger deleteProduct" value="<?= $items['id']; ?>">Delete</button>
-
+                                                        <button name="delete_SupplierItem" type="button" class="btn btn-sm btn-danger deleteProduct" value="<?= $items['id']; ?>">Delete</button>
                                                     </td>
 
 
@@ -358,9 +363,7 @@ include "classes/viewsupplierModel.php";
                                         <tr>
                                             <th>ID</th>
                                             <th>Name</th>
-                                            <th>Address</th>
-                                            <th>Contact Person</th>
-                                            <th>Contact Number</th>
+                                            <th>Supplier</th>
                                             <th>Status</th>
                                             <th>Edit</th>
                                             <th>Delete</th>

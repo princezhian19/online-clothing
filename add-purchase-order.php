@@ -138,6 +138,19 @@ include "classes/viewsupplierModel.php";
                 </div>
             </li>
             <li class="nav-item">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapse5" aria-expanded="true" aria-controls="collapse4">
+                    <i class="fa-brands fa-dropbox"></i>
+                    <span>Purchase Order </span>
+                </a>
+                <div id="collapse5" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                    <div class="bg-white py-2 collapse-inner rounded">
+                        <h6 class="collapse-header">Purchase Order:</h6>
+                        <a class="collapse-item" href="add-purchase-order.php">Add PO</a>
+                        <a class="collapse-item" href="view-purchase-order.php">View PO</a>
+                    </div>
+                </div>
+            </li>
+            <li class="nav-item">
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities" aria-expanded="true" aria-controls="collapseUtilities">
                     <i class="fas fa-fw fa-wrench"></i>
                     <span>Orders</span>
@@ -383,7 +396,7 @@ include "classes/viewsupplierModel.php";
                         
                         <div class="card-body" id="products_table">
                             <div class="table-responsive">
-                                <table id="dataTable" class="table table-striped table-bordered" style="width:100%">
+                                <table id="" class="table table-striped table-bordered" style="width:100%">
                                     <thead class="">
                                         <tr>
                                             <th>Unit</th>
@@ -391,6 +404,7 @@ include "classes/viewsupplierModel.php";
                                             <th>Item</th>
                                             <th>Cost</th>
                                             <th>Total</th>
+                                            <th>Delete</th>
                                         </tr>
                                     </thead>
                                     <tbody id="orders">
@@ -402,6 +416,7 @@ include "classes/viewsupplierModel.php";
                                             <th>Item</th>
                                             <th>Cost</th>
                                             <th>Total</th>
+                                            <th>Delete</th>
                                         </tr>
                                     </tfoot>
                                 </table>
@@ -410,6 +425,7 @@ include "classes/viewsupplierModel.php";
                     </div>
                                 </div>
                             </div>
+                            <button type="button" name="save_orders_btn" class="form-control btn btn-success mb-2" onclick="storage.saveOrders('tableItems')">save</button>
                         </form>
 
                     </div>
@@ -528,9 +544,10 @@ include "classes/viewsupplierModel.php";
                     var itemList = storage.getItems('suppliers_items');
                     var item = itemList.find(it => it.id == item_id);
 
-                    
+
 
                     storage.addItem('tableItems',{
+                        supplier_product_id: item.id,
                         item_id,
                         supplier_id,
                         item_id,unit,
@@ -539,25 +556,25 @@ include "classes/viewsupplierModel.php";
                         cost: item.cost, 
                         total: Number(quantity) * Number(item.cost)
                     });
-                    loadTableItems();                    
+                    storage.loadTableItems();                    
                 } 
         </script>
         <script>
             loadItems();
             function init() {
                 onSupplierChange();
-                loadTableItems();
+                storage.loadTableItems();
             }
-            function loadTableItems() {
-                const currentOrders = storage.getItems('tableItems');
-                tbl.clear('orders');
-                currentOrders.map((item) => {
-                    tbl.addRow('orders', {
-                        item_id: item.item_id,
-                        unit: item.unit, quantity: item.quantity, name: item.name, cost: item.cost, total: item.total
-                    })
-                })
-            }
+            // function loadTableItems() {
+            //     const currentOrders = storage.getItems('tableItems');
+            //     tbl.clear('orders');
+            //     currentOrders.map((item) => {
+            //         tbl.addRow('orders', {
+            //             item_id: item.item_id,
+            //             unit: item.unit, quantity: item.quantity, name: item.name, cost: item.cost, total: item.total
+            //         })
+            //     })
+            // }
         </script>
 
 
