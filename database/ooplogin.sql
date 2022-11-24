@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 21, 2022 at 10:55 PM
+-- Generation Time: Nov 24, 2022 at 07:21 AM
 -- Server version: 10.4.24-MariaDB
 -- PHP Version: 8.1.6
 
@@ -65,7 +65,8 @@ CREATE TABLE `orders` (
 
 INSERT INTO `orders` (`id`, `tracking_id`, `user_id`, `name`, `email`, `phone`, `address`, `pincode`, `total_price`, `payment_mode`, `payment_id`, `status`, `comments`, `created_at`) VALUES
 (1, 'GraphShirt837dasds', 3, 'asd', 'asd@gmail.com', 'asdasds', 'test', 4027, 750, 'COD', NULL, 0, NULL, '2022-11-17 08:51:33'),
-(2, 'GraphShirt555995602388', 3, ' Marc', 'users1@mail.com', '09995602388', 'angdasd', 4027, 450, 'COD', NULL, 0, NULL, '2022-11-21 08:12:45');
+(2, 'GraphShirt555995602388', 3, ' Marc', 'users1@mail.com', '09995602388', 'angdasd', 4027, 450, 'COD', NULL, 0, NULL, '2022-11-21 08:12:45'),
+(3, 'GraphShirt318332222222', 3, ' AAAAA', 'users1@mail.com', '09332222222', 'sdadsa dsadasdsadsadsa', 2323, 300, 'COD', NULL, 1, NULL, '2022-11-23 13:44:40');
 
 -- --------------------------------------------------------
 
@@ -89,7 +90,8 @@ CREATE TABLE `order_items` (
 
 INSERT INTO `order_items` (`id`, `order_id`, `prod_id`, `qty`, `price`, `created_at`, `size`) VALUES
 (1, 1, 1, 3, 250, '2022-11-17 08:51:33', 'S'),
-(2, 2, 3, 1, 450, '2022-11-21 08:12:45', 'M');
+(2, 2, 3, 1, 450, '2022-11-21 08:12:45', 'M'),
+(3, 3, 2, 1, 300, '2022-11-23 13:44:40', 'M');
 
 -- --------------------------------------------------------
 
@@ -113,11 +115,30 @@ CREATE TABLE `products` (
 
 INSERT INTO `products` (`id`, `name`, `slug`, `image`, `description`, `price`, `quantity`) VALUES
 (1, 'klaus design shirt', 'klaus design shirt', '1668314395.jpg', 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s', 250, 17),
-(2, 'swak bronx shirt', 'swak bronx shirt', '1668314529.jpg', 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s', 300, 20),
+(2, 'swak bronx shirt', 'swak bronx shirt', '1668314529.jpg', 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s', 300, 19),
 (3, 'Soap for the best design', 'Soap for the best design', '1668314630.jpg', 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s', 450, 19),
 (4, 'Graffiti not a crime shirt', 'Graffiti not a crime shirt', '1668314701.jpg', 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s', 550, 20),
 (5, 'Black graffiti not a crime', 'Black graffiti not a crime shirt', '1668314804.jpg', 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s', 560, 20),
 (6, 'test', 'test shirt', '1668585031.jpg', 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s,', 500, 20);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `purchase_orders`
+--
+
+CREATE TABLE `purchase_orders` (
+  `id` int(11) NOT NULL,
+  `code` varchar(100) NOT NULL,
+  `supplier_id` int(11) NOT NULL,
+  `supplier_product_id` int(11) NOT NULL,
+  `unit` varchar(100) NOT NULL,
+  `cost` int(11) NOT NULL,
+  `discount` decimal(10,0) DEFAULT 0,
+  `tax` decimal(10,0) DEFAULT 0,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
 
@@ -150,6 +171,56 @@ INSERT INTO `reviews` (`id`, `name`, `rating`, `message`, `datetime`, `prod_id`,
 (8, 'user', '1', 'a', '1668519908', 1, 'klaus design shirt'),
 (9, 'user', '1', 'Ang pangit ng damit', '1668570095', 1, 'klaus design shirt'),
 (10, 'user', '5', 'Nice shirt!', '1668878885', 4, 'Graffiti not a crime shirt');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `suppliers`
+--
+
+CREATE TABLE `suppliers` (
+  `id` int(11) NOT NULL,
+  `name` varchar(250) NOT NULL,
+  `address` text NOT NULL,
+  `contact_person` varchar(250) NOT NULL,
+  `contact_number` varchar(20) DEFAULT NULL,
+  `status` varchar(100) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `suppliers`
+--
+
+INSERT INTO `suppliers` (`id`, `name`, `address`, `contact_person`, `contact_number`, `status`) VALUES
+(1, 'Zooyork', 'Supplier A address', 'Supplier A contact person', '10000001', '1'),
+(2, 'Vans', 'Supplier B address', 'Jema', '09454223555', '1');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `supplier_products`
+--
+
+CREATE TABLE `supplier_products` (
+  `id` int(11) NOT NULL,
+  `supplier_id` int(11) NOT NULL,
+  `name` text NOT NULL,
+  `slug` varchar(250) DEFAULT NULL,
+  `description` text NOT NULL,
+  `cost` decimal(10,0) NOT NULL,
+  `status` varchar(50) DEFAULT NULL,
+  `date_created` timestamp NOT NULL DEFAULT current_timestamp(),
+  `date_updated` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `supplier_products`
+--
+
+INSERT INTO `supplier_products` (`id`, `supplier_id`, `name`, `slug`, `description`, `cost`, `status`, `date_created`, `date_updated`) VALUES
+(1, 2, 'New Item 1', 'New Item 1', 'New Item 1', '200', '1', '2022-11-23 23:18:21', '2022-11-23 23:18:21'),
+(2, 2, 'Vans', 'Vanz', 'Vansz', '300', '1', '2022-11-24 01:05:58', '2022-11-24 01:05:58'),
+(3, 1, 'Zooyork plain tee', 'Zooyork plain tee', 'Zooyork plain tee', '1000', '1', '2022-11-24 03:33:16', '2022-11-24 03:33:16');
 
 -- --------------------------------------------------------
 
@@ -213,9 +284,27 @@ ALTER TABLE `products`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `purchase_orders`
+--
+ALTER TABLE `purchase_orders`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `reviews`
 --
 ALTER TABLE `reviews`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `suppliers`
+--
+ALTER TABLE `suppliers`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `supplier_products`
+--
+ALTER TABLE `supplier_products`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -232,19 +321,19 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `carts`
 --
 ALTER TABLE `carts`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 --
 -- AUTO_INCREMENT for table `orders`
 --
 ALTER TABLE `orders`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `order_items`
 --
 ALTER TABLE `order_items`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `products`
@@ -253,10 +342,28 @@ ALTER TABLE `products`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
+-- AUTO_INCREMENT for table `purchase_orders`
+--
+ALTER TABLE `purchase_orders`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT for table `reviews`
 --
 ALTER TABLE `reviews`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+
+--
+-- AUTO_INCREMENT for table `suppliers`
+--
+ALTER TABLE `suppliers`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- AUTO_INCREMENT for table `supplier_products`
+--
+ALTER TABLE `supplier_products`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `users`
