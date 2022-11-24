@@ -8,6 +8,7 @@
 <script src="tdesignAPI/js/jquery.form.js"></script>
 <script src="tdesignAPI/js/mainapp.js"></script>
 <link rel="stylesheet" href="tdesignAPI/css/jquery-ui.css" />
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/alertify.min.css" />
 <script src="tdesignAPI/js/jquery-ui.js"></script>
 
 <script type="text/javascript">
@@ -385,8 +386,9 @@
 	</div>
 	</div>
 	</div> -->
-
+						<input type="hidden" value='<?= $_SESSION["userid"] ?>' id='userid'>
 </div>
+        <script src="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/alertify.min.js"></script>
 	<script src="script/custom.js"></script>
 <script>
 	//$('input[type=file]').bootstrapFileInput();
@@ -396,8 +398,8 @@
 			var reader = new FileReader();
 			reader.onload = function(e) {
 				image_icon(e.target.result);
+				console.log(e.target.result);
 			}
-
 			reader.readAsDataURL(input.files[0]);
 		}
 	}
@@ -405,6 +407,7 @@
 
 	$("#imgInp").change(function() {
 		readURL(this);
+		console.log(this.target.result);
 	});
 	
 </script>

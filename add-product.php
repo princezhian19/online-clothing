@@ -116,6 +116,33 @@ include "classes/viewproductModel.php"
                     </div>
                 </div>
             </li>
+            
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapse4" aria-expanded="true" aria-controls="collapse4">
+                    <i class="fa-brands fa-dropbox"></i>
+                    <span>Items </span>
+                </a>
+                <div id="collapse4" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                    <div class="bg-white py-2 collapse-inner rounded">
+                        <h6 class="collapse-header">Items:</h6>
+                        <a class="collapse-item" href="add-supplier-item.php">Add Items</a>
+                        <a class="collapse-item" href="view-suppliers-items.php">View items</a>
+                    </div>
+                </div>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapse5" aria-expanded="true" aria-controls="collapse4">
+                    <i class="fa-brands fa-dropbox"></i>
+                    <span>Purchase Order </span>
+                </a>
+                <div id="collapse5" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                    <div class="bg-white py-2 collapse-inner rounded">
+                        <h6 class="collapse-header">Purchase Order:</h6>
+                        <a class="collapse-item" href="add-purchase-order.php">Add PO</a>
+                        <a class="collapse-item" href="view-purchase-order.php">View PO</a>
+                    </div>
+                </div>
+            </li>
             <li class="nav-item">
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities" aria-expanded="true" aria-controls="collapseUtilities">
                     <i class="fas fa-fw fa-wrench"></i>

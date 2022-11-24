@@ -33,6 +33,13 @@ class viewproducts extends connection
         $stmt->execute();
         return $stmt;
     }
+    function getbyName($table, $name)
+    {
+        $sql = "SELECT * FROM $table WHERE name = '$name'";
+        $stmt = $this->connect()->prepare($sql);
+        $stmt->execute();
+        return $stmt;
+    }
     function getSlug($table, $slug)
     {
         $sql = "SELECT * FROM $table WHERE slug = '$slug'";

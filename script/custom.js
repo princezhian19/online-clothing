@@ -124,24 +124,37 @@ $(document).ready(function () {
         e.preventDefault();
         $('#form1').submit()
     });
+    var isZero = false;
+    
     $("form[name='uploader']").on("submit", function(ev) {
         ev.preventDefault(); // Prevent browser default submit.
         var small2 = $('#small2').val();
         var medium2 = $('#medium2').val();
         var large2 = $('#large2').val();
-      alert('a');
-        var formData = new FormData(this);
-        formData.append('add_custom_product_btn', true);
+        var userid = $('#userid').val();
+        var c = document.getElementById('image_reply');
+        var i = large2 > 0?1:0;
+        var base64 = c.getElementsByTagName('canvas')[isZero?0:1].toDataURL("image/jpeg");
+        isZero = !isZero;
+        // var formData = new FormData(this);
+        // formData.append('add_custom_product_btn', true);
+        console.log(base64);
         $.ajax({
           url: "includes/addproductInclude.php",
-          type: "POST",
-          data: formData,
-          success: function (msg) {
-            alert(msg)
+          method: 'POST',
+        type: 'POST',
+          data: {
+            add_custom_product_btn: true,
+            base64: base64,
+            sizes: 'S',
+            prod_id: 'S',
+            prod_qty: small2,
+            user_id: userid,
+            scope: 'add'
           },
-          cache: false,
-          contentType: false,
-          processData: false
+          success: function (msg) {
+            alertify.success("Product Added to cart!");
+          },
         });
           
     });
