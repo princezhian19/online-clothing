@@ -9,27 +9,17 @@ if ($_SESSION["verifiedAt"] == null) {
     exit();
 }
 if (isset($_SESSION["userid"])) {
-    if ($_SESSION['userrole'] != 1) {
+    if ($_SESSION['userrole'] == 0) {
         header("Location: customerPage.php");
         exit();
     }
-    if ($_SESSION['userrole'] == 1) {
-        $styleOrder = "style='display:none;'";
-    }
 }
-include 'classes/connectiondb.php';
-include 'classes/viewproductModel.php';
-
-$productCount = new viewproducts;
-
-$Pcount = $productCount->getAll('products');
-$Ocount = $productCount->getAll('orders');
-$Ucount = $productCount->getTableUsers();
-
-
-
-
-
+if ($_SESSION['userrole'] == 1) {
+    $styleOrder = "style='display:none;'";
+}
+include "classes/connectiondb.php";
+include "classes/viewsupplieritemModel.php";
+include "classes/viewsupplierModel.php";
 
 
 ?>
@@ -44,7 +34,7 @@ $Ucount = $productCount->getTableUsers();
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Admin Dashboard</title>
+    <title>View Suppliers item</title>
 
     <!-- Custom fonts for this template -->
     <link href="vendors/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -52,13 +42,14 @@ $Ucount = $productCount->getTableUsers();
 
     <!-- Custom styles for this template -->
     <link href="dashboard/css/sb-admin-2.min.css" rel="stylesheet">
-    <link rel="icon" href="assets/logo.png" type="image/ico">
 
     <!-- Custom styles for this page -->
     <link href="vendors/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
     <script src="https://kit.fontawesome.com/yourcode.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css">
     <link rel="stylesheet" href="styles/viewProduct.css">
+    <link rel="icon" href="assets/logo.png" type="image/ico">
+
 
 </head>
 
@@ -132,7 +123,7 @@ $Ucount = $productCount->getTableUsers();
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Items:</h6>
                         <a class="collapse-item" href="add-supplier-item.php">Add Items</a>
-                        <a class="collapse-item" href="view-suppliers.php">View items</a>
+                        <a class="collapse-item" href="view-suppliers-items.php">View items</a>
                     </div>
                 </div>
             </li>
@@ -145,23 +136,12 @@ $Ucount = $productCount->getTableUsers();
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Orders</h6>
                         <a class="collapse-item" href="orders.php">View orders</a>
+
                     </div>
                 </div>
             </li>
-            
-            <li class="nav-item">
-                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapse5" aria-expanded="true" aria-controls="collapse4">
-                    <i class="fa-brands fa-dropbox"></i>
-                    <span>Purchase Order </span>
-                </a>
-                <div id="collapse5" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
-                    <div class="bg-white py-2 collapse-inner rounded">
-                        <h6 class="collapse-header">Purchase Order:</h6>
-                        <a class="collapse-item" href="add-purchase-order.php">Add PO</a>
-                        <a class="collapse-item" href="view-suppliers.php">View PO</a>
-                    </div>
-                </div>
-            </li>
+
+
 
             <!-- Divider -->
             <hr class="sidebar-divider">
@@ -198,37 +178,14 @@ $Ucount = $productCount->getTableUsers();
                         </button>
                     </form>
 
-                    <!-- Topbar Search -->
 
 
                     <!-- Topbar Navbar -->
                     <ul class="navbar-nav ml-auto">
-
-                        <!-- Nav Item - Search Dropdown (Visible Only XS) -->
-                        <li class="nav-item dropdown no-arrow d-sm-none">
-                            <a class="nav-link dropdown-toggle" href="#" id="searchDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <i class="fas fa-search fa-fw"></i>
-                            </a>
-                            <!-- Dropdown - Messages -->
-                            <div class="dropdown-menu dropdown-menu-right p-3 shadow animated--grow-in" aria-labelledby="searchDropdown">
-                                <form class="form-inline mr-auto w-100 navbar-search">
-                                    <div class="input-group">
-                                        <input type="text" class="form-control bg-light border-0 small" placeholder="Search for..." aria-label="Search" aria-describedby="basic-addon2">
-                                        <div class="input-group-append">
-                                            <button class="btn btn-primary" type="button">
-                                                <i class="fas fa-search fa-sm"></i>
-                                            </button>
-                                        </div>
-                                    </div>
-                                </form>
-                            </div>
-                        </li>
-
                         <?php
-                        $views = new viewproducts();
-                        $prods = $views->getAllQuantity("products");
+                        $views = new viewsupplieritems();
+                        $prods = $views->getAllQuantity("supplier_products");
                         $low = $prods->rowCount();
-
 
                         if ($low == 0) {
                             $none = "style='display:none;'";
@@ -241,7 +198,7 @@ $Ucount = $productCount->getTableUsers();
 
                         <li class="nav-item dropdown no-arrow mx-1">
                             <a class="nav-link dropdown-toggle" href="#" id="alertsDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <i class="fas fa-bell fa-fw <?php echo $shake?>"></i>
+                                <i class="fas fa-bell fa-fw <?php echo $shake ?>"></i>
                                 <!-- Counter - Alerts -->
                                 <span <?php echo $none ?> class="badge badge-danger badge-counter"> <?php echo $low ?> </span>
                             </a>
@@ -252,12 +209,13 @@ $Ucount = $productCount->getTableUsers();
                                     Alerts Center
                                 </h6>
                                 <?php
-                                $view = new viewproducts();
-                                $prod = $view->getAllQuantity("products");
-
-                                if ($prod->rowCount() > 0) {
-                                    foreach ($prod as $items) {
-
+                                $view = new viewsupplieritems();
+                                $up = $view->getAllQuantity("supplier_products");
+                                
+                                echo "<h1> viewing</h1>";
+                                echo "<p>".json_encode($up)."</p>";
+                                if ($up->rowCount() > 0) {
+                                    foreach ($up as $items) {
                                 ?>
                                         <a class="dropdown-item d-flex align-items-center" href="#">
                                             <div class="mr-3">
@@ -270,33 +228,15 @@ $Ucount = $productCount->getTableUsers();
                                                 Low stocks on <span><?= $items['name']; ?></span>
                                             </div>
                                         </a>
-
-
-
-
                                 <?php
                                     }
                                 } else {
                                     echo "No alert messages";
                                 }
-
                                 ?>
-
-
                                 <a class="dropdown-item text-center small text-gray-500" href="#">Show All Alerts</a>
                             </div>
                         </li>
-
-
-
-
-
-
-
-
-
-
-
 
 
                         <!-- Nav Item - User Information -->
@@ -317,7 +257,7 @@ $Ucount = $productCount->getTableUsers();
                                 </a>
                                 <a class="dropdown-item" href="#" <?php echo $styleOrder ?>>
                                     <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
-                                    Activity Log
+                                    My Orders
                                 </a>
                                 <div class="dropdown-divider"></div>
                                 <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
@@ -336,57 +276,92 @@ $Ucount = $productCount->getTableUsers();
                 <div class="container-fluid">
 
                     <!-- Page Heading -->
-                    <h2 class="text-center">Admin Dashboard</h2>
-                    <div class="row">
-                        <div class="col-xl-3 col-md-6 mb-4">
-                            <div class="card border-left-danger shadow h-100 py-2">
-                                <div class="card-body">
-                                    <div class="row no-gutters align-items-center">
-                                        <div class="col mr-2">
-                                            <div class="text-xs font-weight-bold text-danger text-uppercase mb-1">
-                                                Products</div>
-                                            <div class="h5 mb-0 font-weight-bold text-gray-800"> <?php echo $Pcount->rowCount(); ?> </div>
-                                        </div>
-                                        <div class="col-auto">
-                                            <i class="fas fa-calendar fa-2x text-gray-300"></i>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-xl-3 col-md-6 mb-4">
-                            <div class="card border-left-warning shadow h-100 py-2">
-                                <div class="card-body">
-                                    <div class="row no-gutters align-items-center">
-                                        <div class="col mr-2">
-                                            <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
-                                                Users</div>
-                                            <div class="h5 mb-0 font-weight-bold text-gray-800"><?php echo $Ucount->rowCount(); ?></div>
-                                        </div>
-                                        <div class="col-auto">
-                                            <i class="fa-solid fa-user fa-2x text-gray-300"></i>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-xl-3 col-md-6 mb-4">
-                            <div class="card border-left-dark shadow h-100 py-2">
-                                <div class="card-body">
-                                    <div class="row no-gutters align-items-center">
-                                        <div class="col mr-2">
-                                            <div class="text-xs font-weight-bold text-dark text-uppercase mb-1">
-                                                Orders</div>
-                                            <div class="h5 mb-0 font-weight-bold text-gray-800"><?php echo $Ocount->rowCount(); ?></div>
-                                        </div>
-                                        <div class="col-auto">
-                                            <i class="fa-solid fa-cart-shopping fa-2x text-gray-300"></i>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                    <h1 class="h3 mb-2 text-gray-800">Suppliers Item</h1>
+                    <p class="mb-4">View Suppliers Item</p>
+
+                    <!-- DataTales Example -->
+                    <div class="card shadow mb-4">
+                        <div class="card-header py-3">
+                            <h6 class="m-0 font-weight-bold text-dark">Suppliers item  table</h6>
                         </div>
 
+                        
+                        <div class="card-body" id="products_table">
+                            <div class="table-responsive">
+                            
+
+                            
+                                <table id="dataTable" class="table table-striped table-bordered" style="width:100%">
+                                    <thead class="">
+                                        <tr>
+                                            <th>ID</th>
+                                            <th>Name</th>
+                                            <th>Supplier</th>
+                                            <th>Status</th>
+                                            <th>Edit</th>
+                                            <th>Delete</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+
+                                        <?php
+                                        
+                                        include "includes/deleteproductInclude.php";
+                                        $view = new viewsupplieritems();
+                                        $prod = $view->getAll("supplier_products");
+                                        if ($prod->rowCount() > 0) {
+                                            foreach ($prod as $items) {
+                                                $viewsuppliers = new viewsuppliers();
+                                                $supplier_product = $viewsuppliers->getbyId("suppliers",$items['supplier_id']);
+                                                $supplier = $supplier_product->fetch();
+                                        ?>
+                                                <tr>
+                                                    <td><?= $items['id']; ?> </td>
+                                                    <td><?= $items['name']; ?> </td>
+                                                    <td><?= $supplier['name']; ?></td>
+                                                    <td><?= $items['status'] == 1? 'active':'inactive'; ?></td>
+                                                    <td>
+                                                        <a href="editSupplierItem.php?myid=<?= $items['id']; ?>" class="btn btn-sm btn-warning">Edit</a>
+                                                    </td>
+                                                    <td>
+
+                                                        <input type="hidden" name="supid" value="<?= $items['id']; ?> ">
+                                                        <button name="delete_SupplierItem" type="button" class="btn btn-sm btn-danger deleteProduct" value="<?= $items['id']; ?>">Delete</button>
+
+                                                    </td>
+
+
+
+                                                </tr>
+                                        <?php
+                                            }
+                                        } else {
+                                            echo "No Records Found";
+                                        }
+
+
+
+                                        ?>
+
+                                    </tbody>
+                                    <tfoot>
+                                        <tr>
+                                            <th>ID</th>
+                                            <th>Name</th>
+                                            <th>Supplier</th>
+                                            <th>Status</th>
+                                            <th>Edit</th>
+                                            <th>Delete</th>
+
+                                        </tr>
+
+                                    </tfoot>
+
+
+
+                                </table>
+                            </div>
+                        </div>
                     </div>
 
                 </div>
@@ -434,7 +409,9 @@ $Ucount = $productCount->getTableUsers();
             </div>
         </div>
     </div>
-
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <script src="script/jquery-3.6.1.min.js"></script>
+    <script src="script/custom.js"></script>
     <!-- Bootstrap core JavaScript-->
     <script src="vendors/jquery/jquery.min.js"></script>
     <script src="vendors/bootstrap/js/bootstrap.bundle.min.js"></script>
@@ -451,6 +428,8 @@ $Ucount = $productCount->getTableUsers();
 
     <!-- Page level custom scripts -->
     <script src="dashboard/js/demo/datatables-demo.js"></script>
+
+
 
 
 

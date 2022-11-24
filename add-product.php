@@ -104,6 +104,19 @@ include "classes/viewproductModel.php"
                 </div>
             </li>
             <li class="nav-item">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapse3" aria-expanded="true" aria-controls="collapse3">
+                    <i class="fa-brands fa-dropbox"></i>
+                    <span>Suppliers</span>
+                </a>
+                <div id="collapse3" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                    <div class="bg-white py-2 collapse-inner rounded">
+                        <h6 class="collapse-header">Products:</h6>
+                        <a class="collapse-item" href="add-supplier.php">Add Supplier</a>
+                        <a class="collapse-item" href="view-suppliers.php">View Suppliers</a>
+                    </div>
+                </div>
+            </li>
+            <li class="nav-item">
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities" aria-expanded="true" aria-controls="collapseUtilities">
                     <i class="fas fa-fw fa-wrench"></i>
                     <span>Orders</span>

@@ -9,30 +9,19 @@ if ($_SESSION["verifiedAt"] == null) {
     exit();
 }
 if (isset($_SESSION["userid"])) {
-    if ($_SESSION['userrole'] != 1) {
+    if ($_SESSION['userrole'] == 0) {
         header("Location: customerPage.php");
         exit();
     }
-    if ($_SESSION['userrole'] == 1) {
-        $styleOrder = "style='display:none;'";
-    }
 }
-include 'classes/connectiondb.php';
-include 'classes/viewproductModel.php';
-
-$productCount = new viewproducts;
-
-$Pcount = $productCount->getAll('products');
-$Ocount = $productCount->getAll('orders');
-$Ucount = $productCount->getTableUsers();
-
-
-
-
-
-
-
+if ($_SESSION['userrole'] == 1) {
+    $styleOrder = "style='display:none;'";
+}
+include "classes/connectiondb.php";
+include "classes/viewsupplieritemModel.php";
+include "classes/viewsupplierModel.php";
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -44,25 +33,30 @@ $Ucount = $productCount->getTableUsers();
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Admin Dashboard</title>
+    <title>Add Item</title>
+    <link rel="icon" href="assets/logo.png" type="image/ico">
 
     <!-- Custom fonts for this template -->
     <link href="vendors/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
     <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
 
+
     <!-- Custom styles for this template -->
     <link href="dashboard/css/sb-admin-2.min.css" rel="stylesheet">
-    <link rel="icon" href="assets/logo.png" type="image/ico">
 
     <!-- Custom styles for this page -->
     <link href="vendors/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
     <script src="https://kit.fontawesome.com/yourcode.js" crossorigin="anonymous"></script>
+    <script src="script/addProduct.js"></script>
+    <link rel="stylesheet" href="styles/addProduct.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css">
     <link rel="stylesheet" href="styles/viewProduct.css">
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/alertify.min.css" />
 
 </head>
 
 <body id="page-top">
+
 
     <!-- Page Wrapper -->
     <div id="wrapper">
@@ -117,7 +111,7 @@ $Ucount = $productCount->getTableUsers();
                 </a>
                 <div id="collapse3" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
-                        <h6 class="collapse-header">Suppliers:</h6>
+                        <h6 class="collapse-header">Products:</h6>
                         <a class="collapse-item" href="add-supplier.php">Add Supplier</a>
                         <a class="collapse-item" href="view-suppliers.php">View Suppliers</a>
                     </div>
@@ -145,23 +139,12 @@ $Ucount = $productCount->getTableUsers();
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Orders</h6>
                         <a class="collapse-item" href="orders.php">View orders</a>
+
                     </div>
                 </div>
             </li>
-            
-            <li class="nav-item">
-                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapse5" aria-expanded="true" aria-controls="collapse4">
-                    <i class="fa-brands fa-dropbox"></i>
-                    <span>Purchase Order </span>
-                </a>
-                <div id="collapse5" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
-                    <div class="bg-white py-2 collapse-inner rounded">
-                        <h6 class="collapse-header">Purchase Order:</h6>
-                        <a class="collapse-item" href="add-purchase-order.php">Add PO</a>
-                        <a class="collapse-item" href="view-suppliers.php">View PO</a>
-                    </div>
-                </div>
-            </li>
+
+
 
             <!-- Divider -->
             <hr class="sidebar-divider">
@@ -198,7 +181,6 @@ $Ucount = $productCount->getTableUsers();
                         </button>
                     </form>
 
-                    <!-- Topbar Search -->
 
 
                     <!-- Topbar Navbar -->
@@ -223,10 +205,9 @@ $Ucount = $productCount->getTableUsers();
                                 </form>
                             </div>
                         </li>
-
                         <?php
-                        $views = new viewproducts();
-                        $prods = $views->getAllQuantity("products");
+                        $views = new viewsupplieritems();
+                        $prods = $views->getAllQuantity("supplier_products");
                         $low = $prods->rowCount();
 
 
@@ -241,7 +222,7 @@ $Ucount = $productCount->getTableUsers();
 
                         <li class="nav-item dropdown no-arrow mx-1">
                             <a class="nav-link dropdown-toggle" href="#" id="alertsDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <i class="fas fa-bell fa-fw <?php echo $shake?>"></i>
+                                <i class="fas fa-bell fa-fw <?php echo $shake ?>"></i>
                                 <!-- Counter - Alerts -->
                                 <span <?php echo $none ?> class="badge badge-danger badge-counter"> <?php echo $low ?> </span>
                             </a>
@@ -252,8 +233,8 @@ $Ucount = $productCount->getTableUsers();
                                     Alerts Center
                                 </h6>
                                 <?php
-                                $view = new viewproducts();
-                                $prod = $view->getAllQuantity("products");
+                                $view = new viewsupplieritems();
+                                $prod = $view->getAllQuantity("supplier_products");
 
                                 if ($prod->rowCount() > 0) {
                                     foreach ($prod as $items) {
@@ -270,10 +251,6 @@ $Ucount = $productCount->getTableUsers();
                                                 Low stocks on <span><?= $items['name']; ?></span>
                                             </div>
                                         </a>
-
-
-
-
                                 <?php
                                     }
                                 } else {
@@ -281,21 +258,9 @@ $Ucount = $productCount->getTableUsers();
                                 }
 
                                 ?>
-
-
                                 <a class="dropdown-item text-center small text-gray-500" href="#">Show All Alerts</a>
                             </div>
                         </li>
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -334,123 +299,163 @@ $Ucount = $productCount->getTableUsers();
 
                 <!-- Begin Page Content -->
                 <div class="container-fluid">
+                <?php
+                                $view = new viewsupplieritems();
+                                $suppliers = $view->getAll("supplier_products");
 
+                                if ($prod->rowCount() > 0) {
+                                    foreach ($prod as $items) {
+
+                                ?>
+                                        <a class="dropdown-item d-flex align-items-center" href="#">
+                                            <div class="mr-3">
+                                                <div class="icon-circle bg-warning">
+                                                    <i class="fas fa-exclamation-triangle text-white"></i>
+                                                </div>
+                                            </div>
+                                            <div>
+                                                <div class="small text-gray-500"><?php echo date('F Y'); ?></div>
+                                                Low stocks on <span><?= $items['name']; ?></span>
+                                            </div>
+                                        </a>
+                                <?php
+                                    }
+                                } else {
+                                    echo "No alert messages";
+                                }
+
+                                ?>
                     <!-- Page Heading -->
-                    <h2 class="text-center">Admin Dashboard</h2>
-                    <div class="row">
-                        <div class="col-xl-3 col-md-6 mb-4">
-                            <div class="card border-left-danger shadow h-100 py-2">
-                                <div class="card-body">
-                                    <div class="row no-gutters align-items-center">
-                                        <div class="col mr-2">
-                                            <div class="text-xs font-weight-bold text-danger text-uppercase mb-1">
-                                                Products</div>
-                                            <div class="h5 mb-0 font-weight-bold text-gray-800"> <?php echo $Pcount->rowCount(); ?> </div>
-                                        </div>
-                                        <div class="col-auto">
-                                            <i class="fas fa-calendar fa-2x text-gray-300"></i>
-                                        </div>
+                    <h1 class="h3 mb-2 text-gray-800">Add items</h1>
+                    <div class="card-body">
+                        <form action="includes/addsupplieritemInclude.php" method="POST" onsubmit="addsuccess()">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label for="status" class="control-label">Supplier</label>
+                                        <select name="supplier_id" id="status" class="custom-select selevt">
+                                            <?php 
+                                                $view = new viewsuppliers();
+                                                $suppliers = $view->getAll("suppliers");
+                                                if ($suppliers->rowCount() > 0) {
+                                                    foreach ($suppliers as $supplier) {  
+                                            ?>
+                                                        <option value="<?= $supplier['id'] ?>"><?= $supplier['name']; ?></option>
+                                                    <?php } ?>
+                                                <?php } ?>
+                                           
+                                        </select>
                                     </div>
                                 </div>
-                            </div>
-                        </div>
-                        <div class="col-xl-3 col-md-6 mb-4">
-                            <div class="card border-left-warning shadow h-100 py-2">
-                                <div class="card-body">
-                                    <div class="row no-gutters align-items-center">
-                                        <div class="col mr-2">
-                                            <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
-                                                Users</div>
-                                            <div class="h5 mb-0 font-weight-bold text-gray-800"><?php echo $Ucount->rowCount(); ?></div>
-                                        </div>
-                                        <div class="col-auto">
-                                            <i class="fa-solid fa-user fa-2x text-gray-300"></i>
-                                        </div>
-                                    </div>
+                                <div class="col-md-6">
+                                    <label class="mb-0">Name</label>
+                                    <input type="text" required name="name" placeholder="Enter item name" class="form-control mb-2">
                                 </div>
-                            </div>
-                        </div>
-                        <div class="col-xl-3 col-md-6 mb-4">
-                            <div class="card border-left-dark shadow h-100 py-2">
-                                <div class="card-body">
-                                    <div class="row no-gutters align-items-center">
-                                        <div class="col mr-2">
-                                            <div class="text-xs font-weight-bold text-dark text-uppercase mb-1">
-                                                Orders</div>
-                                            <div class="h5 mb-0 font-weight-bold text-gray-800"><?php echo $Ocount->rowCount(); ?></div>
-                                        </div>
-                                        <div class="col-auto">
-                                            <i class="fa-solid fa-cart-shopping fa-2x text-gray-300"></i>
-                                        </div>
-                                    </div>
+                                <div class="col-md-6">
+                                    <label class="mb-0">Slug</label>
+                                    <input type="text" required name="slug" placeholder="Enter slug name" class="form-control mb-2">
                                 </div>
+                                <div class="col-md-12">
+                                    <label class="mb-0">Description</label>
+                                    <textarea rows="3" type="text" required name="description" placeholder="Enter description" class="form-control mb-2"></textarea>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="mb-0">Cost</label>
+                                    <input type="text" required name="cost" placeholder="Enter item price" class="form-control mb-2">
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="mb-0">Status</label>
+                                    <select name="status" id="status" class="custom-select selevt">
+                                        <option value="1">active</option>
+                                        <option value="0">inactive</option>
+                                    </select>
+                                </div>
+                                
+                                <div class="col-md-12">
+                                    <button type="submit" name="add_item_btn" class="btn btn-success" id="">Save</button>
+                                </div>
+
                             </div>
-                        </div>
+                        </form>
 
                     </div>
+                    <!-- /.container-fluid -->
 
                 </div>
-                <!-- /.container-fluid -->
+                <!-- End of Main Content -->
+
+                <!-- Footer -->
+                <footer class="sticky-footer bg-white">
+                    <div class="container my-auto">
+                        <div class="copyright text-center my-auto">
+                            <span>Copyright &copy; GraphiteeShirt 2022</span>
+                        </div>
+                    </div>
+                </footer>
+                <!-- End of Footer -->
 
             </div>
-            <!-- End of Main Content -->
+            <!-- End of Content Wrapper -->
 
-            <!-- Footer -->
-            <footer class="sticky-footer bg-white">
-                <div class="container my-auto">
-                    <div class="copyright text-center my-auto">
-                        <span>Copyright &copy; GraphiteeShirt 2022</span>
+        </div>
+        <!-- End of Page Wrapper -->
+
+        <!-- Scroll to Top Button-->
+        <a class="scroll-to-top rounded" href="#page-top">
+            <i class="fas fa-angle-up"></i>
+        </a>
+
+        <!-- Logout Modal-->
+        <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
+                        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
+                    <div class="modal-footer">
+                        <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                        <a class="btn btn-danger" href="includes/logoutInclude.php">Logout</a>
                     </div>
                 </div>
-            </footer>
-            <!-- End of Footer -->
-
-        </div>
-        <!-- End of Content Wrapper -->
-
-    </div>
-    <!-- End of Page Wrapper -->
-
-    <!-- Scroll to Top Button-->
-    <a class="scroll-to-top rounded" href="#page-top">
-        <i class="fas fa-angle-up"></i>
-    </a>
-
-    <!-- Logout Modal-->
-    <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
-                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">×</span>
-                    </button>
-                </div>
-                <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
-                <div class="modal-footer">
-                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                    <a class="btn btn-danger" href="includes/logoutInclude.php">Logout</a>
-                </div>
             </div>
         </div>
-    </div>
 
-    <!-- Bootstrap core JavaScript-->
-    <script src="vendors/jquery/jquery.min.js"></script>
-    <script src="vendors/bootstrap/js/bootstrap.bundle.min.js"></script>
+        <!-- Bootstrap core JavaScript-->
+        <script src="vendors/jquery/jquery.min.js"></script>
+        <script src="vendors/bootstrap/js/bootstrap.bundle.min.js"></script>
 
-    <!-- Core plugin JavaScript-->
-    <script src="vendors/jquery-easing/jquery.easing.min.js"></script>
+        <!-- Core plugin JavaScript-->
+        <script src="vendors/jquery-easing/jquery.easing.min.js"></script>
 
-    <!-- Custom scripts for all pages-->
-    <script src="dashboard/js/sb-admin-2.min.js"></script>
+        <!-- Custom scripts for all pages-->
+        <script src="dashboard/js/sb-admin-2.min.js"></script>
 
-    <!-- Page level plugins -->
-    <script src="vendors/datatables/jquery.dataTables.min.js"></script>
-    <script src="vendors/datatables/dataTables.bootstrap4.min.js"></script>
+        <!-- Page level plugins -->
+        <script src="vendors/datatables/jquery.dataTables.min.js"></script>
+        <script src="vendors/datatables/dataTables.bootstrap4.min.js"></script>
 
-    <!-- Page level custom scripts -->
-    <script src="dashboard/js/demo/datatables-demo.js"></script>
+        <!-- Page level custom scripts -->
+        <script src="dashboard/js/demo/datatables-demo.js"></script>
+        <script src="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/alertify.min.js"></script>
+
+
+
+        <script>
+            <?php if (isset($_SESSION['message'])) { ?>
+
+                alertify.set('notifier', 'position', 'top-right');
+                alertify.success('<?= $_SESSION['message']; ?>');
+            <?php }
+            unset($_SESSION['message']);
+            ?>
+        </script>
+
+
+
 
 
 
