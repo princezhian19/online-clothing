@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 24, 2022 at 07:21 AM
+-- Generation Time: Nov 24, 2022 at 01:24 PM
 -- Server version: 10.4.24-MariaDB
 -- PHP Version: 8.1.6
 
@@ -36,6 +36,13 @@ CREATE TABLE `carts` (
   `size` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+--
+-- Dumping data for table `carts`
+--
+
+INSERT INTO `carts` (`id`, `user_id`, `prod_id`, `prod_qty`, `created_at`, `size`) VALUES
+(20, 3, 6, 5, '2022-11-24 11:37:18', 'S');
+
 -- --------------------------------------------------------
 
 --
@@ -64,8 +71,8 @@ CREATE TABLE `orders` (
 --
 
 INSERT INTO `orders` (`id`, `tracking_id`, `user_id`, `name`, `email`, `phone`, `address`, `pincode`, `total_price`, `payment_mode`, `payment_id`, `status`, `comments`, `created_at`) VALUES
-(1, 'GraphShirt837dasds', 3, 'asd', 'asd@gmail.com', 'asdasds', 'test', 4027, 750, 'COD', NULL, 0, NULL, '2022-11-17 08:51:33'),
-(2, 'GraphShirt555995602388', 3, ' Marc', 'users1@mail.com', '09995602388', 'angdasd', 4027, 450, 'COD', NULL, 0, NULL, '2022-11-21 08:12:45'),
+(1, 'GraphShirt837dasds', 3, 'asd', 'asd@gmail.com', 'asdasds', 'test', 4027, 750, 'COD', NULL, 1, NULL, '2022-11-17 08:51:33'),
+(2, 'GraphShirt555995602388', 3, ' Marc', 'users1@mail.com', '09995602388', 'angdasd', 4027, 450, 'COD', NULL, 1, NULL, '2022-11-21 08:12:45'),
 (3, 'GraphShirt318332222222', 3, ' AAAAA', 'users1@mail.com', '09332222222', 'sdadsa dsadasdsadsadsa', 2323, 300, 'COD', NULL, 1, NULL, '2022-11-23 13:44:40');
 
 -- --------------------------------------------------------
@@ -119,7 +126,10 @@ INSERT INTO `products` (`id`, `name`, `slug`, `image`, `description`, `price`, `
 (3, 'Soap for the best design', 'Soap for the best design', '1668314630.jpg', 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s', 450, 19),
 (4, 'Graffiti not a crime shirt', 'Graffiti not a crime shirt', '1668314701.jpg', 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s', 550, 20),
 (5, 'Black graffiti not a crime', 'Black graffiti not a crime shirt', '1668314804.jpg', 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s', 560, 20),
-(6, 'test', 'test shirt', '1668585031.jpg', 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s,', 500, 20);
+(6, 'test', 'test shirt', '1668585031.jpg', 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s,', 500, 20),
+(7, 'custom', 'custom', '1669292101.', 'custom', 300, 1),
+(8, 'custom', 'custom', '1669292285.', 'custom', 300, 1),
+(9, 'custom', 'custom', '1669292414.jpg', 'custom', 300, 1);
 
 -- --------------------------------------------------------
 
@@ -134,11 +144,21 @@ CREATE TABLE `purchase_orders` (
   `supplier_product_id` int(11) NOT NULL,
   `unit` varchar(100) NOT NULL,
   `cost` int(11) NOT NULL,
+  `quantity` int(11) NOT NULL DEFAULT 1,
   `discount` decimal(10,0) DEFAULT 0,
   `tax` decimal(10,0) DEFAULT 0,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `purchase_orders`
+--
+
+INSERT INTO `purchase_orders` (`id`, `code`, `supplier_id`, `supplier_product_id`, `unit`, `cost`, `quantity`, `discount`, `tax`, `created_at`, `updated_at`) VALUES
+(16, 'PO-2022-11-24-8bTYn', 1, 3, 'aaa', 1000, 24, '0', '0', '2022-11-24 10:51:47', '2022-11-24 10:51:47'),
+(17, 'PO-2022-11-24-nE7uu', 2, 1, 'pcs', 200, 10, '0', '0', '2022-11-24 10:51:59', '2022-11-24 10:51:59'),
+(18, 'PO-2022-11-24-nE7uu', 2, 2, 'pcs', 300, 20, '0', '0', '2022-11-24 10:51:59', '2022-11-24 10:51:59');
 
 -- --------------------------------------------------------
 
@@ -321,7 +341,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `carts`
 --
 ALTER TABLE `carts`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
 
 --
 -- AUTO_INCREMENT for table `orders`
@@ -339,13 +359,13 @@ ALTER TABLE `order_items`
 -- AUTO_INCREMENT for table `products`
 --
 ALTER TABLE `products`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT for table `purchase_orders`
 --
 ALTER TABLE `purchase_orders`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 --
 -- AUTO_INCREMENT for table `reviews`

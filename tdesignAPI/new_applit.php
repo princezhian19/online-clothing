@@ -114,11 +114,10 @@
 				?>
 			</div>
 			<div class="custom_icon">
-				<form id="form1" runat="server">
+				<form name="uploader" id="form1" runat="server">
 					<span class="btn btn-default btn-file"> Browse
-						<input type='file' id="imgInp" />
+						<input type='file' id="imgInp" name="image" />
 					</span>
-
 				</form>
 			</div>
 
@@ -297,7 +296,7 @@
 					<button type="submit" class="btn btn-primary">Proceed</button>
 					</form>-->
 					<div class="row">
-						<form method="POST" enctype="multipart/form-data" id="imageFileForm" action="checkout/checkout.php">
+						<form method="POST" enctype="multipart/form-data" id="imageFileForm" action="checkout.php">
 							<div class="col-md-1">
 								<button type="button" class="btn btn-default close_img" data-dismiss="modal">
 									Close
@@ -307,7 +306,7 @@
 								Price :545/-
 							</div>
 
-							<div class="col-md-6">
+							<div class="col-md-6 product_data">
 								<center>
 									<table class="table">
 
@@ -320,7 +319,7 @@
 										</tr>
 										<tr>
 											<td>
-												<input id="small2" onchange="changeval2()" name="small" type="number" value="1" class="form-control small input-md" min=0 max=99999 />
+												<input id="small2" onchange="changeval2()" name="small" type="number" value="1" class="form-control small input-md " min=0 max=99999 />
 											</td>
 
 											<td>
@@ -343,7 +342,7 @@
 							<div class="col-md-2">
 								<input type="hidden" name="img_front" id="img_front" value="" />
 								<input type="hidden" name="img_back" id="img_back" value="" />
-								<button type="submit" class="btn btn-primary">
+								<button type="button" class="btn btn-primary addtocartBtnCustom">
 									Buy Now!
 								</button>
 							</div>
@@ -388,6 +387,7 @@
 	</div> -->
 
 </div>
+	<script src="script/custom.js"></script>
 <script>
 	//$('input[type=file]').bootstrapFileInput();
 	//$('.file-inputs').bootstrapFileInput();
@@ -406,4 +406,5 @@
 	$("#imgInp").change(function() {
 		readURL(this);
 	});
+	
 </script>

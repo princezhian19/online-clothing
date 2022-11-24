@@ -89,7 +89,8 @@ $(document).ready(function () {
             method: "POST",
             url: "includes/cartIncludes.php",
             data: {
-                "prod_id": prod_id,
+                // "prod_id": prod_id,
+                "prod_id": 6,
                 "prod_qty": qty,
                 "sizes":size,
                 "scope": "add"
@@ -119,7 +120,65 @@ $(document).ready(function () {
 
 
     });
+    $(document).on('click','.addtocartBtnCustom', function (e){
+        e.preventDefault();
+        $('#form1').submit()
+    });
+    $("form[name='uploader']").on("submit", function(ev) {
+        ev.preventDefault(); // Prevent browser default submit.
+        var small2 = $('#small2').val();
+        var medium2 = $('#medium2').val();
+        var large2 = $('#large2').val();
+      alert('a');
+        var formData = new FormData(this);
+        formData.append('add_custom_product_btn', true);
+        $.ajax({
+          url: "includes/addproductInclude.php",
+          type: "POST",
+          data: formData,
+          success: function (msg) {
+            alert(msg)
+          },
+          cache: false,
+          contentType: false,
+          processData: false
+        });
+          
+    });
+    function saveC(size, qty) {
+        $.ajax({
+            method: "POST",
+            url: "includes/cartIncludes.php",
+            data: {
+                // "prod_id": prod_id,
+                "prod_id": 6,
+                "prod_qty": qty,
+                "sizes":size,
+                "scope": "add"
+            },
 
+            success: function (response) {
+                if (response == 401) {
+                    alertify.success("Login to continue!");
+                }
+                else if (response == "existing") {
+                    alertify.success("Product already in cart");
+
+                }
+                else if (response == 201) {
+                    alertify.success("Product Added to cart!");
+                }
+
+
+                else if (response == 500) {
+                    alertify.success("Something went wrong!");
+
+                }
+
+
+            }
+        });
+    }
     $(document).on('click', '.updateQty', function () {
 
         var qty = $(this).closest('.product_data').find('.qty_input').val();
