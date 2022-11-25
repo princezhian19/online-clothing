@@ -85,6 +85,31 @@ const storage = {
        const item = storage.getItems('suppliers_items').find(si => si.id == id)
        if(item) return item.name;
        return '';                     
+    },
+    receiveOrders(code) {
+        var  formdata = new FormData();
+        formdata.append('receive', true);
+        formdata.append('code', code);
+        $.ajax({
+            url:_base_url_+"api/purchaseorder/index.php",
+            method: 'POST',
+            processData: false,
+            contentType: false,
+            cache: false,
+            type: 'POST',
+            data: formdata,
+            success: (resp) => {
+                localStorage.setItem('tableItems', JSON.stringify([]));
+                const currentOrders = storage.getItems('tableItems');
+                tbl.clear('orders');
+                currentOrders.map((item) => {
+                    tbl.addRow('orders', {
+                        item_id: item.item_id,
+                        unit: item.unit, quantity: item.quantity, name: item.name, cost: item.cost, total: item.total
+                    })
+                })
+            }
+        })
     }
 }
 

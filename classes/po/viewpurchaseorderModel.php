@@ -56,6 +56,14 @@ class viewpurchaseorder extends connection
 
         return $stmt;
     }
+    function getItemsByCol($table, $ref, $id)
+    {
+        $sql = "SELECT * FROM $table WHERE $ref = '$id'";
+        $stmt = $this->connect()->prepare($sql);
+        $stmt->execute();
+
+        return $stmt;
+    }
     function getSlug($table, $slug)
     {
         $sql = "SELECT * FROM $table WHERE slug = '$slug'";

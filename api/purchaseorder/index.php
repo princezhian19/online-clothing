@@ -38,4 +38,11 @@
         }
         echo json_encode(['message' => json_decode($_POST['orders']) ]);
     }
+    if(isset($_POST['receive'])) {
+        $code = $_POST['code'];
+        $po = new viewpurchaseorder();
+        $result = $po->getItemsByCol("purchase_orders","code", $code); 
+        $result = $result->fetchAll(PDO::FETCH_ASSOC);
+        echo json_encode(['a' => $result ]);
+    }
 ?>
