@@ -355,33 +355,17 @@ include "classes/viewsupplierModel.php";
                                         <label for="status" class="control-label">Supplier </label>
                                             <?php 
                                                 $view = new viewsuppliers();
-                                                $po = $view->getByCode('purchase_orders', $_GET['poId']);
-                                                $po = $po->fetch(PDO::FETCH_ASSOC);
+                                                $pos = $view->getByCode('purchase_orders', $_GET['poId']);
+                                                $pos = $pos->fetchAll(PDO::FETCH_ASSOC);
                                             ?>
-                                                <?php if($po) { ?>
-                                                    <input type="text" required name="unit" id="supplierId" class="form-control mb-2">
+                                                <?php if($pos) { ?>
+                                                    <input type="hidden" required name="unit" id="supplierIdZ" value="<?= $pos[0]['supplier_id'] ?>" class="form-control mb-2" >
+                                                    <input type="text" required name="unit" id="supplierId" class="form-control mb-2" >
                                                 <?php } ?>
                                            
                                     </div>
                                 </div>
-                                <!-- <div class="col-md-6">
-                                    <label class="mb-0">Item</label>
-                                    <select name="item" id="selectItemEl" class="custom-select selevt">     
-                                    </select>
-                                </div>
-                                <div class="col-md-3">
-                                    <label class="mb-0">Unit</label>
-                                    <input type="text" required name="unit" id="unit" placeholder="Enter unit name" class="form-control mb-2">
-                                </div>
-                                <div class="col-md-3">
-                                    <label class="mb-0">Quantity</label>
-                                    <input type="text" required name="quantity" id="quantity" placeholder="Enter quantity" class="form-control mb-2">
-                                </div>
-                                <div class="col-md-1">
-                                    <label for="" class="col-md-3 mb-0 invisible">l</label>
-                                    <button type="button" name="add_item_btn" class="form-control btn btn-success mb-2" onclick="add()">add</button>
-                                </div> -->
-
+                            
                             </div>
                             <div class="row">
                                 <div class="col-md-12">
@@ -401,27 +385,25 @@ include "classes/viewsupplierModel.php";
                                             <th>Item</th>
                                             <th>Cost</th>
                                             <th>Total</th>
-                                            <th>Delete</th>
                                         </tr>
                                     </thead>
                                     <tbody id="orders">
                                     <?php 
                                         $view = new viewsuppliers();
                                         $po_items = $view->getByCode('purchase_orders', $_GET['poId']);
-                                        // $po_items = $po->fetchAll(PDO::FETCH_ASSOC);
-                                        // echo json_encode($po_items);
-                                        
-                                        if ($po_items->rowCount() > 0) {
-                                            foreach ($po_items as $po_item) {
+                                        $po = $po_items->fetchAll(PDO::FETCH_ASSOC);
+                                            foreach ($po as $po_item) {
                                     ?>           
-                                            <td><?= $po_item['unit'] ?> </td>  
-                                            <td><?= $po_item['quantity'] ?> </td>
-                                            <td><script>document.write(storage.getItemNameById("<?= $po_item['supplier_product_id'] ?>"));</script></td>
-                                            <td><?= $po_item['cost'] ?> </td>  
-                                            <td><?= $po_item['cost'] *  $po_item['quantity'] ?> </td>  
+                                            <tr>
+                                                <td><?= $po_item['unit'] ?> </td>  
+                                                <td><?= $po_item['quantity'] ?> </td>
+                                                <td><script>document.write(storage.getItemNameById("<?= $po_item['supplier_product_id'] ?>"));</script></td>
+                                                <td><?= $po_item['cost'] ?> </td>  
+                                                <td><?= $po_item['cost'] *  $po_item['quantity'] ?> </td>  
+                                            </tr>
                                         <?php 
                                         }
-                                    } 
+                                    
                                     ?>
                                     </tbody>
                                     <tfoot>
@@ -431,7 +413,6 @@ include "classes/viewsupplierModel.php";
                                             <th>Item</th>
                                             <th>Cost</th>
                                             <th>Total</th>
-                                            <th>Delete</th>
                                         </tr>
                                     </tfoot>
                                 </table>
@@ -440,7 +421,7 @@ include "classes/viewsupplierModel.php";
                     </div>
                                 </div>
                             </div>
-                            <button type="button" name="save_orders_btn" class="form-control btn btn-success mb-2" onclick="storage.saveOrders('tableItems')">save</button>
+                            <button type="button" name="save_orders_btn" class="form-control btn btn-success mb-2">receive</button>
                         </form>
 
                     </div>
@@ -578,7 +559,7 @@ include "classes/viewsupplierModel.php";
         <script>
             loadItems();
             function loadDatas() {
-                const poId = "<?= $po['supplier_id'] ?>";
+                const poId = document.getElementById('supplierIdZ').value;
                 const suppliers = storage.getItems('suppliers');
                 const supplier = suppliers.find(sup => sup.id == poId);
                 if(supplier) {

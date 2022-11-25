@@ -26,6 +26,7 @@ class viewsuppliers extends connection
         $stmt->execute();
         return $stmt;
     }
+    
     function getbyId($table, $id)
     {
         $sql = "SELECT * FROM $table WHERE id = $id ";
@@ -36,7 +37,7 @@ class viewsuppliers extends connection
     
     function getByCode($table, $code)
     {
-        $sql = "SELECT * FROM $table WHERE code = $code ";
+        $sql = "SELECT * FROM $table WHERE code = '$code'";
         $stmt = $this->connect()->prepare($sql);
         $stmt->execute();
         return $stmt;
