@@ -270,7 +270,8 @@ if (!isset($_SESSION["userid"])) {
                     <?php
                     $viewCart = new viewproducts();
                     $cart = $viewCart->getcartItems();
-
+                    // $carts = $cart->fetchAll(PDO::FETCH_ASSOC);
+                    // echo json_encode($cart);
                     if ($cart->rowCount() > 0) {
                     ?>
                         <div class="card card-body shadow">

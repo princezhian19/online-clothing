@@ -78,8 +78,11 @@ class viewproducts extends connection
     function getcartItems()
     {
         $userId = $_SESSION['userid'];
-        $sql = "SELECT c.id as cid, c.prod_id, c.prod_qty, c.size, p.id as pid, p.name, p.image, p.price FROM carts c, products p
-        WHERE c.prod_id=p.id AND c.user_id='$userId' ORDER BY c.id DESC ";
+        $sql = "SELECT c.id as cid, c.prod_id, c.prod_qty, c.size, p.id as pid, p.name, p.image, p.price FROM carts c
+         LEFT JOIN products p on c.prod_id = p.id";
+            // , products p
+        // WHERE c.prod_id=p.id AND c.user_id='$userId' ORDER BY c.id DESC ";
+        // $sql = "SELECT * from carts";
         $stmt = $this->connect()->prepare($sql);
         $stmt->execute();
         return $stmt;

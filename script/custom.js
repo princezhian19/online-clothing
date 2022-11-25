@@ -89,8 +89,8 @@ $(document).ready(function () {
             method: "POST",
             url: "includes/cartIncludes.php",
             data: {
-                // "prod_id": prod_id,
-                "prod_id": 6,
+                "prod_id": prod_id,
+                // "prod_id": 6,
                 "prod_qty": qty,
                 "sizes":size,
                 "scope": "add"
