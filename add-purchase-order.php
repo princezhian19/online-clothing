@@ -562,7 +562,7 @@ include "classes/viewsupplierModel.php";
                     storage.saveOrders('tableItems');
                     alertify.set('notifier', 'position', 'top-right');
                     alertify.success('PO successfuly submitted', 1, function() {
-                        // location.reload();
+                        location.reload();
                     });
                 }
         </script>

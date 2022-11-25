@@ -99,15 +99,7 @@ const storage = {
             type: 'POST',
             data: formdata,
             success: (resp) => {
-                localStorage.setItem('tableItems', JSON.stringify([]));
-                const currentOrders = storage.getItems('tableItems');
-                tbl.clear('orders');
-                currentOrders.map((item) => {
-                    tbl.addRow('orders', {
-                        item_id: item.item_id,
-                        unit: item.unit, quantity: item.quantity, name: item.name, cost: item.cost, total: item.total
-                    })
-                })
+                
             }
         })
     }

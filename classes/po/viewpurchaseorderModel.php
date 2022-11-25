@@ -203,6 +203,26 @@ class viewpurchaseorder extends connection
         return $stmt;
     }
    
-  
-  
+    function updateProduct($prod_qty, $code)
+    {
+
+        $sql = "UPDATE products set quantity=$prod_qty WHERE code='$code'";
+        $stmt = $this->connect()->prepare($sql);
+        $stmt->execute();
+        return $stmt;
+    }
+    function saveNewProduct($supplier_id,$name,$slug,$image,$description,$price,$quantity) {
+        $stmt = $this->connect()->prepare('INSERT INTO products (code,name,slug,image,description,price,quantity) VALUES (?,?,?,?,?,?,?);');
+        if (!$stmt->execute(array($supplier_id,$name,$slug,$image,$description,$price,$quantity))) {
+            return $stmt;
+        }
+        return 'success';
+    }
+    function deletePO($code)
+    {
+        $sql = "DELETE FROM purchase_orders WHERE code='$code'";
+        $stmt = $this->connect()->prepare($sql);
+        $stmt->execute();
+        return $stmt;
+    }
 }

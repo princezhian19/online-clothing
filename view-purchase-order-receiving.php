@@ -421,7 +421,7 @@ include "classes/viewsupplierModel.php";
                     </div>
                                 </div>
                             </div>
-                            <button type="button" name="save_orders_btn" class="form-control btn btn-success mb-2" onclick="storage.receiveOrders('<?= $_GET['poId'] ?>')">receive</button>
+                            <button type="button" name="save_orders_btn" class="form-control btn btn-success mb-2" onclick="receivePO()">receive</button>
                         </form>
 
                     </div>
@@ -555,6 +555,14 @@ include "classes/viewsupplierModel.php";
                     });
                     storage.loadTableItems();                    
                 } 
+                function receivePO() {
+                    const code = '<?= $_GET['poId'] ?>'
+                    storage.receiveOrders(code);
+                    alertify.set('notifier', 'position', 'top-right');
+                    alertify.success('PO successfuly received', 1, function() {
+                        location.reload();
+                    });
+                }
         </script>
         <script>
             loadItems();

@@ -42,7 +42,20 @@
         $code = $_POST['code'];
         $po = new viewpurchaseorder();
         $result = $po->getItemsByCol("purchase_orders","code", $code); 
-        $result = $result->fetchAll(PDO::FETCH_ASSOC);
-        echo json_encode(['a' => $result ]);
+        $purchase_orders = $result->fetchAll(PDO::FETCH_ASSOC);
+        
+        foreach($purchase_orders as $poItem) {
+            $result = $po->getItemsByCol("products","code", $poItem['supplier_product_id']); 
+            $product = $result->fetch(PDO::FETCH_ASSOC);
+            if($product) {
+                $result = $po->updateProduct($product['quantity'] + $poItem['quantity'], $poItem['supplier_product_id']); 
+            }else {
+                $res = $po->getItemsByCol("supplier_products","id", $poItem['supplier_product_id']); 
+                $supplierProduct = $res->fetch(PDO::FETCH_ASSOC);
+                $result = $po->saveNewProduct($poItem['supplier_product_id'],$supplierProduct['name'],$supplierProduct['slug'],'null',$supplierProduct['description'],$supplierProduct['cost'],$poItem['quantity']);
+            }
+        }
+        $result = $po->deletePO($code); 
+        echo json_encode(['message' => 'PO received successfuly']);
     }
 ?>
