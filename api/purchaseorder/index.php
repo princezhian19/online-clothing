@@ -25,18 +25,17 @@
     }
     if (isset($_POST["save_po"])) {
         $code = generateRandomString();
-        foreach ($_POST['orders'] as $key => $value) {
-            $supplier_id = $value["supplier_id"];
-            $quantity = $value["quantity"];
-            $supplier_product_id = $value["supplier_product_id"];
-            $unit = $value["unit"];
-            $cost = $value["cost"];
+        foreach (json_decode($_POST['orders']) as $key => $value) {
+            $supplier_id = $value->supplier_id;
+            $quantity = $value->quantity;
+            $supplier_product_id = $value->supplier_product_id;
+            $unit = $value->unit;
+            $cost = $value->cost;
             $discount = $_POST["discount"];
             $tax = $_POST["tax"];
             $po = new viewpurchaseorder();
             $po->savePo($code,$supplier_id,$supplier_product_id,$unit,$cost,$discount,$tax,$quantity);
         }
-        
-        echo json_encode(['message' => 'PO submitted successfuly']);
+        echo json_encode(['message' => json_decode($_POST['orders']) ]);
     }
 ?>

@@ -12,6 +12,13 @@ class viewproducts extends connection
         $stmt->execute();
         return $stmt;
     }
+    function getAllExceptCustom($table)
+    {
+        $sql = "SELECT * FROM $table";
+        $stmt = $this->connect()->prepare($sql);
+        $stmt->execute();
+        return $stmt;
+    }
     function getAllQuantity($table)
     {
         $sql = "SELECT * FROM $table WHERE quantity < 5";

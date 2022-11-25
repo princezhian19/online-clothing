@@ -45,16 +45,19 @@ const storage = {
         localStorage.setItem(key, JSON.stringify(newItems));
     },
     saveOrders: (key) => {
+        var  formdata = new FormData();
+        formdata.append('orders', JSON.stringify(storage.getItems('tableItems')));
+        formdata.append('tax', 0);
+        formdata.append('discount', 0);
+        formdata.append('save_po', true);
         $.ajax({
             url:_base_url_+"api/purchaseorder/index.php",
             method: 'POST',
+            processData: false,
+            contentType: false,
+            cache: false,
             type: 'POST',
-            data: {
-                orders: storage.getItems('tableItems'),
-                tax: 0,
-                discount: 0,
-                save_po: true
-            },
+            data: formdata,
             success: (resp) => {
                 localStorage.setItem('tableItems', JSON.stringify([]));
                 const currentOrders = storage.getItems('tableItems');
@@ -77,5 +80,11 @@ const storage = {
                 unit: item.unit, quantity: item.quantity, name: item.name, cost: item.cost, total: item.total
             })
         })
+    },
+    getItemNameById: (id) => {
+       const item = storage.getItems('suppliers_items').find(si => si.id == id)
+       if(item) return item.name;
+       return '';                     
     }
 }
+

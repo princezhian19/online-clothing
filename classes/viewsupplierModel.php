@@ -34,6 +34,13 @@ class viewsuppliers extends connection
         return $stmt;
     }
     
+    function getByCode($table, $code)
+    {
+        $sql = "SELECT * FROM $table WHERE code = $code ";
+        $stmt = $this->connect()->prepare($sql);
+        $stmt->execute();
+        return $stmt;
+    }
     function getGroupbyCode($table)
     {
         $sql = "SELECT * FROM $table group by code";

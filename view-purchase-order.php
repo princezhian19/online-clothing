@@ -311,7 +311,7 @@ include "classes/po/viewpurchaseorderModel.php";
                                     <thead class="">
                                         <tr>
                                             <th>Code</th>
-                                            <th>Name</th>
+                                            <th>Date Created</th>
                                             <th>Supplier</th>
                                             <th>Cost</th>
                                             <th>Total</th>
@@ -336,11 +336,12 @@ include "classes/po/viewpurchaseorderModel.php";
                                         ?>
                                                 <tr>
                                                     <td><?= $items['code']; ?> </td>
-                                                    <td><?= $item['name']; ?> </td>
+                                                    <td><?= $items['created_at']; ?> </td>
                                                     <td><?= $supplier['name']; ?> </td>
                                                     <td><?= $items['cost']; ?></td>
                                                     <td><?= $items['cost'] * $items['quantity']; ?></td>
                                                     <td>
+                                                    <a href="view-purchase-order-receiving.php?poId=<?= $items['code']; ?>" class="btn btn-sm btn-warning">view</a>
                                                         <input type="hidden" name="supid" value="<?= $items['id']; ?> ">
                                                         <button name="delete_SupplierItem" type="button" class="btn btn-sm btn-danger deleteProduct" value="<?= $items['id']; ?>">Delete</button>
                                                     </td>

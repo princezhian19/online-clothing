@@ -253,8 +253,8 @@ include "classes/viewsupplierModel.php";
                                     Alerts Center
                                 </h6>
                                 <?php
-                                $view = new viewsupplieritems();
-                                $prod = $view->getAllQuantity("supplier_products");
+                                $view = new viewsuppliers();
+                                $prod = $view->getAllQuantity("purchase_orders");
 
                                 if ($prod->rowCount() > 0) {
                                     foreach ($prod as $items) {
@@ -320,8 +320,8 @@ include "classes/viewsupplierModel.php";
                 <!-- Begin Page Content -->
                 <div class="container-fluid">
                 <?php
-                                $view = new viewsupplieritems();
-                                $suppliers = $view->getAll("supplier_products");
+                                $view = new viewsuppliers();
+                                $suppliers = $view->getAll("purchase_orders");
 
                                 if ($prod->rowCount() > 0) {
                                     foreach ($prod as $items) {
@@ -346,28 +346,25 @@ include "classes/viewsupplierModel.php";
 
                                 ?>
                     <!-- Page Heading -->
-                    <h1 class="h3 mb-2 text-gray-800">Purchase Order</h1>
+                    <h1 class="h3 mb-2 text-gray-800">Purchase Order Receiving</h1>
                     <div class="card-body">
                         <form action="includes/addsupplieritemInclude.php" method="POST" onsubmit="addsuccess()">
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label for="status" class="control-label">Supplier</label>
-                                        <select name="supplier_id" id="select-supplier" class="custom-select selevt" onchange="onSupplierChange()">
+                                        <label for="status" class="control-label">Supplier </label>
                                             <?php 
                                                 $view = new viewsuppliers();
-                                                $suppliers = $view->getAll("suppliers");
-                                                if ($suppliers->rowCount() > 0) {
-                                                    foreach ($suppliers as $supplier) {  
+                                                $po = $view->getByCode('purchase_orders', $_GET['poId']);
+                                                $po = $po->fetch(PDO::FETCH_ASSOC);
                                             ?>
-                                                        <option value="<?= $supplier['id'] ?>"><?= $supplier['name']; ?></option>
-                                                    <?php } ?>
+                                                <?php if($po) { ?>
+                                                    <input type="text" required name="unit" id="supplierId" class="form-control mb-2">
                                                 <?php } ?>
                                            
-                                        </select>
                                     </div>
                                 </div>
-                                <div class="col-md-6">
+                                <!-- <div class="col-md-6">
                                     <label class="mb-0">Item</label>
                                     <select name="item" id="selectItemEl" class="custom-select selevt">     
                                     </select>
@@ -383,7 +380,7 @@ include "classes/viewsupplierModel.php";
                                 <div class="col-md-1">
                                     <label for="" class="col-md-3 mb-0 invisible">l</label>
                                     <button type="button" name="add_item_btn" class="form-control btn btn-success mb-2" onclick="add()">add</button>
-                                </div>
+                                </div> -->
 
                             </div>
                             <div class="row">
@@ -408,6 +405,24 @@ include "classes/viewsupplierModel.php";
                                         </tr>
                                     </thead>
                                     <tbody id="orders">
+                                    <?php 
+                                        $view = new viewsuppliers();
+                                        $po_items = $view->getByCode('purchase_orders', $_GET['poId']);
+                                        // $po_items = $po->fetchAll(PDO::FETCH_ASSOC);
+                                        // echo json_encode($po_items);
+                                        
+                                        if ($po_items->rowCount() > 0) {
+                                            foreach ($po_items as $po_item) {
+                                    ?>           
+                                            <td><?= $po_item['unit'] ?> </td>  
+                                            <td><?= $po_item['quantity'] ?> </td>
+                                            <td><script>document.write(storage.getItemNameById("<?= $po_item['supplier_product_id'] ?>"));</script></td>
+                                            <td><?= $po_item['cost'] ?> </td>  
+                                            <td><?= $po_item['cost'] *  $po_item['quantity'] ?> </td>  
+                                        <?php 
+                                        }
+                                    } 
+                                    ?>
                                     </tbody>
                                     <tfoot>
                                         <tr>
@@ -425,7 +440,7 @@ include "classes/viewsupplierModel.php";
                     </div>
                                 </div>
                             </div>
-                            <button type="button" name="save_orders_btn" class="form-control btn btn-success mb-2" onclick="save()">save</button>
+                            <button type="button" name="save_orders_btn" class="form-control btn btn-success mb-2" onclick="storage.saveOrders('tableItems')">save</button>
                         </form>
 
                     </div>
@@ -500,29 +515,30 @@ include "classes/viewsupplierModel.php";
             <?php }
             unset($_SESSION['message']);
             ?>
-                const onSupplierChange = () => {
-                    var selectSupplierEl = document.getElementById("select-supplier");
-                    var id = selectSupplierEl.value
-                    $.ajax({
-                    url:_base_url_+"api/purchaseorder/index.php?get_supplier_by_id=true&supplier_id="+id,
-                    cache: false,
-                    contentType: false,
-                    processData: false,
-                    method: 'GET',
-                    type: 'GET',
-                    dataType: 'json',
-                    success: (resp) => {
-                        var selectItemEl = document.getElementById("selectItemEl");
-                        $('#selectItemEl').empty()
-                        resp.map(item => {
-                            console.log(item)
-                            let newOption = new Option(item.name,item.id);
-                            console.log(newOption)
-                            selectItemEl.add(newOption,undefined);
-                        })
-                    }
-                    })
-                }
+                // const onSupplierChange = () => {
+                //     var selectSupplierEl = document.getElementById("select-supplier");
+                //     var id = selectSupplierEl.value
+                //     $.ajax({
+                //     url:_base_url_+"api/purchaseorder/index.php?get_supplier_by_id=true&supplier_id="+id,
+                //     cache: false,
+                //     contentType: false,
+                //     processData: false,
+                //     method: 'GET',
+                //     type: 'GET',
+                //     dataType: 'json',
+                //     success: (resp) => {
+                //         var selectItemEl = document.getElementById("selectItemEl");
+                //         $('#selectItemEl').empty()
+                //         resp.map(item => {
+                //             console.log(item)
+                //             let newOption = new Option(item.name,item.id);
+                //             console.log(newOption)
+                //             selectItemEl.add(newOption,undefined);
+                //         })
+                //     }
+                //     })
+                // }
+                
                 function addNewItem() {
                     var ordersTable = document.getElementById("orders");
                     var row = table.insertRow(0);
@@ -558,19 +574,21 @@ include "classes/viewsupplierModel.php";
                     });
                     storage.loadTableItems();                    
                 } 
-                function save() {
-                    storage.saveOrders('tableItems');
-                    alertify.set('notifier', 'position', 'top-right');
-                    alertify.success('PO successfuly submitted', 1, function() {
-                        // location.reload();
-                    });
-                }
         </script>
         <script>
             loadItems();
+            function loadDatas() {
+                const poId = "<?= $po['supplier_id'] ?>";
+                const suppliers = storage.getItems('suppliers');
+                const supplier = suppliers.find(sup => sup.id == poId);
+                if(supplier) {
+                    document.getElementById('supplierId').value = supplier.name;
+                }
+            }
             function init() {
-                onSupplierChange();
-                storage.loadTableItems();
+                // onSupplierChange();
+                // storage.loadTableItems();
+                loadDatas();
             }
             // function loadTableItems() {
             //     const currentOrders = storage.getItems('tableItems');

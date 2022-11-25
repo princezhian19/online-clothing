@@ -258,10 +258,12 @@ if (!isset($_SESSION["userid"])) {
                         $view = new viewproducts();
                         $prod = $view->getAll("products");
 
-                        if ($prod->rowCount() > 0) {
+                        if ($prod->rowCount() > 1) {
                             foreach ($prod as $items) {
-
-                        ?>
+                                if(strpos($items["name"], 'custom-') !== false) {
+                                    continue;
+                                }
+                        ?>  
                                 <div class="col-md-3">
                                     <a href="customersProduct.php?product=<?= $items['slug']; ?>">
                                         <div class="wsk-cp-product">
