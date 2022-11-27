@@ -332,6 +332,28 @@ include 'classes/viewsupplierModel.php';
                                                 <label class="mb-0">Slug</label>
                                                 <input type="text" required name="slug" placeholder="Enter slug name" class="form-control mb-2" value="<?= $items['slug']; ?>">
                                             </div>
+                                            <div class="col-md-6">
+                                                <label class="mb-0">Size</label>
+                                                <select name="size" id="size" class="custom-select selevt" >
+                                                    <option value="S" <?php if($items['size'] =='S') echo 'selected'; ?>>Small</option>
+                                                    <option value="M" <?php if($items['size'] == 'M') echo 'selected'; ?>>Medium</option>
+                                                    <option value="L" <?php if($items['size'] == 'L') echo 'selected'; ?>>Large</option>
+                                                </select>
+                                            </div>
+                                            
+                                            <div class="col-md-6">
+                                                <label class="mb-0">Color</label>
+                                                <select name="color" id="color" class="custom-select selevt">
+                                                    <option value="black" <?php if($items['color'] =='black') echo 'selected'; ?>>Black</option>
+                                                    <option value="white" <?php if($items['color'] =='white') echo 'selected'; ?>>White</option>
+                                                    <option value="red" <?php if($items['color'] =='red') echo 'selected'; ?>>Red</option>
+                                                    <option value="green" <?php if($items['color'] =='green') echo 'selected'; ?>>Green</option>
+                                                    <option value="orange" <?php if($items['color'] =='orange') echo 'selected'; ?>>Orange</option>
+                                                    <option value="yellow" <?php if($items['color'] =='yellow') echo 'selected'; ?>>Yellow</option>
+                                                    <option value="pink" <?php if($items['color'] =='pink') echo 'selected'; ?>>Pink</option>
+                                                    <option value="brown" <?php if($items['color'] =='brown') echo 'selected'; ?>>Brown</option>
+                                                </select>
+                                            </div>
                                             <div class="col-md-12">
                                                 <label class="mb-0">Description</label>
                                                 <textarea rows="3" type="text" required name="description" placeholder="Enter description" class="form-control mb-2"><?= $items['description']; ?></textarea>

@@ -368,6 +368,29 @@ include "classes/viewsupplierModel.php";
                                     <label class="mb-0">Slug</label>
                                     <input type="text" required name="slug" placeholder="Enter slug name" class="form-control mb-2">
                                 </div>
+                                
+                                <div class="col-md-6">
+                                    <label class="mb-0">Size</label>
+                                    <select name="size" id="size" class="custom-select selevt">
+                                        <option value="S">Small</option>
+                                        <option value="M">Medium</option>
+                                        <option value="L">Large</option>
+                                    </select>
+                                </div>
+                                
+                                <div class="col-md-6">
+                                    <label class="mb-0">Color</label>
+                                    <select name="color" id="color" class="custom-select selevt">
+                                        <option value="black">Black</option>
+                                        <option value="white">White</option>
+                                        <option value="red">Red</option>
+                                        <option value="green">Green</option>
+                                        <option value="orange">Orange</option>
+                                        <option value="yellow">Yellow</option>
+                                        <option value="pink">Pink</option>
+                                        <option value="brown">Brown</option>
+                                    </select>
+                                </div>
                                 <div class="col-md-12">
                                     <label class="mb-0">Description</label>
                                     <textarea rows="3" type="text" required name="description" placeholder="Enter description" class="form-control mb-2"></textarea>

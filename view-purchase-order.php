@@ -339,7 +339,8 @@ include "classes/po/viewpurchaseorderModel.php";
                                                     <td><?= $items['created_at']; ?> </td>
                                                     <td><?= $supplier['name']; ?> </td>
                                                     <td><?= $items['cost']; ?></td>
-                                                    <td><?= $items['cost'] * $items['quantity']; ?></td>
+                                                    <!-- <td><?= $items['cost'] * $items['quantity']; ?></td> -->
+                                                    <td><?= $items['total_price'] ?></td>
                                                     <td>
                                                     <a href="view-purchase-order-receiving.php?poId=<?= $items['code']; ?>" class="btn btn-sm btn-warning">view</a>
                                                         <input type="hidden" name="supid" value="<?= $items['id']; ?> ">

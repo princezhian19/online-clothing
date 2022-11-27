@@ -309,10 +309,11 @@ include "classes/viewsupplierModel.php";
                                         <tr>
                                             <th>ID</th>
                                             <th>Name</th>
+                                            <th>Size</th>
+                                            <th>Color</th>
                                             <th>Supplier</th>
                                             <th>Status</th>
-                                            <th>Edit</th>
-                                            <th>Delete</th>
+                                            <th>Action</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -331,16 +332,14 @@ include "classes/viewsupplierModel.php";
                                                 <tr>
                                                     <td><?= $items['id']; ?> </td>
                                                     <td><?= $items['name']; ?> </td>
+                                                    <td><?= $items['size']; ?> </td>
+                                                    <td><?= $items['color']; ?> </td>
                                                     <td><?= $supplier['name']; ?></td>
                                                     <td><?= $items['status'] == 1? 'active':'inactive'; ?></td>
                                                     <td>
                                                         <a href="editSupplierItem.php?myid=<?= $items['id']; ?>" class="btn btn-sm btn-warning">Edit</a>
-                                                    </td>
-                                                    <td>
-
                                                         <input type="hidden" name="supid" value="<?= $items['id']; ?> ">
                                                         <button name="delete_SupplierItem" type="button" class="btn btn-sm btn-danger deleteProduct" value="<?= $items['id']; ?>">Delete</button>
-
                                                     </td>
 
 
@@ -361,10 +360,11 @@ include "classes/viewsupplierModel.php";
                                         <tr>
                                             <th>ID</th>
                                             <th>Name</th>
+                                            <th>Size</th>
+                                            <th>Color</th>
                                             <th>Supplier</th>
                                             <th>Status</th>
-                                            <th>Edit</th>
-                                            <th>Delete</th>
+                                            <th>Action</th>
 
                                         </tr>
 

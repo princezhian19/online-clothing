@@ -381,6 +381,8 @@ include "classes/viewsupplierModel.php";
                                     <thead class="">
                                         <tr>
                                             <th>Unit</th>
+                                            <th>Size</th>
+                                            <th>Color</th>
                                             <th>Quantity</th>
                                             <th>Item</th>
                                             <th>Cost</th>
@@ -392,27 +394,33 @@ include "classes/viewsupplierModel.php";
                                         $view = new viewsuppliers();
                                         $po_items = $view->getByCode('purchase_orders', $_GET['poId']);
                                         $po = $po_items->fetchAll(PDO::FETCH_ASSOC);
+                                        $total = 0;
                                             foreach ($po as $po_item) {
+                                                $total += $po_item['cost'] *  $po_item['quantity'];
                                     ?>           
                                             <tr>
                                                 <td><?= $po_item['unit'] ?> </td>  
+                                                <td><script>document.write(storage.getItemNameById("<?= $po_item['supplier_product_id'] ?>").size);</script></td>  
+                                                <td><script>document.write(storage.getItemNameById("<?= $po_item['supplier_product_id'] ?>").color);</script></td>  
                                                 <td><?= $po_item['quantity'] ?> </td>
-                                                <td><script>document.write(storage.getItemNameById("<?= $po_item['supplier_product_id'] ?>"));</script></td>
+                                                <td><script>document.write(storage.getItemNameById("<?= $po_item['supplier_product_id'] ?>").name);</script></td>
                                                 <td><?= $po_item['cost'] ?> </td>  
                                                 <td><?= $po_item['cost'] *  $po_item['quantity'] ?> </td>  
                                             </tr>
                                         <?php 
                                         }
-                                    
+                                        
                                     ?>
                                     </tbody>
                                     <tfoot>
                                         <tr>
                                             <th>Unit</th>
+                                            <th>Size</th>
+                                            <th>Color</th>
                                             <th>Quantity</th>
                                             <th>Item</th>
                                             <th>Cost</th>
-                                            <th>Total</th>
+                                            <th>Total: <?= $total ?></th>
                                         </tr>
                                     </tfoot>
                                 </table>

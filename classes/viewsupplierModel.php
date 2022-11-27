@@ -44,7 +44,7 @@ class viewsuppliers extends connection
     }
     function getGroupbyCode($table)
     {
-        $sql = "SELECT * FROM $table group by code";
+        $sql = "SELECT *, SUM(cost * quantity) as total_price  FROM $table group by code";
         $stmt = $this->connect()->prepare($sql);
         $stmt->execute();
         return $stmt;

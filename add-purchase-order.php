@@ -376,6 +376,29 @@ include "classes/viewsupplierModel.php";
                                     <label class="mb-0">Unit</label>
                                     <input type="text" required name="unit" id="unit" placeholder="Enter unit name" class="form-control mb-2">
                                 </div>
+                                
+                                <div class="col-md-3">
+                                    <label class="mb-0">Size</label>
+                                    <select name="size" id="size" class="custom-select selevt">
+                                        <option value="S">Small</option>
+                                        <option value="M">Medium</option>
+                                        <option value="L">Large</option>
+                                    </select>
+                                </div>
+                                
+                                <div class="col-md-3">
+                                    <label class="mb-0">Color</label>
+                                    <select name="color" id="color" class="custom-select selevt">
+                                        <option value="black">Black</option>
+                                        <option value="white">White</option>
+                                        <option value="red">Red</option>
+                                        <option value="green">Green</option>
+                                        <option value="orange">Orange</option>
+                                        <option value="yellow">Yellow</option>
+                                        <option value="pink">Pink</option>
+                                        <option value="brown">Brown</option>
+                                    </select>
+                                </div>
                                 <div class="col-md-3">
                                     <label class="mb-0">Quantity</label>
                                     <input type="text" required name="quantity" id="quantity" placeholder="Enter quantity" class="form-control mb-2">
@@ -400,11 +423,13 @@ include "classes/viewsupplierModel.php";
                                     <thead class="">
                                         <tr>
                                             <th>Unit</th>
+                                            <th>Size</th>
+                                            <th>Color</th>
                                             <th>Quantity</th>
                                             <th>Item</th>
                                             <th>Cost</th>
                                             <th>Total</th>
-                                            <th>Delete</th>
+                                            <th>Action</th>
                                         </tr>
                                     </thead>
                                     <tbody id="orders">
@@ -412,11 +437,13 @@ include "classes/viewsupplierModel.php";
                                     <tfoot>
                                         <tr>
                                             <th>Unit</th>
+                                            <th>Size</th>
+                                            <th>Color</th>
                                             <th>Quantity</th>
                                             <th>Item</th>
                                             <th>Cost</th>
                                             <th>Total</th>
-                                            <th>Delete</th>
+                                            <th></th>
                                         </tr>
                                     </tfoot>
                                 </table>
@@ -538,9 +565,9 @@ include "classes/viewsupplierModel.php";
                     var item_id = selectItemEl.value;
                     var unit = document.getElementById("unit").value;
                     var quantity = document.getElementById("quantity").value;
-                    console.log({
-                        supplier_id,item_id,unit,quantity
-                    })
+                    var size = document.getElementById("size").value;
+                    var color = document.getElementById("color").value;
+
                     var itemList = storage.getItems('suppliers_items');
                     var item = itemList.find(it => it.id == item_id);
 
@@ -554,7 +581,9 @@ include "classes/viewsupplierModel.php";
                         quantity,
                         name: item.name, 
                         cost: item.cost, 
-                        total: Number(quantity) * Number(item.cost)
+                        total: Number(quantity) * Number(item.cost),
+                        size: size,
+                        color: color
                     });
                     storage.loadTableItems();                    
                 } 

@@ -9,13 +9,14 @@ if (isset($_POST["update_supplieritem_btn"])) {
     $description = $_POST["description"];
     $cost = $_POST['cost'];
     $status = $_POST["status"];
+    $size = $_POST["size"];
+    $color = $_POST["color"];
 
     
     include "../classes/connectiondb.php";
     include "../classes/editsupplieritemModel.php";
     include "../classes/editsupplieritemController.php";
-    
-    $updateSupplierItem = new updatesupplieritemController($name,$supplier_id,$slug,$description,$cost,$status,$supitemid);
+    $updateSupplierItem = new updatesupplieritemController($name,$supplier_id,$slug,$description,$cost,$status,$supitemid, $size, $color);
     $updateSupplierItem->updateSupplierItem();
    
     header("Location: ../editSupplierItem.php?myid=$supitemid","SupplierItemUpdatedSuccessfully");

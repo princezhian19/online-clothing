@@ -77,13 +77,13 @@ const storage = {
         currentOrders.map((item) => {
             tbl.addRow('orders', {
                 item_id: item.item_id,
-                unit: item.unit, quantity: item.quantity, name: item.name, cost: item.cost, total: item.total
+                unit: item.unit, quantity: item.quantity, name: item.name, cost: item.cost, total: item.total, size: item.size, color: item.color
             })
         })
     },
     getItemNameById: (id) => {
        const item = storage.getItems('suppliers_items').find(si => si.id == id)
-       if(item) return item.name;
+       if(item) return item;
        return '';                     
     },
     receiveOrders(code) {

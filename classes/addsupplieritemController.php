@@ -2,7 +2,7 @@
 
 class addsupplieritemController extends addsupplieritem{
 
-    public function __construct($name,$slug,$description,$cost,$status, $supplier_id)
+    public function __construct($name,$slug,$description,$cost,$status, $supplier_id, $size, $color)
     {
         $this->name = $name;
         $this->slug = $slug;
@@ -10,6 +10,8 @@ class addsupplieritemController extends addsupplieritem{
         $this->cost = $cost;
         $this->status = $status;
         $this->supplier_id = $supplier_id;
+        $this->size = $size;
+        $this->color = $color;
     }
     public function addSupplierItem(){
 
@@ -18,7 +20,7 @@ class addsupplieritemController extends addsupplieritem{
             exit();
         }
 
-        $this->addSupItem($this->name,$this->slug,$this->description,$this->cost,$this->status,$this->supplier_id);
+        $this->addSupItem($this->name,$this->slug,$this->description,$this->cost,$this->status,$this->supplier_id, $this->size, $this->color);
        
 
     }
@@ -27,7 +29,7 @@ class addsupplieritemController extends addsupplieritem{
     {
 
         $result = "";
-        if (empty($this->name) && empty($this->slug) && empty($this->description) && empty($this->cost) && empty($this->status && empty($this->supplier_id))) {
+        if (empty($this->name) && empty($this->slug) && empty($this->description) && empty($this->cost) && empty($this->supplier_id) && empty($this->size) && empty($this->color)) {
             $result = false;
         } else {
             $result = true;
