@@ -219,9 +219,17 @@ class viewpurchaseorder extends connection
         $stmt->execute();
         return $stmt;
     }
-    function saveNewProduct($supplier_id,$name,$slug,$image,$description,$price,$quantity) {
-        $stmt = $this->connect()->prepare('INSERT INTO products (code,name,slug,image,description,price,quantity) VALUES (?,?,?,?,?,?,?);');
-        if (!$stmt->execute(array($supplier_id,$name,$slug,$image,$description,$price,$quantity))) {
+    function updateProductV2($prod_qty, $code, $size, $color)
+    {
+
+        $sql = "UPDATE products set quantity=$prod_qty WHERE code='$code' and size ='$size' and color='$color'";
+        $stmt = $this->connect()->prepare($sql);
+        $stmt->execute();
+        return $stmt;
+    }
+    function saveNewProduct($supplier_id,$name,$slug,$image,$description,$price,$quantity, $size, $color) {
+        $stmt = $this->connect()->prepare('INSERT INTO products (code,name,slug,image,description,price,quantity, size, color) VALUES (?,?,?,?,?,?,?,?,?);');
+        if (!$stmt->execute(array($supplier_id,$name,$slug,$image,$description,$price,$quantity, $size, $color))) {
             return $stmt;
         }
         return 'success';

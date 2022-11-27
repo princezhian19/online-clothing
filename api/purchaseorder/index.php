@@ -46,14 +46,16 @@
         
         foreach($purchase_orders as $poItem) {
 
-            // $supplier_products = new viewpurchaseorder();
-            // $supplier_product = $po->getItems("supplier_products","id",$poItem['supplier_product_id']); 
+            $supplier_products = new viewpurchaseorder();
 
-            $result = $po->getItemsByIdSizeColor("products", $poItem['supplier_product_id'], $poItem['size'], $poItem['color']); 
-            $product = $result->fetch(PDO::FETCH_ASSOC);
+            $supplier_product = $po->getItems("supplier_products","id", $poItem['supplier_product_id']); 
+            $supplier_product = $supplier_product->fetch(PDO::FETCH_ASSOC);
+
+            $product = $po->getItemsByIdSizeColor("products", $poItem['supplier_product_id'], $supplier_product['size'], $supplier_product['color']); 
+            $product = $product->fetch(PDO::FETCH_ASSOC);
 
             if($product) {
-                $result = $po->updateProduct($product['quantity'] + $poItem['quantity'], $poItem['supplier_product_id']); 
+                $result = $po->updateProductV2($product['quantity'] + $poItem['quantity'], $poItem['supplier_product_id'], $supplier_product['size'], $supplier_product['color']); 
             }else {
                 $res = $po->getItemsByCol("supplier_products","id", $poItem['supplier_product_id']); 
                 $supplierProduct = $res->fetch(PDO::FETCH_ASSOC);
@@ -61,10 +63,13 @@
                     $poItem['supplier_product_id'],
                     $supplierProduct['name'],
                     $supplierProduct['slug'],
-                    'null',
+                    $supplier_product['image'],
                     $supplierProduct['description'],
                     $supplierProduct['cost'],
-                    $poItem['quantity']);
+                    $poItem['quantity'],
+                    $supplier_product['size'],
+                    $supplier_product['color']
+                );
             }
         }
         $result = $po->deletePO($code); 

@@ -270,6 +270,9 @@ if (!isset($_SESSION["userid"])) {
             $prodSlug = $view->getSlug("products", $product_slug);
             $prod = $prodSlug->fetchAll(PDO::FETCH_ASSOC);
 
+            $ViewProducts = new viewproducts();
+            $getProductSizesResult = $ViewProducts->getProductSizes("products", $prod[0]['code']);
+            $productSizes = $getProductSizesResult->fetchAll(PDO::FETCH_ASSOC);
             if ($prod) {
         ?>
                 <div class="py-3 bg-light">
@@ -313,7 +316,7 @@ if (!isset($_SESSION["userid"])) {
                                     <div class="col-md-4">
                                         <div class="input-group mb-3" style="width:130px">
                                             <button class="input-group-text decerement_btn">-</button>
-                                            <input type="text" class="form-control text-center qty_input bg-white" disabled value="1">
+                                            <input type="number" class="form-control text-center qty_input bg-white" disabled value="1">
                                             <button class="input-group-text increment_btn">+</button>
                                         </div>
                                     </div>
@@ -323,12 +326,9 @@ if (!isset($_SESSION["userid"])) {
                                     <div class="col-md-4">
 
                                         <select class="form-select sizes" aria-label="Default select example">
-
-                                            <option value="" disabled hidden selected>Select a Size</option>
-                                            <option value="S">S</option>
-                                            <option value="M">M</option>
-                                            <option value="L">L</option>
-
+                                            <?php foreach($productSizes as $prodSize) { ?> 
+                                                <option value="<?= $prodSize['size'] ?>"><?= $prodSize['size'] ?></option>
+                                            <?php } ?>
                                         </select>
                                     </div>
                                 </div>

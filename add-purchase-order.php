@@ -541,10 +541,9 @@ include "classes/viewsupplierModel.php";
                     success: (resp) => {
                         var selectItemEl = document.getElementById("selectItemEl");
                         $('#selectItemEl').empty()
-                        resp.map(item => {
-                            console.log(item)
-                            let newOption = new Option(item.name,item.id);
-                            console.log(newOption)
+                        const filteredItems = resp.filter((item, index, self) => index === self.findIndex(s => s.name === item.name))
+                        filteredItems.map(item => {
+                            let newOption = new Option(item.name, item.name);
                             selectItemEl.add(newOption,undefined);
                         })
                     }
@@ -562,22 +561,31 @@ include "classes/viewsupplierModel.php";
                     var selectSupplierEl = document.getElementById("select-supplier");
                     var selectItemEl = document.getElementById("selectItemEl");
                     var supplier_id = selectSupplierEl.value;
-                    var item_id = selectItemEl.value;
+                    var item_name = selectItemEl.value;
                     var unit = document.getElementById("unit").value;
                     var quantity = document.getElementById("quantity").value;
                     var size = document.getElementById("size").value;
                     var color = document.getElementById("color").value;
 
                     var itemList = storage.getItems('suppliers_items');
-                    var item = itemList.find(it => it.id == item_id);
-
+                    var item = itemList.find(it => {
+                        if(it.name === item_name && it.size === size && it.color === color) {
+                            return it
+                        }
+                    });
+                    if(!item) {
+                        alertify.set('notifier', 'position', 'top-right');
+                        alertify.error('Item not available', 2);
+                        return false
+                    }
 
 
                     storage.addItem('tableItems',{
                         supplier_product_id: item.id,
-                        item_id,
+                        item_id: item.id,
                         supplier_id,
-                        item_id,unit,
+                        item_id: item.id,
+                        unit,
                         quantity,
                         name: item.name, 
                         cost: item.cost, 
@@ -590,7 +598,7 @@ include "classes/viewsupplierModel.php";
                 function save() {
                     storage.saveOrders('tableItems');
                     alertify.set('notifier', 'position', 'top-right');
-                    alertify.success('PO successfuly submitted', 1, function() {
+                    alertify.success('PO successfuly submitted', 2, function() {
                         location.reload();
                     });
                 }

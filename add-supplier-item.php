@@ -341,7 +341,7 @@ include "classes/viewsupplierModel.php";
                     <!-- Page Heading -->
                     <h1 class="h3 mb-2 text-gray-800">Add items</h1>
                     <div class="card-body">
-                        <form action="includes/addsupplieritemInclude.php" method="POST" onsubmit="addsuccess()">
+                        <form action="includes/addsupplieritemInclude.php" method="POST" enctype="multipart/form-data" onsubmit="addsuccess()">
                             <div class="row">
                                 <div class="col-md-12">
                                     <div class="form-group">
@@ -369,7 +369,7 @@ include "classes/viewsupplierModel.php";
                                     <input type="text" required name="slug" placeholder="Enter slug name" class="form-control mb-2">
                                 </div>
                                 
-                                <div class="col-md-6">
+                                <div class="col-md-4">
                                     <label class="mb-0">Size</label>
                                     <select name="size" id="size" class="custom-select selevt">
                                         <option value="S">Small</option>
@@ -378,7 +378,7 @@ include "classes/viewsupplierModel.php";
                                     </select>
                                 </div>
                                 
-                                <div class="col-md-6">
+                                <div class="col-md-4">
                                     <label class="mb-0">Color</label>
                                     <select name="color" id="color" class="custom-select selevt">
                                         <option value="black">Black</option>
@@ -390,6 +390,10 @@ include "classes/viewsupplierModel.php";
                                         <option value="pink">Pink</option>
                                         <option value="brown">Brown</option>
                                     </select>
+                                </div>
+                                <div class="col-md-4">
+                                    <label class="mb-0">Upload image</label>
+                                    <input type="file" required name="image" class="form-control mb-2">
                                 </div>
                                 <div class="col-md-12">
                                     <label class="mb-0">Description</label>

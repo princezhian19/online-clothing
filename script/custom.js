@@ -55,11 +55,11 @@ $(document).ready(function () {
 
         var value = parseInt(qty, 10);
         value = isNaN(value) ? 0 : value;
-        if (value < 10) {
+        // if (value < 10) {
             value++;
 
             $(this).closest('.product_data').find('.qty_input').val(value);
-        }
+        // }
 
     });
 
@@ -104,16 +104,19 @@ $(document).ready(function () {
                     alertify.success("Product already in cart");
 
                 }
+                else if(response.includes('Available stocks')) {
+                    alertify.success(response);
+                }
                 else if (response == 201) {
                     alertify.success("Product Added to cart!");
+                    window.location.href = './customerPage.php';
                 }
 
 
                 else if (response == 500) {
                     alertify.success("Something went wrong!");
-
                 }
-
+                
 
             }
         });

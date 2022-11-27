@@ -189,6 +189,16 @@ class viewproducts extends connection
         return $stmt;
     }
    
+
+    function getProductSizes($table, $code)
+    {
+        $sql = "SELECT * FROM $table WHERE code = '$code' and quantity > 0";
+        $stmt = $this->connect()->prepare($sql);
+        $stmt->execute();
+        return $stmt;
+    }
+
+
   
   
 }

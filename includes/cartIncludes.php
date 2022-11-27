@@ -10,6 +10,8 @@ if (isset($_SESSION['userid'])) {
                 $prod_qty = $_POST['prod_qty'];
                 $user_id = $_SESSION['userid'];
               
+                
+
 
                 include "../classes/connectiondb.php";
                 include "../classes/viewproductModel.php";
@@ -18,17 +20,26 @@ if (isset($_SESSION['userid'])) {
 
                 $checkCart = $addtocart->existingCart($user_id, $prod_id);
 
+
                 if ($checkCart->rowCount() > 0) {
 
                     echo "existing";
                 } else {
-
-                    $addcart = $addtocart->addtoCart($user_id, $prod_id, $prod_qty,$prod_size);
-                    if ($addcart) {
-                        echo 201;
-                    } else {
-                        echo 500;
+                    
+                    $ViewProducts = new viewproducts();
+                    $viewProductResult = $ViewProducts->getbyId('products', $prod_id);
+                    $product = $viewProductResult->fetch(PDO::FETCH_ASSOC);
+                    if( $prod_qty > $product['quantity']) {
+                        echo 'Available stocks is only '.$product['quantity'];
+                    }else {
+                        $addcart = $addtocart->addtoCart($user_id, $prod_id, $prod_qty,$prod_size);
+                        if ($addcart) {
+                            echo 201;
+                        } else {
+                            echo 500;
+                        }
                     }
+                    
                 }
 
 

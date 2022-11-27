@@ -28,7 +28,12 @@ const storage = {
         if(!items) {
             localStorage.setItem(key, JSON.stringify([item]));
         }else {
-            const existed = items.find(oldItem => oldItem.item_id == item.item_id);
+            const existed = items.find(oldItem => {
+                if(oldItem.item_id == item.item_id && oldItem.size == item.size && oldItem.color == item.color ) {
+                    return true;
+                }
+                return false;
+            });
             if(existed) {
                 existed.quantity = Number(item.quantity) + Number(existed.quantity);
             }else {

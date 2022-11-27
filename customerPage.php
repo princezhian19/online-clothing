@@ -257,12 +257,15 @@ if (!isset($_SESSION["userid"])) {
                         <?php
                         $view = new viewproducts();
                         $prod = $view->getAll("products");
-
+                        
                         if ($prod->rowCount() > 1) {
+                            $codes = [];
                             foreach ($prod as $items) {
                                 if(strpos($items["name"], 'custom-') !== false) {
                                     continue;
                                 }
+                                if(in_array($items['code'], $codes)) continue;
+                                $codes[] = $items['code'];
                         ?>  
                                 <div class="col-md-3">
                                     <a href="customersProduct.php?product=<?= $items['slug']; ?>">
@@ -286,11 +289,6 @@ if (!isset($_SESSION["userid"])) {
                                         </div>
                                     </a>
                                 </div>
-
-
-
-
-
                         <?php
                             }
                         } else {
