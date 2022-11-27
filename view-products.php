@@ -307,6 +307,8 @@ include "classes/viewproductModel.php";
                                             <th>Name</th>
                                             <th>Image</th>
                                             <th>Description</th>
+                                            <th>Size</th>
+                                            <th>Color</th>
                                             <th>Price</th>
                                             <th>Quantity</th>
                                             <th>Edit</th>
@@ -330,6 +332,8 @@ include "classes/viewproductModel.php";
                                                         <img src="uploads/<?= $items['image']; ?>" width="50px" height="50px" alt="<?= $items['name']; ?>">
                                                     </td>
                                                     <td><?= $items['description']; ?></td>
+                                                    <td><?= $items['size']; ?></td>
+                                                    <td><?= $items['color']; ?></td>
                                                     <td><?= $items['price']; ?></td>
                                                     <td><?= $items['quantity']; ?></td>
                                                     <td>

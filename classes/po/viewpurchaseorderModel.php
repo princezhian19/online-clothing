@@ -64,6 +64,14 @@ class viewpurchaseorder extends connection
 
         return $stmt;
     }
+    function getItemsByIdSizeColor($table, $id, $size, $color)
+    {
+        $sql = "SELECT * FROM $table WHERE code = '$id' and size = '$size' and color = '$color'";
+        $stmt = $this->connect()->prepare($sql);
+        $stmt->execute();
+
+        return $stmt;
+    }
     function getSlug($table, $slug)
     {
         $sql = "SELECT * FROM $table WHERE slug = '$slug'";

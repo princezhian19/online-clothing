@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 25, 2022 at 05:33 AM
+-- Generation Time: Nov 27, 2022 at 06:15 AM
 -- Server version: 10.4.24-MariaDB
 -- PHP Version: 8.1.6
 
@@ -66,7 +66,8 @@ CREATE TABLE `orders` (
 INSERT INTO `orders` (`id`, `tracking_id`, `user_id`, `name`, `email`, `phone`, `address`, `pincode`, `total_price`, `payment_mode`, `payment_id`, `status`, `comments`, `created_at`) VALUES
 (1, 'GraphShirt837dasds', 3, 'asd', 'asd@gmail.com', 'asdasds', 'test', 4027, 750, 'COD', NULL, 1, NULL, '2022-11-17 08:51:33'),
 (2, 'GraphShirt555995602388', 3, ' Marc', 'users1@mail.com', '09995602388', 'angdasd', 4027, 450, 'COD', NULL, 1, NULL, '2022-11-21 08:12:45'),
-(3, 'GraphShirt318332222222', 3, ' AAAAA', 'users1@mail.com', '09332222222', 'sdadsa dsadasdsadsadsa', 2323, 300, 'COD', NULL, 1, NULL, '2022-11-23 13:44:40');
+(3, 'GraphShirt318332222222', 3, ' AAAAA', 'users1@mail.com', '09332222222', 'sdadsa dsadasdsadsadsa', 2323, 300, 'COD', NULL, 1, NULL, '2022-11-23 13:44:40'),
+(4, 'GraphShirt55776875', 3, ' AAAAA', 'users1@mail.com', '0976875', 'ghfgdsf', 7854, 3950, 'COD', NULL, 0, NULL, '2022-11-27 04:43:51');
 
 -- --------------------------------------------------------
 
@@ -91,7 +92,10 @@ CREATE TABLE `order_items` (
 INSERT INTO `order_items` (`id`, `order_id`, `prod_id`, `qty`, `price`, `created_at`, `size`) VALUES
 (1, 1, 1, 3, 250, '2022-11-17 08:51:33', 'S'),
 (2, 2, 3, 1, 450, '2022-11-21 08:12:45', 'M'),
-(3, 3, 2, 1, 300, '2022-11-23 13:44:40', 'M');
+(3, 3, 2, 1, 300, '2022-11-23 13:44:40', 'M'),
+(4, 4, 2, 2, 300, '2022-11-27 04:43:51', 'S'),
+(5, 4, 48, 2, 300, '2022-11-27 04:43:51', 'S'),
+(6, 4, 4, 5, 550, '2022-11-27 04:43:51', 'L');
 
 -- --------------------------------------------------------
 
@@ -103,24 +107,26 @@ CREATE TABLE `products` (
   `id` int(11) NOT NULL,
   `code` varchar(50) DEFAULT NULL,
   `name` varchar(255) NOT NULL,
+  `size` varchar(10) NOT NULL DEFAULT 'S',
+  `color` varchar(50) NOT NULL DEFAULT 'black',
   `slug` varchar(255) NOT NULL,
   `image` varchar(255) NOT NULL,
   `description` text NOT NULL,
   `price` int(11) NOT NULL,
-  `quantity` int(11) NOT NULL
+  `quantity` int(11) NOT NULL,
+  `max_quantity` int(11) NOT NULL DEFAULT 20
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `products`
 --
 
-INSERT INTO `products` (`id`, `code`, `name`, `slug`, `image`, `description`, `price`, `quantity`) VALUES
-(1, 'sd2d2d', 'klaus design shirt', 'klaus design shirt', '1668314395.jpg', 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s', 250, 17),
-(2, 'asaasd334343', 'swak bronx shirt', 'swak bronx shirt', '1668314529.jpg', 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s', 300, 19),
-(3, 'azv3asd', 'Soap for the best design', 'Soap for the best design', '1668314630.jpg', 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s', 450, 19),
-(4, 'sds2fg4', 'Graffiti not a crime shirt', 'Graffiti not a crime shirt', '1668314701.jpg', 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s', 550, 20),
-(5, '1', 'Black graffiti not a crime', 'Black graffiti not a crime shirt', '1668314804.jpg', 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s', 560, 1),
-(6, '2', 'test', 'test shirt', '1668585031.jpg', 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s,', 500, 1);
+INSERT INTO `products` (`id`, `code`, `name`, `size`, `color`, `slug`, `image`, `description`, `price`, `quantity`, `max_quantity`) VALUES
+(1, 'sd2d2d', 'klaus design shirt', 'S', 'black', 'klaus design shirt', '1668314395.jpg', 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s', 250, 17, 20),
+(2, 'asaasd334343', 'swak bronx shirt', 'S', 'black', 'swak bronx shirt', '1668314529.jpg', 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s', 300, 17, 20),
+(3, 'azv3asd', 'Soap for the best design', 'S', 'black', 'Soap for the best design', '1668314630.jpg', 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s', 450, 19, 20),
+(4, 'sds2fg4', 'Graffiti not a crime shirt', 'S', 'black', 'Graffiti not a crime shirt', '1668314701.jpg', 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s', 550, 15, 20),
+(5, '1', 'Black graffiti not a crime', 'S', 'black', 'Black graffiti not a crime shirt', '1668314804.jpg', 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s', 560, 92, 20);
 
 -- --------------------------------------------------------
 
@@ -147,8 +153,8 @@ CREATE TABLE `purchase_orders` (
 --
 
 INSERT INTO `purchase_orders` (`id`, `code`, `supplier_id`, `supplier_product_id`, `unit`, `cost`, `quantity`, `discount`, `tax`, `created_at`, `updated_at`) VALUES
-(41, 'PO-2022-11-25-DCAVW', 2, 1, 'pcs', 200, 10, '0', '0', '2022-11-25 04:22:02', '2022-11-25 04:22:02'),
-(42, 'PO-2022-11-25-DCAVW', 2, 2, 'pcs', 300, 10, '0', '0', '2022-11-25 04:22:02', '2022-11-25 04:22:02');
+(51, 'PO-2022-11-27-9ZkmZ', 2, 1, 'pcs', 200, 10, '0', '0', '2022-11-27 04:53:08', '2022-11-27 04:53:08'),
+(52, 'PO-2022-11-27-9ZkmZ', 2, 2, 'pcs', 300, 5, '0', '0', '2022-11-27 04:53:08', '2022-11-27 04:53:08');
 
 -- --------------------------------------------------------
 
@@ -180,7 +186,8 @@ INSERT INTO `reviews` (`id`, `name`, `rating`, `message`, `datetime`, `prod_id`,
 (7, 'user', '2', 'aw', '1668519586', 1, 'klaus design shirt'),
 (8, 'user', '1', 'a', '1668519908', 1, 'klaus design shirt'),
 (9, 'user', '1', 'Ang pangit ng damit', '1668570095', 1, 'klaus design shirt'),
-(10, 'user', '5', 'Nice shirt!', '1668878885', 4, 'Graffiti not a crime shirt');
+(10, 'user', '5', 'Nice shirt!', '1668878885', 4, 'Graffiti not a crime shirt'),
+(11, 'user', '4', 'erer', '1669359899', 3, 'Soap for the best design');
 
 -- --------------------------------------------------------
 
@@ -215,6 +222,8 @@ CREATE TABLE `supplier_products` (
   `id` int(11) NOT NULL,
   `supplier_id` int(11) NOT NULL,
   `name` text NOT NULL,
+  `size` varchar(10) NOT NULL DEFAULT 'S',
+  `color` varchar(20) NOT NULL DEFAULT 'black',
   `slug` varchar(250) DEFAULT NULL,
   `description` text NOT NULL,
   `cost` decimal(10,0) NOT NULL,
@@ -227,10 +236,11 @@ CREATE TABLE `supplier_products` (
 -- Dumping data for table `supplier_products`
 --
 
-INSERT INTO `supplier_products` (`id`, `supplier_id`, `name`, `slug`, `description`, `cost`, `status`, `date_created`, `date_updated`) VALUES
-(1, 2, 'New Item 1', 'New Item 1', 'New Item 1', '200', '1', '2022-11-23 23:18:21', '2022-11-23 23:18:21'),
-(2, 2, 'Vans', 'Vanz', 'Vansz', '300', '1', '2022-11-24 01:05:58', '2022-11-24 01:05:58'),
-(3, 1, 'Zooyork plain tee', 'Zooyork plain tee', 'Zooyork plain tee', '1000', '1', '2022-11-24 03:33:16', '2022-11-24 03:33:16');
+INSERT INTO `supplier_products` (`id`, `supplier_id`, `name`, `size`, `color`, `slug`, `description`, `cost`, `status`, `date_created`, `date_updated`) VALUES
+(1, 2, 'Black and White', 'S', 'black', 'Black and White', 'Black and White', '200', '1', '2022-11-23 23:18:21', '2022-11-23 23:18:21'),
+(2, 2, 'Vans', 'S', 'black', 'Vanz', 'Vansz', '300', '1', '2022-11-24 01:05:58', '2022-11-24 01:05:58'),
+(3, 1, 'Zooyork plain tee', 'S', 'black', 'Zooyork plain tee', 'Zooyork plain tee', '1000', '1', '2022-11-24 03:33:16', '2022-11-24 03:33:16'),
+(4, 2, '1990s', 'L', 'white', '1990s Collection', '1990s gen', '1501', '1', '2022-11-27 03:14:24', '2022-11-27 03:14:24');
 
 -- --------------------------------------------------------
 
@@ -331,37 +341,37 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `carts`
 --
 ALTER TABLE `carts`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=34;
 
 --
 -- AUTO_INCREMENT for table `orders`
 --
 ALTER TABLE `orders`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `order_items`
 --
 ALTER TABLE `order_items`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `products`
 --
 ALTER TABLE `products`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=44;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=49;
 
 --
 -- AUTO_INCREMENT for table `purchase_orders`
 --
 ALTER TABLE `purchase_orders`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=43;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=53;
 
 --
 -- AUTO_INCREMENT for table `reviews`
 --
 ALTER TABLE `reviews`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT for table `suppliers`
@@ -373,7 +383,7 @@ ALTER TABLE `suppliers`
 -- AUTO_INCREMENT for table `supplier_products`
 --
 ALTER TABLE `supplier_products`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `users`

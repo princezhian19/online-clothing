@@ -290,7 +290,6 @@ include 'classes/viewproductModel.php';
 
                         if ($prod->rowCount() > 0) {
                             foreach ($prod as $items) {
-
                     ?>
                                 <div class="card-body">
                                     <form action="includes/editproductInclude.php" method="POST" enctype="multipart/form-data">
@@ -303,6 +302,14 @@ include 'classes/viewproductModel.php';
                                             <div class="col-md-12">
                                                 <label class="mb-0">Description</label>
                                                 <textarea rows="3" type="text" required name="description" placeholder="Enter description" class="form-control mb-2"><?= $items['description']; ?></textarea>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label class="mb-0">Szie</label>
+                                                <input type="text" required name="price" placeholder="Enter product price" value="<?= $items['price']; ?>" class="form-control mb-2">
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label class="mb-0">Price</label>
+                                                <input type="text" required name="price" placeholder="Enter product price" value="<?= $items['price']; ?>" class="form-control mb-2">
                                             </div>
                                             <div class="col-md-6">
                                                 <label class="mb-0">Price</label>

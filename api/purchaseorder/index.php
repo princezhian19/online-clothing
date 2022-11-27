@@ -45,14 +45,26 @@
         $purchase_orders = $result->fetchAll(PDO::FETCH_ASSOC);
         
         foreach($purchase_orders as $poItem) {
-            $result = $po->getItemsByCol("products","code", $poItem['supplier_product_id']); 
+
+            // $supplier_products = new viewpurchaseorder();
+            // $supplier_product = $po->getItems("supplier_products","id",$poItem['supplier_product_id']); 
+
+            $result = $po->getItemsByIdSizeColor("products", $poItem['supplier_product_id'], $poItem['size'], $poItem['color']); 
             $product = $result->fetch(PDO::FETCH_ASSOC);
+
             if($product) {
                 $result = $po->updateProduct($product['quantity'] + $poItem['quantity'], $poItem['supplier_product_id']); 
             }else {
                 $res = $po->getItemsByCol("supplier_products","id", $poItem['supplier_product_id']); 
                 $supplierProduct = $res->fetch(PDO::FETCH_ASSOC);
-                $result = $po->saveNewProduct($poItem['supplier_product_id'],$supplierProduct['name'],$supplierProduct['slug'],'null',$supplierProduct['description'],$supplierProduct['cost'],$poItem['quantity']);
+                $result = $po->saveNewProduct(
+                    $poItem['supplier_product_id'],
+                    $supplierProduct['name'],
+                    $supplierProduct['slug'],
+                    'null',
+                    $supplierProduct['description'],
+                    $supplierProduct['cost'],
+                    $poItem['quantity']);
             }
         }
         $result = $po->deletePO($code); 
