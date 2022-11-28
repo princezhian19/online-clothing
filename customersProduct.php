@@ -24,6 +24,7 @@ if (!isset($_SESSION["userid"])) {
     $count = new viewproducts();
     $cartCount = $count->cartCount($_SESSION["userid"]);
 }
+include_once './config.php';
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -262,7 +263,7 @@ if (!isset($_SESSION["userid"])) {
     <div class="row">
         <?php
 
-
+        $conn1 = new connection();                                                                            
         $view = new viewproducts();
         $prod = $view->getAll("products");
         if (isset($_GET['product'])) {
@@ -321,6 +322,60 @@ if (!isset($_SESSION["userid"])) {
                                         </div>
                                     </div>
                                 </div>
+                                <!-- Show the available sizes and stocks -->
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="input-group mb-12" style="width:130px">
+
+                                        <?php  $view_query = mysqli_query($mysqli, "SELECT * FROM products where slug = '$product_slug' "); $row = mysqli_fetch_array($view_query);
+                                            if ( $row['size'] == 'S' ) {
+                                                if ($row['quantity'] > 4){
+
+                                                    echo "S - "."<p>".$row['quantity']."</p>";
+                                                }
+                                                else if ($row['quantity'] == 0 ){
+                                                    echo "S - "."<p style='color:red;'>"."   Out of Stocks"."</p>";
+                                                }
+                                                else if ($row['quantity'] <= 4 ){
+                                                    echo "S - "."<p style='color:red;'>"."Only ".$row['quantity']." Stocks Left"."</p>";
+                                                }
+                                                
+                                            }
+                                            else if ( $row['size'] == 'M' ) {
+                                                if ($row['quantity'] > 4){
+
+                                                    echo "M - "."<p>".$row['quantity']."</p>";
+                                                }
+                                                else if ($row['quantity'] == 0 ){
+                                                    echo "M - "."<p style='color:red;'>"."   Out of Stocks"."</p>";
+                                                }
+                                                else if ($row['quantity'] <= 4 ){
+                                                    echo "M - "."<p style='color:red;'>"."Only ".$row['quantity']." Stocks Left"."</p>";
+                                                }
+                                                
+                                            }
+                                           else  if ( $row['size'] == 'L' ) {
+                                                if ($row['quantity'] > 4){
+
+                                                    echo "L - "."<p>".$row['quantity']."</p>";
+                                                }
+                                                else if ($row['quantity'] == 0 ){
+                                                    echo "L - "."<p style='color:red;'>"."   Out of Stocks"."</p>";
+                                                }
+                                                else if ($row['quantity'] <= 4 ){
+                                                    echo "L - "."<p style='color:red;'>"."Only ".$row['quantity']." Stocks Left"."</p>";
+                                                }
+                                                
+                                            }
+                                            
+                                            ?>
+                                            
+                                          
+                                        </div>
+                                    </div>
+                                </div>
+
+                                 <!-- Show the available sizes and stocks -->
                                 <div class="row">
                                     <h6 class="fw-bold">Product Size:</h6>
                                     <div class="col-md-4">
