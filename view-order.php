@@ -330,20 +330,32 @@ if (!isset($_SESSION["userid"])) {
 
                                             </div>
 
+                                    <form action="includes/uploadPayment.php" method="POST" enctype="multipart/form-data" onsubmit="addsuccess()" style="padding-left:0;">
                                             <div class="col-md-12 mb-2">
                                                 <label class="fw-bold">Address</label>
-                                                <div class="border p-1">
-                                                    <?= $data[0]["address"]; ?>
-                                                </div>
-
+                                                <input type="text" name="address" value="<?= $data[0]["address"]; ?>" class="form-control" required>
                                             </div>
                                             <div class="col-md-12 mb-2">
                                                 <label class="fw-bold">Pincode</label>
                                                 <div class="border p-1">
                                                     <?= $data[0]["pincode"]; ?>
                                                 </div>
-
                                             </div>
+                                            <?php if($data[0]["payment_mode"] === 'COD') { ?>                               
+                                            <div class="col-md-12 mb-2">
+                                                <label class="fw-bold">
+                                                    Proof of payment
+                                                </label>
+                                                <div class="border p-1">
+                                                    <img src="uploads/<?= $data[0]['proof_of_payment']; ?>" width="300px" height="500px" alt="<?= $data[0]['name']; ?>">
+                                                        <input type="file"  name="image" class="form-control mb-2">
+                                                        <input type="hidden" name="order_id" value="<?= $data[0]['id']; ?>">
+                                                        <input type="hidden" name="t" value="<?= $_GET['t']; ?>">
+                                                        <button name="upload_payment" class="btn btn-success">Update</button>
+                                                </div>
+                                            </div>
+                                            </form>
+                                            <?php } ?>
                                         </div>
                                     </div>
                                     <div class="col-md-6">
@@ -415,6 +427,11 @@ if (!isset($_SESSION["userid"])) {
                                             }
 
                                             ?>
+                                        </div>
+                                        
+                                        <label class="fw-bold">Payment Mode</label>
+                                        <div class="border mb-3">
+                                            <?= $data[0]["payment_mode"]; ?>
                                         </div>
                                     </div>
 

@@ -28,5 +28,28 @@ session_start();
             
         }
         
-       
+        public function uploadProofOfPayment($sql)
+        {
+            $stmt = $this->connect()->prepare($sql);
+            $res = $stmt->execute();
+            return;
+            if (!$stmt->execute(array($id,$image))) {
+                $stmt = null;
+                header("Location: ../index.php?error=stmtfailed");
+                exit();
+            }
+            $_SESSION['message']= "Proof of payment uploaded successfully"; 
+            
+            $result = "";
+            
+            if ($stmt->rowCount() > 0) {
+                $result = false;
+            } else {
+                $result = true;
+                
+            }
+            
+            return $result;
+            
+        }
     }
