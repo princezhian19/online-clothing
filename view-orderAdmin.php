@@ -322,8 +322,17 @@ if ($_SESSION['userrole'] == 1) {
                                                             <div class="border p-1">
                                                                 <?= $data[0]["pincode"]; ?>
                                                             </div>
-
                                                         </div>
+                                                        <?php if($data[0]["payment_mode"] === 'GCASH') { ?>                               
+                                                            <div class="col-md-12 mb-2">
+                                                                <label class="fw-bold">
+                                                                    Proof of payment
+                                                                </label>
+                                                                <div class="border p-1">
+                                                                    <img src="uploads/<?= $data[0]['proof_of_payment']; ?>" width="300px" height="500px" alt="<?= 'proof of payment'; ?>">
+                                                                </div>
+                                                            </div>
+                                                        <?php } ?>
                                                     </div>
                                                 </div>
                                                 <div class="col-md-6">

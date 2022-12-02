@@ -341,13 +341,13 @@ if (!isset($_SESSION["userid"])) {
                                                     <?= $data[0]["pincode"]; ?>
                                                 </div>
                                             </div>
-                                            <?php if($data[0]["payment_mode"] === 'COD') { ?>                               
+                                            <?php if($data[0]["payment_mode"] === 'GCASH') { ?>                               
                                             <div class="col-md-12 mb-2">
                                                 <label class="fw-bold">
                                                     Proof of payment
                                                 </label>
                                                 <div class="border p-1">
-                                                    <img src="uploads/<?= $data[0]['proof_of_payment']; ?>" width="300px" height="500px" alt="<?= $data[0]['name']; ?>">
+                                                    <img src="uploads/<?= $data[0]['proof_of_payment']; ?>" width="300px" height="500px" alt="<?= 'proof of payment'; ?>">
                                                         <input type="file"  name="image" class="form-control mb-2">
                                                         <input type="hidden" name="order_id" value="<?= $data[0]['id']; ?>">
                                                         <input type="hidden" name="t" value="<?= $_GET['t']; ?>">

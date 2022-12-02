@@ -359,8 +359,12 @@ if ($cart->rowCount() == 0) {
                                 ?>
                                 <hr class="bg-secondary">
                                 <h5>Total Price: <span class="float-end fw-bold">Php <?= $totalprice ?></span></h5>
+                                <label class="fw-bold">Payment Mode</label>
+                                <select name="payment_mode" id="payment_mode" class="custom-select selevt mb-2">
+                                    <option value="COD">COD</option>
+                                    <option value="GCASH">GCASH</option>
+                                </select>
                                 <div class="">
-                                    <input type="hidden" name="payment_mode" value="COD">
                                     <button tpye="submit" name="placeorderBtn" class="btn btn-primary w-100">Confirm and Place Order | COD</button>
                                 </div>
 
