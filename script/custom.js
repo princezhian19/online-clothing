@@ -84,17 +84,22 @@ $(document).ready(function () {
 
         var qty = $(this).closest('.product_data').find('.qty_input').val();
         var size = $(this).closest('.product_data').find('.sizes').val();
+        var color = $(this).closest('.product_data').find('.color').val();
+        var code = $(this).closest('.product_data').find('.code').val();
         var prod_id = $(this).val();
+        var data = {
+            prod_id: prod_id,
+            prod_qty: qty,
+            code: code,
+            sizes: size,
+            color: color,
+            scope: "add"
+        }
+        console.log(data)
         $.ajax({
             method: "POST",
             url: "includes/cartIncludes.php",
-            data: {
-                "prod_id": prod_id,
-                // "prod_id": 6,
-                "prod_qty": qty,
-                "sizes":size,
-                "scope": "add"
-            },
+            data: data,
 
             success: function (response) {
                 if (response == 401) {
@@ -105,6 +110,9 @@ $(document).ready(function () {
 
                 }
                 else if(response.includes('Available stocks')) {
+                    alertify.success(response);
+                }
+                else if(response.includes('Wrong color')) {
                     alertify.success(response);
                 }
                 else if (response == 201) {

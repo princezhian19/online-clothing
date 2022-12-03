@@ -8,10 +8,11 @@
             $data = $stmt->fetch(PDO::FETCH_ASSOC);
             return $data;
         }
-        public function executeQuery($sql)
+        public function fetchAll($sql)
         {
             $stmt = $this->connect()->prepare($sql);
-            $res = $stmt->execute();
+            $stmt->execute();
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
             return;
             if (!$stmt->execute(array($id,$image))) {
                 $stmt = null;

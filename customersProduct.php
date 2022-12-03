@@ -25,6 +25,7 @@ if (!isset($_SESSION["userid"])) {
     $cartCount = $count->cartCount($_SESSION["userid"]);
 }
 include_once './config.php';
+include "classes/model.php";
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -267,6 +268,8 @@ include_once './config.php';
         $view = new viewproducts();
         $prod = $view->getAll("products");
         if (isset($_GET['product'])) {
+
+
             $product_slug = $_GET['product'];
             $prodSlug = $view->getSlug("products", $product_slug);
             $prod = $prodSlug->fetchAll(PDO::FETCH_ASSOC);
@@ -275,6 +278,14 @@ include_once './config.php';
             $getProductSizesResult = $ViewProducts->getProductSizes("products", $prod[0]['code']);
             $productSizes = $getProductSizesResult->fetchAll(PDO::FETCH_ASSOC);
             if ($prod) {
+
+                
+                $model = new Model();
+                $stocks = $model->fetchAll("SELECT * FROM products where code ='".$prod[0]['code']."'");
+
+                $model2 = new Model();
+                $colorsAvailable = $model->fetchAll("SELECT * FROM products where code ='".$prod[0]['code']."' group by color");
+
         ?>
                 <div class="py-3 bg-light">
                     <div class="container mt-1">
@@ -325,70 +336,53 @@ include_once './config.php';
                                 <!-- Show the available sizes and stocks -->
                                 <div class="row">
                                     <div class="col-md-12">
-                                        <div class="input-group mb-12" style="width:130px">
+                                        <div class="mb-12">
 
-                                        <?php  $view_query = mysqli_query($mysqli, "SELECT * FROM products where slug = '$product_slug' "); $row = mysqli_fetch_array($view_query);
-                                            if ( $row['size'] == 'S' ) {
-                                                if ($row['quantity'] > 4){
-
-                                                    echo "S - "."<p>".$row['quantity']."</p>";
-                                                }
-                                                else if ($row['quantity'] == 0 ){
-                                                    echo "S - "."<p style='color:red;'>"."   Out of Stocks"."</p>";
-                                                }
-                                                else if ($row['quantity'] <= 4 ){
-                                                    echo "S - "."<p style='color:red;'>"."Only ".$row['quantity']." Stocks Left"."</p>";
-                                                }
-                                                
-                                            }
-                                            else if ( $row['size'] == 'M' ) {
-                                                if ($row['quantity'] > 4){
-
-                                                    echo "M - "."<p>".$row['quantity']."</p>";
-                                                }
-                                                else if ($row['quantity'] == 0 ){
-                                                    echo "M - "."<p style='color:red;'>"."   Out of Stocks"."</p>";
-                                                }
-                                                else if ($row['quantity'] <= 4 ){
-                                                    echo "M - "."<p style='color:red;'>"."Only ".$row['quantity']." Stocks Left"."</p>";
-                                                }
-                                                
-                                            }
-                                           else  if ( $row['size'] == 'L' ) {
-                                                if ($row['quantity'] > 4){
-
-                                                    echo "L - "."<p>".$row['quantity']."</p>";
-                                                }
-                                                else if ($row['quantity'] == 0 ){
-                                                    echo "L - "."<p style='color:red;'>"."   Out of Stocks"."</p>";
-                                                }
-                                                else if ($row['quantity'] <= 4 ){
-                                                    echo "L - "."<p style='color:red;'>"."Only ".$row['quantity']." Stocks Left"."</p>";
-                                                }
-                                                
-                                            }
+                                        <?php  $view_query = mysqli_query($mysqli, "SELECT * FROM products where code ='".$prod[0]['code']."'"); 
+                                            while ($row = mysqli_fetch_array($view_query)) {
                                             
+                                                    if ($row['quantity'] >= 10){
+
+                                                        echo "<span class=''>".$row['color'].": ".ucfirst($row['size'])."-".$row['quantity']."</span>, &nbsp; ";
+                                                    }
+                                                    else if ($row['quantity'] == 0 ){
+                                                        echo "<span class='' style='color:red;'>".ucfirst($row['color']).": ".$row['size']."-"."   Out of Stocks"."</span>, &nbsp; ";
+                                                    }
+                                                    else if ($row['quantity'] < 10 ){
+                                                        echo "<span class='' style='color:red;'>".ucfirst($row['color']).": ".$row['size']."-"."Only ".$row['quantity']." Left"."</span>, &nbsp; ";
+                                                    }
+                                            }
                                             ?>
-                                            
-                                          
                                         </div>
                                     </div>
                                 </div>
 
                                  <!-- Show the available sizes and stocks -->
                                 <div class="row">
-                                    <h6 class="fw-bold">Product Size:</h6>
+                                    <h6 class="fw-bold">Size:</h6>
                                     <div class="col-md-4">
 
-                                        <select class="form-select sizes" aria-label="Default select example">
+                                        <select class="form-select mb-2 sizes" aria-label="Default select example">
                                             <?php foreach($productSizes as $prodSize) { ?> 
                                                 <option value="<?= $prodSize['size'] ?>"><?= $prodSize['size'] ?></option>
                                             <?php } ?>
                                         </select>
                                     </div>
                                 </div>
+                                <div class="row">
+                                    <h6 class="fw-bold">Color:</h6>
+                                    <div class="col-md-4">
+
+                                        <select class="form-select color" aria-label="Default select example">
+                                            <?php foreach($colorsAvailable as $availableColor) { ?> 
+                                                <option value="<?= $availableColor['color'] ?>"><?= $availableColor['color'] ?></option>
+                                            <?php } ?>
+                                        </select>
+                                    </div>
+                                </div>
                                 <div class="row mt-3">
                                     <div class="col-md-6">
+                                        <input type="hidden" value="<?= $prod[0]['code'] ?>" name="code" id="code" class="code">
                                         <button class="btn btn-primary px-4 addtocartBtn" value=" <?= $prod[0]['id']; ?>"><i class="fa fa-shopping-cart me-2"></i>Add to Cart</button>
                                     </div>
                                     <!--  <div class="col-md-6">

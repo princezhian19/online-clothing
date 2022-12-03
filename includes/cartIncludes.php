@@ -8,6 +8,8 @@ if (isset($_SESSION['userid'])) {
                 $prod_size = $_POST['sizes'];
                 $prod_id = $_POST['prod_id'];
                 $prod_qty = $_POST['prod_qty'];
+                $code = $_POST['code'];
+                $color = $_POST['color'];
                 $user_id = $_SESSION['userid'];
               
                 
@@ -15,6 +17,7 @@ if (isset($_SESSION['userid'])) {
 
                 include "../classes/connectiondb.php";
                 include "../classes/viewproductModel.php";
+                include "../classes/model.php";
 
                 $addtocart = new viewproducts();
 
@@ -29,7 +32,16 @@ if (isset($_SESSION['userid'])) {
                     $ViewProducts = new viewproducts();
                     $viewProductResult = $ViewProducts->getbyId('products', $prod_id);
                     $product = $viewProductResult->fetch(PDO::FETCH_ASSOC);
-                    if( $prod_qty > $product['quantity']) {
+                    // echo json_encode($product);
+
+
+                    $model = new Model();
+                    $res = $model->fetch("SELECT * from products where code = '".$code."' and size='".$prod_size."' and color='".$color."';");
+                    // echo json_encode($res);
+                    // return;
+                    if( $prod_qty > $product['quantity'] && $product['color'] != $color) {
+                        echo 'Wrong color selected';
+                    }else if( $prod_qty > $product['quantity'] && $product['size'] == $prod_size) {
                         echo 'Available stocks is only '.$product['quantity'];
                     }else {
                         $addcart = $addtocart->addtoCart($user_id, $prod_id, $prod_qty,$prod_size);
