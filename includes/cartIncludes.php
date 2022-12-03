@@ -49,6 +49,11 @@ if (isset($_SESSION['userid'])) {
                         if( $prod_qty > $cartProduct['quantity']) {
                             echo 'Available stocks is only '.$cartProduct['quantity'];
                         }else {
+                            $cart2 = $cartProductModel->fetch("SELECT * from carts where prod_id = ".$cartProduct['id']." and user_id=".$user_id.";");
+                            if(!empty($cart2)) {
+                                echo "existing";
+                                return;
+                            }
                             $addcart = $addtocart->addtoCart($user_id, $cartProduct['id'], $prod_qty, $cartProduct['size']);
                             if ($addcart) {
                                 echo 201;
@@ -68,15 +73,26 @@ if (isset($_SESSION['userid'])) {
                     //     echo "existing";
                     // }
                 }else {
-                    if(!empty($cartProduct) && $cart['prod_id'] == $cartProduct['id']) {
-                        echo "existing";
-                    }else {
-                        $addcart = $addtocart->addtoCart($user_id, $cartProduct['id'], $prod_qty,$res['size']);
-                        if ($addcart) {
-                            echo 201;
-                        } else {
-                            echo 500;
+                    if(!empty($cartProduct) && $cartProduct['quantity'] < $prod_qty) {
+                        echo 'Available stocks is only '.$cartProduct['quantity'];
+                    }
+                    else {
+                        if(empty($cartProduct)) {
+                            echo 'Color/Size not available';
+                        }else {
+                            $cart2 = $cartProductModel->fetch("SELECT * from carts where prod_id = ".$cartProduct['id']." and user_id=".$user_id.";");
+                            if(!empty($cart2)) {
+                                echo "existing";
+                                return;
+                            }
+                            $addcart = $addtocart->addtoCart($user_id, $cartProduct['id'], $prod_qty, $prod_size);
+                            if ($addcart) {
+                                echo 201;
+                            } else {
+                                echo 500;
+                            }
                         }
+                        
                     }
                 }
 

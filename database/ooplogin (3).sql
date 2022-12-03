@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 03, 2022 at 10:50 AM
+-- Generation Time: Dec 03, 2022 at 11:36 AM
 -- Server version: 10.4.24-MariaDB
 -- PHP Version: 8.1.6
 
@@ -39,7 +39,7 @@ CREATE TABLE `accounts` (
 --
 
 INSERT INTO `accounts` (`id`, `gcash_qr`, `account_name`, `contact_number`) VALUES
-(1, '1670035632.jpg', 'Assign account name', '023231312');
+(1, '1670062382.jpg', 'STI Group', '0988534343');
 
 -- --------------------------------------------------------
 
@@ -55,14 +55,6 @@ CREATE TABLE `carts` (
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `size` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
---
--- Dumping data for table `carts`
---
-
-INSERT INTO `carts` (`id`, `user_id`, `prod_id`, `prod_qty`, `created_at`, `size`) VALUES
-(57, 3, 59, 1, '2022-12-03 08:19:57', 'S'),
-(66, 3, 63, 1, '2022-12-03 09:28:13', 'L');
 
 -- --------------------------------------------------------
 
@@ -93,10 +85,7 @@ CREATE TABLE `orders` (
 --
 
 INSERT INTO `orders` (`id`, `tracking_id`, `user_id`, `name`, `email`, `phone`, `address`, `pincode`, `total_price`, `payment_mode`, `payment_id`, `status`, `comments`, `proof_of_payment`, `created_at`) VALUES
-(5, 'GraphShirt59493493', 3, ' Noel', 'noel@gmail.com', '0493493', 'TEST B', 432, 450, 'COD', NULL, 0, NULL, '1669991042.jpg', '2022-12-02 12:52:17'),
-(7, 'GraphShirt6590089898', 3, ' AAAAAA', 'users1@mail.com', '000089898', 'Calamba laguna', 5656, 3400, 'GCASH', NULL, 0, NULL, '1669991630.jpg', '2022-12-02 14:32:33'),
-(8, 'GraphShirt555323', 3, ' adasdasdsa', 'users1@mail.com', '22323', 'asdsad', 2232, 450, 'GCASH', NULL, 0, NULL, NULL, '2022-12-03 02:18:03'),
-(9, 'GraphShirt219532', 3, ' asdadadasd', 'users1@mail.com', '54532', 'addsadsda', 3434, 2700, 'GCASH', NULL, 0, NULL, NULL, '2022-12-03 05:05:08');
+(11, 'GraphShirt1843434343', 3, 'Person A', 'users1@mail.com', '093434343', 'calamba laguna barangay barandal', 2147483647, 400, 'GCASH', NULL, 1, NULL, '1670063282.jpg', '2022-12-03 10:26:57');
 
 -- --------------------------------------------------------
 
@@ -119,12 +108,7 @@ CREATE TABLE `order_items` (
 --
 
 INSERT INTO `order_items` (`id`, `order_id`, `prod_id`, `qty`, `price`, `created_at`, `size`) VALUES
-(7, 5, 3, 1, 450, '2022-12-02 12:52:17', 'S'),
-(8, 6, 2, 1, 300, '2022-12-02 14:30:35', 'S'),
-(9, 7, 65, 2, 1700, '2022-12-02 14:32:33', 'L'),
-(10, 8, 3, 1, 450, '2022-12-03 02:18:03', 'S'),
-(11, 9, 59, 5, 200, '2022-12-03 05:05:08', 'S'),
-(12, 9, 65, 1, 1700, '2022-12-03 05:05:08', 'L');
+(15, 11, 63, 2, 200, '2022-12-03 10:26:57', 'L');
 
 -- --------------------------------------------------------
 
@@ -157,8 +141,8 @@ INSERT INTO `products` (`id`, `code`, `name`, `size`, `color`, `slug`, `image`, 
 (4, 'sds2fg4', 'Graffiti not a crime shirt', 'S', 'black', 'Graffiti not a crime shirt', '1668314701.jpg', 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s', 550, 15, 20),
 (55, '1', 'Black and White', 'S', 'black', 'Black and White', 'a.png', 'Black and White', 200, 332, 20),
 (58, '3', 'Zooyork plain tee', 'S', 'black', 'Zooyork plain tee', 'null', 'Zooyork plain tee', 1000, 24, 20),
-(59, '7', 'Zoo York Limited 2022 collection', 'S', 'black', 'Zoo York Limited 2022 collection', 'b.jpg', 'Zoo York Limited 2022 collection', 200, 1, 20),
-(63, '7', 'Zoo York Limited 2022 collection', 'L', 'orange', 'Zoo York Limited 2022 collection', 'c.jpg', 'Zoo York Limited 2022 collection', 200, 10, 20),
+(59, '7', 'Zoo York Limited 2022 collection', 'S', 'black', 'Zoo York Limited 2022 collection', 'b.jpg', 'Zoo York Limited 2022 collection', 200, 0, 20),
+(63, '7', 'Zoo York Limited 2022 collection', 'L', 'orange', 'Zoo York Limited 2022 collection', 'c.jpg', 'Zoo York Limited 2022 collection', 200, 3, 20),
 (65, '11', 'Zooyork T', 'L', 'black', 'Zooyork T', '1669554035.png', 'Zooyork T', 1700, 7, 20);
 
 -- --------------------------------------------------------
@@ -376,19 +360,19 @@ ALTER TABLE `accounts`
 -- AUTO_INCREMENT for table `carts`
 --
 ALTER TABLE `carts`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=68;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=78;
 
 --
 -- AUTO_INCREMENT for table `orders`
 --
 ALTER TABLE `orders`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT for table `order_items`
 --
 ALTER TABLE `order_items`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- AUTO_INCREMENT for table `products`
