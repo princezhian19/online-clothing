@@ -10,6 +10,7 @@ session_start();
 //}
 include "classes/connectiondb.php";
 include "classes/viewproductModel.php";
+include "classes/model.php";
 if (isset($_GET['t'])) {
     $tracking_no = $_GET['t'];
     $checkTrackingID = new viewproducts();
@@ -41,6 +42,9 @@ if (!isset($_SESSION["userid"])) {
     $count = new viewproducts();
     $cartCount = $count->cartCount($_SESSION["userid"]);
 }
+
+    $model = new Model();
+    $account = $model->fetch("SELECT * FROM accounts where id = 1");
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -433,6 +437,11 @@ if (!isset($_SESSION["userid"])) {
                                         <div class="border mb-3">
                                             <?= $data[0]["payment_mode"]; ?>
                                         </div>
+                                        <?php if($data[0]["payment_mode"] === 'GCASH') { ?> 
+                                        <div>
+                                            <img src="uploads/<?= $account['gcash_qr'] ?>" alt="qrcode"  width="300px" height="500px" class=" mb-2">
+                                        </div>
+                                        <?php } ?>
                                     </div>
 
                                 </div>

@@ -20,6 +20,7 @@ if ($_SESSION['userrole'] == 1) {
 include "classes/connectiondb.php";
 include "classes/viewsupplieritemModel.php";
 include "classes/viewsupplierModel.php";
+include "classes/model.php";
 ?>
 
 <!DOCTYPE html>
@@ -249,107 +250,42 @@ include "classes/viewsupplierModel.php";
                 <!-- Begin Page Content -->
                 <div class="container-fluid">
                 <?php
-                                $view = new viewsupplieritems();
-                                $suppliers = $view->getAll("supplier_products");
+                $model = new Model();
+                $account = $model->fetch("SELECT * FROM accounts where id = 1");
+                // echo json_encode($account);
+                
 
-                                if ($prod->rowCount() > 0) {
-                                    foreach ($prod as $items) {
-
-                                ?>
-                                        <a class="dropdown-item d-flex align-items-center" href="#">
-                                            <div class="mr-3">
-                                                <div class="icon-circle bg-warning">
-                                                    <i class="fas fa-exclamation-triangle text-white"></i>
-                                                </div>
-                                            </div>
-                                            <div>
-                                                <div class="small text-gray-500"><?php echo date('F Y'); ?></div>
-                                                Low stocks on <span><?= $items['name']; ?></span>
-                                            </div>
-                                        </a>
-                                <?php
-                                    }
-                                } else {
-                                    echo "No alert messages";
-                                }
-
-                                ?>
+                ?>
                     <!-- Page Heading -->
-                    <h1 class="h3 mb-2 text-gray-800">Add items</h1>
+                    <h1 class="h3 mb-2 text-gray-800">GCash Account</h1>
                     <div class="card-body">
-                        <form action="includes/addsupplieritemInclude.php" method="POST" enctype="multipart/form-data" onsubmit="addsuccess()">
+                        <form action="includes/uploadPayment.php" method="POST" enctype="multipart/form-data" onsubmit="addsuccess()">
                             <div class="row">
-                                <div class="col-md-12">
-                                    <div class="form-group">
-                                        <label for="status" class="control-label">Supplier</label>
-                                        <select name="supplier_id" id="status" class="custom-select selevt">
-                                            <?php 
-                                                $view = new viewsuppliers();
-                                                $suppliers = $view->getAll("suppliers");
-                                                if ($suppliers->rowCount() > 0) {
-                                                    foreach ($suppliers as $supplier) {  
-                                            ?>
-                                                        <option value="<?= $supplier['id'] ?>"><?= $supplier['name']; ?></option>
-                                                    <?php } ?>
-                                                <?php } ?>
-                                           
-                                        </select>
+                                <div class="col-md-6">
+                                    <div class="col-md-12">
+                                        <label class="mb-0">Account Name</label>    
+                                        <input type="text" name="account_name" class="form-control mb-2" placeholder="account name" value="<?= $account['account_name'] ?>" required>    
+                                    </div>
+                                    
+                                    <div class="col-md-12">
+                                        <label class="mb-0">Number</label>
+                                        <input type="text" required name="contact_number" placeholder="gcash number" class="form-control mb-2" value="<?= $account['contact_number'] ?>">
                                     </div>
                                 </div>
+
                                 <div class="col-md-6">
-                                    <label class="mb-0">Name</label>
-                                    <input type="text" required name="name" placeholder="Enter item name" class="form-control mb-2">
-                                </div>
-                                <div class="col-md-6">
-                                    <label class="mb-0">Slug</label>
-                                    <input type="text" required name="slug" placeholder="Enter slug name" class="form-control mb-2">
+                                    <img src="uploads/<?= $account['gcash_qr'] ?>" alt="qrcode"  width="300px" height="500px" class=" mb-2">
+                                    <input type="file"  name="image" class="form-control mb-2">
                                 </div>
                                 
-                                <div class="col-md-4">
-                                    <label class="mb-0">Size</label>
-                                    <select name="size" id="size" class="custom-select selevt">
-                                        <option value="S">Small</option>
-                                        <option value="M">Medium</option>
-                                        <option value="L">Large</option>
-                                    </select>
-                                </div>
                                 
-                                <div class="col-md-4">
-                                    <label class="mb-0">Color</label>
-                                    <select name="color" id="color" class="custom-select selevt">
-                                        <option value="black">Black</option>
-                                        <option value="white">White</option>
-                                        <option value="red">Red</option>
-                                        <option value="green">Green</option>
-                                        <option value="orange">Orange</option>
-                                        <option value="yellow">Yellow</option>
-                                        <option value="pink">Pink</option>
-                                        <option value="brown">Brown</option>
-                                    </select>
+                                <div class="col-md-12 text-right">
+                                     <input type="hidden" name="account_id" class="form-control mb-2" value="<?= $account['id'] ?>" required>
+                                    <button type="submit" name="save_gcash" class="btn btn-success" id="save_gcash">Save</button>
                                 </div>
-                                <div class="col-md-4">
-                                    <label class="mb-0">Upload image</label>
-                                    <input type="file" required name="image" class="form-control mb-2">
-                                </div>
-                                <div class="col-md-12">
-                                    <label class="mb-0">Description</label>
-                                    <textarea rows="3" type="text" required name="description" placeholder="Enter description" class="form-control mb-2"></textarea>
-                                </div>
-                                <div class="col-md-6">
-                                    <label class="mb-0">Cost</label>
-                                    <input type="text" required name="cost" placeholder="Enter item price" class="form-control mb-2">
-                                </div>
-                                <div class="col-md-6">
-                                    <label class="mb-0">Status</label>
-                                    <select name="status" id="status" class="custom-select selevt">
-                                        <option value="1">active</option>
-                                        <option value="0">inactive</option>
-                                    </select>
-                                </div>
-                                
-                                <div class="col-md-12">
-                                    <button type="submit" name="add_item_btn" class="btn btn-success" id="">Save</button>
-                                </div>
+
+                            </div>
+                            <div class="row">
 
                             </div>
                         </form>
