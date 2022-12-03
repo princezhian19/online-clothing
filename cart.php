@@ -277,9 +277,9 @@ if (!isset($_SESSION["userid"])) {
                         <div class="card card-body shadow">
 
                             <div class="row">
-                                <div class="col-md-12">
+                                <div class="col-md-12 col-lg-12 col-sm-12">
                                     <div class="row align-items-center">
-                                        <div class="col-md-4">
+                                        <div class="col-md-2">
                                             <h6>Product</h6>
                                         </div>
                                         <div class="col-md-2">
@@ -287,6 +287,9 @@ if (!isset($_SESSION["userid"])) {
                                         </div>
                                         <div class="col-md-2">
                                             <h6>Size</h6>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <h6>Color</h6>
                                         </div>
                                         <div class="col-md-2">
                                             <h6>Quantity</h6>
@@ -298,7 +301,10 @@ if (!isset($_SESSION["userid"])) {
 
                                     <div id="">
                                         <?php
+                                            include 'classes/model.php';
+                                            $model = new Model();
                                         foreach ($cart as $items) {
+                                            $p = $model->fetch('SELECT * FROM products where id='.$items['prod_id']);
                                         ?>
                                             <div class="card product_data shadow-sm mb-3">
                                                 <div class="row align-items-center">
@@ -306,25 +312,25 @@ if (!isset($_SESSION["userid"])) {
                                                         <img src="uploads/<?= $items['image']; ?>" alt="Image" width="80px">
                                                     </div>
                                                     <div class="col-md-2">
-                                                        <h5><?= $items['name']; ?></h5>
+                                                        Php<?= $items['price']; ?>
                                                     </div>
                                                     <div class="col-md-2">
-                                                        <h5>Php<?= $items['price']; ?></h5>
+                                                        <?= $items['size']; ?>
                                                     </div>
                                                     <div class="col-md-2">
-                                                        <h5><?= $items['size']; ?></h5>
+                                                        <?= $p['color']; ?>
                                                     </div>
                                                     <div class="col-md-2">
                                                         <input type="hidden" class="prodID" value="<?= $items['prod_id']; ?>">
-                                                        <div class="input-group mb-3" style="width:130px">
+                                                        <div class="input-group" style="width:130px">
                                                             <button class="input-group-text decerement_btn updateQty">-</button>
-                                                            <input type="text" class="form-control text-center qty_input bg-white" disabled value="<?= $items['prod_qty']; ?>">
+                                                            <input id="pqty" type="text" class="form-control text-center qty_input bg-white" disabled value="<?= $items['prod_qty']; ?>">
                                                             <button class="input-group-text increment_btn updateQty">+</button>
                                                         </div>
                                                     </div>
                                                     <div class="col-md-2">
                                                         <button class="btn btn-danger btn-sm deleteCart" value=" <?= $items['cid'] ?>">
-                                                            <i class="fa fa-trash me-2"></i> Remove
+                                                            <i class="fa fa-trash me-2"></i> remove
                                                         </button>
 
                                                     </div>

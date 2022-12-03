@@ -50,7 +50,10 @@ $(document).ready(function () {
     $(document).on('click','.increment_btn', function (e){
 
         e.preventDefault();
-
+        if(!shouldIncrease) {
+            shouldIncrease = true;
+            return;
+        }
         var qty = $(this).closest('.product_data').find('.qty_input').val();
 
         var value = parseInt(qty, 10);
@@ -105,22 +108,26 @@ $(document).ready(function () {
                 if (response == 401) {
                     alertify.success("Login to continue!");
                 }
-                else if (response == "existing") {
+                else if (response.includes('existing')) {
                     alertify.success("Product already in cart");
 
                 }
                 else if(response.includes('Available stocks')) {
                     alertify.success(response);
                 }
-                else if(response.includes('Wrong color')) {
-                    alertify.success(response);
+                else if(response.includes('Color not available') || response.includes('Color/Size not available')) {
+                    alertify.warning(response);
                 }
                 else if (response == 201) {
                     alertify.success("Product Added to cart!");
                     window.location.href = './customerPage.php';
                 }
 
-
+                else if (response == 'Color/Size not available') {
+                    alertify.success(response);
+                    window.location.href = './customerPage.php';
+                }
+                
                 else if (response == 500) {
                     alertify.success("Something went wrong!");
                 }
@@ -203,11 +210,19 @@ $(document).ready(function () {
             }
         });
     }
+    var shouldIncrease = true;
     $(document).on('click', '.updateQty', function () {
 
         var qty = $(this).closest('.product_data').find('.qty_input').val();
 
         var prod_id = $(this).closest('.product_data').find('.prodID').val();
+
+        
+        // var size = $(this).closest('.product_data').find('.sizes').val();
+        // var color = $(this).closest('.product_data').find('.color').val();
+        // var code = $(this).closest('.product_data').find('.code').val();
+
+alert('a');
 
         $.ajax({
             method: "POST",
@@ -218,7 +233,13 @@ $(document).ready(function () {
                 "scope": "update"
             },
             success: function (response) {
-                
+                if(response.includes('Stock available is only')) {
+                    alertify.warning(response);
+                    shouldIncrease = false;
+                    $('#pqty').val(1);
+                }else {
+                    shouldIncrease = true;
+                }
             }
         });
 
