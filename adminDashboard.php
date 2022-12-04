@@ -55,6 +55,7 @@ $Ucount = $productCount->getTableUsers();
     <link rel="icon" href="assets/logo.png" type="image/ico">
 
     <!-- Custom styles for this page -->
+    <script src="script/graph.js"></script>
     <link href="vendors/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
     <script src="https://kit.fontawesome.com/yourcode.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css">
@@ -325,6 +326,7 @@ $Ucount = $productCount->getTableUsers();
                         </div>
 
                     </div>
+                    <div style="width: 800px;"><canvas id="acquisitions"></canvas></div>
 
                 </div>
                 <!-- /.container-fluid -->
@@ -388,8 +390,7 @@ $Ucount = $productCount->getTableUsers();
 
     <!-- Page level custom scripts -->
     <script src="dashboard/js/demo/datatables-demo.js"></script>
-
-
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.3/Chart.min.js"></script>
 
 </body>
 
