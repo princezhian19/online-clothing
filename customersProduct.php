@@ -45,6 +45,7 @@ include "classes/model.php";
     <link rel="icon" href="assets/logo.png" type="image/ico">
     <link href="styles/review.css" rel="stylesheet">
 
+    <script src="script/storage.js"></script>
     <!-- Custom styles for this page -->
     <link href="vendors/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
     <script src="https://kit.fontawesome.com/yourcode.js" crossorigin="anonymous"></script>
@@ -59,8 +60,8 @@ include "classes/model.php";
     </style>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
 
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
 
 </head>
@@ -320,7 +321,7 @@ include "classes/model.php";
                                     <div class="col-md-6">
 
                                         <h6 class="fw-bold">Product Price:</h6>
-                                        <h5>Php <?= $prod[0]['price']; ?> </h5>
+                                        <h5 id="selected-price">Php - </h5>
                                     </div>
 
                                 </div>
@@ -329,6 +330,8 @@ include "classes/model.php";
                                         <div class="input-group mb-3" style="width:130px">
                                             <button class="input-group-text decerement_btn">-</button>
                                             <input type="number" class="form-control text-center qty_input bg-white" disabled value="1">
+                                            <input type="hidden"  value="<?= $prod[0]['name'] ?>" id="selected-name">
+                                            <input type="hidden"  value="<?= $prod[0]['code'] ?>" id="selected-code">
                                             <button class="input-group-text increment_btn">+</button>
                                         </div>
                                     </div>
@@ -362,7 +365,7 @@ include "classes/model.php";
                                     <h6 class="fw-bold">Size:</h6>
                                     <div class="col-md-4">
 
-                                        <select class="form-select mb-2 sizes" aria-label="Default select example">
+                                        <select class="form-select mb-2 sizes" aria-label="Default select example" id="selected-size" onchange="getPrice()">
                                             <?php foreach($productSizes as $prodSize) { ?> 
                                                 <option value="<?= $prodSize['size'] ?>"><?= $prodSize['size'] ?></option>
                                             <?php } ?>
@@ -373,7 +376,7 @@ include "classes/model.php";
                                     <h6 class="fw-bold">Color:</h6>
                                     <div class="col-md-4">
 
-                                        <select class="form-select color" aria-label="Default select example">
+                                        <select class="form-select color" aria-label="Default select example" id="selected-color" onchange="getPrice()">
                                             <?php foreach($colorsAvailable as $availableColor) { ?> 
                                                 <option value="<?= $availableColor['color'] ?>"><?= $availableColor['color'] ?></option>
                                             <?php } ?>
@@ -668,8 +671,17 @@ include "classes/model.php";
                             items: 5
                         }
                     }
-                })
+                });
+                storage.getPrice(
+                    $('#selected-code').val(),$('#selected-name').val(),$('#selected-size').val(),$('#selected-color').val(),
+                );
             });
+            
+            function getPrice() {
+                storage.getPrice(
+                    $('#selected-code').val(),$('#selected-name').val(),$('#selected-size').val(),$('#selected-color').val(),
+                );
+            }
         </script>
 
 </body>

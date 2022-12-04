@@ -40,6 +40,7 @@
     }
     if(isset($_POST['receive'])) {
         $code = $_POST['code'];
+        $supprodcode = $_POST['supprodcode'];
         $po = new viewpurchaseorder();
         $result = $po->getItemsByCol("purchase_orders","code", $code); 
         $purchase_orders = $result->fetchAll(PDO::FETCH_ASSOC);
@@ -59,8 +60,10 @@
             }else {
                 $res = $po->getItemsByCol("supplier_products","id", $poItem['supplier_product_id']); 
                 $supplierProduct = $res->fetch(PDO::FETCH_ASSOC);
+
+                
                 $result = $po->saveNewProduct(
-                    $poItem['supplier_product_id'],
+                    $supprodcode,
                     $supplierProduct['name'],
                     $supplierProduct['slug'],
                     $supplier_product['image'],
@@ -74,5 +77,21 @@
         }
         $result = $po->deletePO($code); 
         echo json_encode(['message' => 'PO received successfuly']);
+    }
+    if(isset($_POST['get_price'])) {
+        $name = $_POST['name'];
+        $size = $_POST['size'];
+        $color = $_POST['color'];
+        $code = $_POST['code'];
+
+        include "../../classes/model.php";
+
+        $model = new Model();
+        $product = $model->fetch("SELECT * FROM products where name='".$name."' and code ='".$code."' and size ='".$size."' and color = '".$color."'");
+        if(!empty($product)) {
+            echo $product['price'];
+        }else {
+            echo '-';
+        }
     }
 ?>

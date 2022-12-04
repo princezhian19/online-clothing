@@ -2,7 +2,7 @@
 
 class addsupplieritemController extends addsupplieritem{
 
-    public function __construct($name, $slug, $description, $cost, $status, $supplier_id, $size, $color, $image)
+    public function __construct($name, $slug, $description, $cost, $status, $supplier_id, $size, $color, $image,$code)
     {
         $this->name = $name;
         $this->slug = $slug;
@@ -13,6 +13,7 @@ class addsupplieritemController extends addsupplieritem{
         $this->size = $size;
         $this->color = $color;
         $this->image = $image;
+        $this->code = $code;
     }
     public function addSupplierItem(){
 
@@ -21,7 +22,7 @@ class addsupplieritemController extends addsupplieritem{
             exit();
         }
 
-        $this->addSupItem($this->name, $this->slug, $this->description, $this->cost, $this->status, $this->supplier_id, $this->size, $this->color, $this->image);
+        $this->addSupItem($this->name, $this->slug, $this->description, $this->cost, $this->status, $this->supplier_id, $this->size, $this->color, $this->image,$this->code);
        
 
     }

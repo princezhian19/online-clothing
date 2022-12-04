@@ -200,7 +200,7 @@ class viewproducts extends connection
 
     function getProductSizes($table, $code)
     {
-        $sql = "SELECT * FROM $table WHERE code = '$code' and quantity > 0";
+        $sql = "SELECT * FROM $table WHERE code = '$code' and quantity > 0 group by size";
         $stmt = $this->connect()->prepare($sql);
         $stmt->execute();
         return $stmt;

@@ -227,9 +227,9 @@ class viewpurchaseorder extends connection
         $stmt->execute();
         return $stmt;
     }
-    function saveNewProduct($supplier_id,$name,$slug,$image,$description,$price,$quantity, $size, $color) {
+    function saveNewProduct($code,$name,$slug,$image,$description,$price,$quantity, $size, $color) {
         $stmt = $this->connect()->prepare('INSERT INTO products (code,name,slug,image,description,price,quantity, size, color) VALUES (?,?,?,?,?,?,?,?,?);');
-        if (!$stmt->execute(array($supplier_id,$name,$slug,$image,$description,$price,$quantity, $size, $color))) {
+        if (!$stmt->execute(array($code,$name,$slug,$image,$description,$price,$quantity, $size, $color))) {
             return $stmt;
         }
         return 'success';

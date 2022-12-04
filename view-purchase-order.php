@@ -260,6 +260,7 @@ include "classes/po/viewpurchaseorderModel.php";
                                         <?php
                                         
                                         include "includes/deleteproductInclude.php";
+                                        include "classes/model.php";
                                         $view = new viewsuppliers();
                                         $prod = $view->getGroupbyCode("purchase_orders");
                                         if ($prod->rowCount() > 0) {
@@ -279,7 +280,7 @@ include "classes/po/viewpurchaseorderModel.php";
                                                     <!-- <td><?= $items['cost'] * $items['quantity']; ?></td> -->
                                                     <td><?= $items['total_price'] ?></td>
                                                     <td>
-                                                    <a href="view-purchase-order-receiving.php?poId=<?= $items['code']; ?>" class="btn btn-sm btn-warning">view</a>
+                                                    <a href="view-purchase-order-receiving.php?poId=<?= $items['code']; ?>&supprodcode=<?= $item['code']; ?>" class="btn btn-sm btn-warning">view</a>
                                                         <input type="hidden" name="supid" value="<?= $items['id']; ?> ">
                                                         <button name="delete_SupplierItem" type="button" class="btn btn-sm btn-danger deleteProduct" value="<?= $items['id']; ?>">Delete</button>
                                                     </td>

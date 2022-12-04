@@ -91,10 +91,11 @@ const storage = {
        if(item) return item;
        return '';                     
     },
-    receiveOrders(code) {
+    receiveOrders(code, supprodcode) {
         var  formdata = new FormData();
         formdata.append('receive', true);
         formdata.append('code', code);
+        formdata.append('supprodcode', supprodcode);
         $.ajax({
             url:_base_url_+"api/purchaseorder/index.php",
             method: 'POST',
@@ -105,6 +106,27 @@ const storage = {
             data: formdata,
             success: (resp) => {
                 
+            }
+        })
+    },
+    getPrice(code, name, size, color) {
+        var  formdata = new FormData();
+        formdata.append('code', code);
+        formdata.append('name', name);
+        formdata.append('size', size);
+        formdata.append('color', color);
+        formdata.append('get_price', color);
+        $.ajax({
+            url: "api/purchaseorder/index.php",
+            method: 'POST',
+            processData: false,
+            contentType: false,
+            cache: false,
+            type: 'POST',
+            data: formdata,
+            success: (resp) => {
+                console.log("PRICE", resp);
+                $('#selected-price').html('Php ' + resp);
             }
         })
     }

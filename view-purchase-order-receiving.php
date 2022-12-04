@@ -501,8 +501,9 @@ include "classes/viewsupplierModel.php";
                     storage.loadTableItems();                    
                 } 
                 function receivePO() {
-                    const code = '<?= $_GET['poId'] ?>'
-                    storage.receiveOrders(code);
+                    const code = '<?= $_GET['poId'] ?>';
+                    const supprodcode = '<?= $_GET['supprodcode'] ?>';
+                    storage.receiveOrders(code, supprodcode);
                     alertify.set('notifier', 'position', 'top-right');
                     alertify.success('PO successfuly received', 1, function() {
                         location.reload();
