@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 03, 2022 at 11:36 AM
+-- Generation Time: Dec 04, 2022 at 07:42 AM
 -- Server version: 10.4.24-MariaDB
 -- PHP Version: 8.1.6
 
@@ -85,7 +85,8 @@ CREATE TABLE `orders` (
 --
 
 INSERT INTO `orders` (`id`, `tracking_id`, `user_id`, `name`, `email`, `phone`, `address`, `pincode`, `total_price`, `payment_mode`, `payment_id`, `status`, `comments`, `proof_of_payment`, `created_at`) VALUES
-(11, 'GraphShirt1843434343', 3, 'Person A', 'users1@mail.com', '093434343', 'calamba laguna barangay barandal', 2147483647, 400, 'GCASH', NULL, 1, NULL, '1670063282.jpg', '2022-12-03 10:26:57');
+(11, 'GraphShirt1843434343', 3, 'Person A', 'users1@mail.com', '093434343', 'calamba laguna barangay barandal', 2147483647, 400, 'GCASH', NULL, 1, NULL, '1670063282.jpg', '2022-11-09 06:10:15'),
+(12, 'GraphShirt93575', 3, ' asdsd', 'users1@mail.com', '8675', 'ddfs dsf dsf dsfds', 3434, 1500, 'COD', NULL, 1, NULL, NULL, '2022-12-04 05:37:02');
 
 -- --------------------------------------------------------
 
@@ -108,7 +109,9 @@ CREATE TABLE `order_items` (
 --
 
 INSERT INTO `order_items` (`id`, `order_id`, `prod_id`, `qty`, `price`, `created_at`, `size`) VALUES
-(15, 11, 63, 2, 200, '2022-12-03 10:26:57', 'L');
+(15, 11, 63, 2, 200, '2022-12-03 10:26:57', 'L'),
+(16, 12, 63, 2, 200, '2022-12-04 05:37:02', 'L'),
+(17, 12, 4, 2, 550, '2022-12-04 05:37:02', 'S');
 
 -- --------------------------------------------------------
 
@@ -138,11 +141,11 @@ INSERT INTO `products` (`id`, `code`, `name`, `size`, `color`, `slug`, `image`, 
 (1, 'sd2d2d', 'klaus design shirt', 'S', 'black', 'klaus design shirt', '1668314395.jpg', 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s', 250, 17, 20),
 (2, 'asaasd334343', 'swak bronx shirt', 'S', 'black', 'swak bronx shirt', '1668314529.jpg', 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s', 300, 16, 20),
 (3, 'azv3asd', 'Soap for the best design', 'S', 'black', 'Soap for the best design', '1668314630.jpg', 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s', 450, 17, 20),
-(4, 'sds2fg4', 'Graffiti not a crime shirt', 'S', 'black', 'Graffiti not a crime shirt', '1668314701.jpg', 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s', 550, 15, 20),
+(4, 'sds2fg4', 'Graffiti not a crime shirt', 'S', 'black', 'Graffiti not a crime shirt', '1668314701.jpg', 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s', 550, 13, 20),
 (55, '1', 'Black and White', 'S', 'black', 'Black and White', 'a.png', 'Black and White', 200, 332, 20),
 (58, '3', 'Zooyork plain tee', 'S', 'black', 'Zooyork plain tee', 'null', 'Zooyork plain tee', 1000, 24, 20),
 (59, '7', 'Zoo York Limited 2022 collection', 'S', 'black', 'Zoo York Limited 2022 collection', 'b.jpg', 'Zoo York Limited 2022 collection', 200, 0, 20),
-(63, '7', 'Zoo York Limited 2022 collection', 'L', 'orange', 'Zoo York Limited 2022 collection', 'c.jpg', 'Zoo York Limited 2022 collection', 200, 3, 20),
+(63, '7', 'Zoo York Limited 2022 collection', 'L', 'orange', 'Zoo York Limited 2022 collection', 'c.jpg', 'Zoo York Limited 2022 collection', 200, 1, 20),
 (65, '11', 'Zooyork T', 'L', 'black', 'Zooyork T', '1669554035.png', 'Zooyork T', 1700, 7, 20);
 
 -- --------------------------------------------------------
@@ -197,6 +200,60 @@ INSERT INTO `reviews` (`id`, `name`, `rating`, `message`, `datetime`, `prod_id`,
 (9, 'user', '1', 'Ang pangit ng damit', '1668570095', 1, 'klaus design shirt'),
 (10, 'user', '5', 'Nice shirt!', '1668878885', 4, 'Graffiti not a crime shirt'),
 (11, 'user', '4', 'erer', '1669359899', 3, 'Soap for the best design');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `sales`
+--
+
+CREATE TABLE `sales` (
+  `id` int(11) NOT NULL,
+  `tracking_id` varchar(255) NOT NULL,
+  `user_id` int(255) NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `email` varchar(255) NOT NULL,
+  `phone` varchar(255) NOT NULL,
+  `address` mediumtext NOT NULL,
+  `pincode` int(255) NOT NULL,
+  `total_price` int(255) NOT NULL,
+  `payment_mode` varchar(255) NOT NULL,
+  `payment_id` varchar(255) DEFAULT NULL,
+  `status` tinyint(4) NOT NULL DEFAULT 0,
+  `comments` varchar(255) DEFAULT NULL,
+  `proof_of_payment` varchar(250) DEFAULT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `sales`
+--
+
+INSERT INTO `sales` (`id`, `tracking_id`, `user_id`, `name`, `email`, `phone`, `address`, `pincode`, `total_price`, `payment_mode`, `payment_id`, `status`, `comments`, `proof_of_payment`, `created_at`) VALUES
+(11, 'GraphShirt1843434343', 3, 'Person A', 'users1@mail.com', '093434343', 'calamba laguna barangay barandal', 2147483647, 400, 'GCASH', NULL, 1, NULL, '1670063282.jpg', '2022-12-03 10:26:57');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `sales_order_items`
+--
+
+CREATE TABLE `sales_order_items` (
+  `id` int(11) NOT NULL,
+  `order_id` int(255) NOT NULL,
+  `prod_id` int(255) NOT NULL,
+  `qty` int(255) NOT NULL,
+  `price` int(255) NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `size` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `sales_order_items`
+--
+
+INSERT INTO `sales_order_items` (`id`, `order_id`, `prod_id`, `qty`, `price`, `created_at`, `size`) VALUES
+(15, 11, 63, 2, 200, '2022-12-03 10:26:57', 'L');
 
 -- --------------------------------------------------------
 
@@ -329,6 +386,18 @@ ALTER TABLE `reviews`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `sales`
+--
+ALTER TABLE `sales`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `sales_order_items`
+--
+ALTER TABLE `sales_order_items`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `suppliers`
 --
 ALTER TABLE `suppliers`
@@ -360,19 +429,19 @@ ALTER TABLE `accounts`
 -- AUTO_INCREMENT for table `carts`
 --
 ALTER TABLE `carts`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=78;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=80;
 
 --
 -- AUTO_INCREMENT for table `orders`
 --
 ALTER TABLE `orders`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT for table `order_items`
 --
 ALTER TABLE `order_items`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 
 --
 -- AUTO_INCREMENT for table `products`
@@ -391,6 +460,18 @@ ALTER TABLE `purchase_orders`
 --
 ALTER TABLE `reviews`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+
+--
+-- AUTO_INCREMENT for table `sales`
+--
+ALTER TABLE `sales`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+
+--
+-- AUTO_INCREMENT for table `sales_order_items`
+--
+ALTER TABLE `sales_order_items`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- AUTO_INCREMENT for table `suppliers`
