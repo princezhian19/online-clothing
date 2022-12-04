@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 04, 2022 at 07:42 AM
+-- Generation Time: Dec 04, 2022 at 05:21 PM
 -- Server version: 10.4.24-MariaDB
 -- PHP Version: 8.1.6
 
@@ -86,7 +86,8 @@ CREATE TABLE `orders` (
 
 INSERT INTO `orders` (`id`, `tracking_id`, `user_id`, `name`, `email`, `phone`, `address`, `pincode`, `total_price`, `payment_mode`, `payment_id`, `status`, `comments`, `proof_of_payment`, `created_at`) VALUES
 (11, 'GraphShirt1843434343', 3, 'Person A', 'users1@mail.com', '093434343', 'calamba laguna barangay barandal', 2147483647, 400, 'GCASH', NULL, 1, NULL, '1670063282.jpg', '2022-11-09 06:10:15'),
-(12, 'GraphShirt93575', 3, ' asdsd', 'users1@mail.com', '8675', 'ddfs dsf dsf dsfds', 3434, 1500, 'COD', NULL, 1, NULL, NULL, '2022-12-04 05:37:02');
+(12, 'GraphShirt93575', 3, ' asdsd', 'users1@mail.com', '8675', 'ddfs dsf dsf dsfds', 3434, 1500, 'COD', NULL, 1, NULL, NULL, '2022-12-04 05:37:02'),
+(13, 'GraphShirt9476453', 3, ' effdfs', 'users1@mail.com', '756453', 'dsfd fdfd sf dsfdfs ', 3423, 400, 'COD', NULL, 0, NULL, NULL, '2022-12-04 15:58:35');
 
 -- --------------------------------------------------------
 
@@ -111,7 +112,9 @@ CREATE TABLE `order_items` (
 INSERT INTO `order_items` (`id`, `order_id`, `prod_id`, `qty`, `price`, `created_at`, `size`) VALUES
 (15, 11, 63, 2, 200, '2022-12-03 10:26:57', 'L'),
 (16, 12, 63, 2, 200, '2022-12-04 05:37:02', 'L'),
-(17, 12, 4, 2, 550, '2022-12-04 05:37:02', 'S');
+(17, 12, 4, 2, 550, '2022-12-04 05:37:02', 'S'),
+(18, 13, 67, 1, 200, '2022-12-04 15:58:35', 'M'),
+(19, 13, 70, 1, 200, '2022-12-04 15:58:35', 'S');
 
 -- --------------------------------------------------------
 
@@ -144,9 +147,13 @@ INSERT INTO `products` (`id`, `code`, `name`, `size`, `color`, `slug`, `image`, 
 (4, 'sds2fg4', 'Graffiti not a crime shirt', 'S', 'black', 'Graffiti not a crime shirt', '1668314701.jpg', 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s', 550, 13, 20),
 (55, '1', 'Black and White', 'S', 'black', 'Black and White', 'a.png', 'Black and White', 200, 332, 20),
 (58, '3', 'Zooyork plain tee', 'S', 'black', 'Zooyork plain tee', 'null', 'Zooyork plain tee', 1000, 24, 20),
-(59, '7', 'Zoo York Limited 2022 collection', 'S', 'black', 'Zoo York Limited 2022 collection', 'b.jpg', 'Zoo York Limited 2022 collection', 200, 0, 20),
-(63, '7', 'Zoo York Limited 2022 collection', 'L', 'orange', 'Zoo York Limited 2022 collection', 'c.jpg', 'Zoo York Limited 2022 collection', 200, 1, 20),
-(65, '11', 'Zooyork T', 'L', 'black', 'Zooyork T', '1669554035.png', 'Zooyork T', 1700, 7, 20);
+(59, '15321', 'Zoo York Limited 2022 collection', 'S', 'black', 'Zoo York Limited 2022 collection', 'b.jpg', 'Zoo York Limited 2022 collection', 200, 0, 20),
+(63, '15321', 'Zoo York Limited 2022 collection', 'L', 'orange', 'Zoo York Limited 2022 collection', 'c.jpg', 'Zoo York Limited 2022 collection', 200, 1, 20),
+(65, '11', 'Zooyork T', 'L', 'black', 'Zooyork T', '1669554035.png', 'Zooyork T', 1700, 7, 20),
+(66, '15321', 'Zoo York Limited 2022 collection', 'S', 'white', 'Zoo York Limited 2022 collection', '1670162405.jpg', 'Zoo York Limited 2022 collection', 100, 10, 20),
+(67, '15321', 'Zoo York Limited 2022 collection', 'M', 'orange', 'Zoo York Limited 2022 collection', '1670162559.jpg', 'Zoo York Limited 2022 collection', 200, 19, 20),
+(70, '15321', 'Zoo York Limited 2022 collection', 'S', 'pink', 'Zoo York Limited 2022 collection', '1670164064.jpg', 'Zoo York Limited 2022 collection', 200, 19, 20),
+(73, '15321', 'Zoo York Limited 2022 collection', 'S', 'yellow', 'Zoo York Limited 2022 collection', '1670167114.png', 'Zoo York Limited 2022 collection', 239, 2, 20);
 
 -- --------------------------------------------------------
 
@@ -286,6 +293,7 @@ INSERT INTO `suppliers` (`id`, `name`, `address`, `contact_person`, `contact_num
 
 CREATE TABLE `supplier_products` (
   `id` int(11) NOT NULL,
+  `code` varchar(20) DEFAULT NULL,
   `supplier_id` int(11) NOT NULL,
   `name` text NOT NULL,
   `size` varchar(10) NOT NULL DEFAULT 'S',
@@ -303,8 +311,15 @@ CREATE TABLE `supplier_products` (
 -- Dumping data for table `supplier_products`
 --
 
-INSERT INTO `supplier_products` (`id`, `supplier_id`, `name`, `size`, `image`, `color`, `slug`, `description`, `cost`, `status`, `date_created`, `date_updated`) VALUES
-(11, 1, 'Zooyork T', 'L', '1669554035.png', 'black', 'Zooyork T', 'Zooyork T', '1700', '1', '2022-11-27 13:00:35', '2022-11-27 13:00:35');
+INSERT INTO `supplier_products` (`id`, `code`, `supplier_id`, `name`, `size`, `image`, `color`, `slug`, `description`, `cost`, `status`, `date_created`, `date_updated`) VALUES
+(11, '15322', 1, 'Zooyork T', 'L', '1669554035.png', 'black', 'Zooyork T', 'Zooyork T', '1700', '1', '2022-11-27 13:00:35', '2022-11-27 13:00:35'),
+(12, '15321', 1, 'Zoo York Limited 2022 collection', 'S', '1670162405.jpg', 'white', 'Zoo York Limited 2022 collection', 'Zoo York Limited 2022 collection', '100', '1', '2022-12-04 14:00:05', '2022-12-04 14:00:05'),
+(13, '15321', 1, 'Zoo York Limited 2022 collection', 'M', '1670162559.jpg', 'orange', 'Zoo York Limited 2022 collection', 'Zoo York Limited 2022 collection', '200', '1', '2022-12-04 14:02:39', '2022-12-04 14:02:39'),
+(14, '15321', 1, 'Zoo York Limited 2022 collection', 'M', '1670162669.jpg', 'red', 'Zoo York Limited 2022 collection', 'Zoo York Limited 2022 collection', '300', '1', '2022-12-04 14:04:29', '2022-12-04 14:04:29'),
+(15, '15321', 1, 'Zoo York Limited 2022 collection', 'M', '1670163654.jpg', 'yellow', 'Zoo York Limited 2022 collection', 'Zoo York Limited 2022 collection', '400', '1', '2022-12-04 14:20:54', '2022-12-04 14:20:54'),
+(16, 'O7RfkttC2F', 1, 'Zoo York Limited 2022 collection V2', 'M', '1670163698.jpg', 'black', 'Zoo York Limited 2022 collection V2', 'Zoo York Limited 2022 collection V2', '500', '1', '2022-12-04 14:21:38', '2022-12-04 14:21:38'),
+(17, '15321', 1, 'Zoo York Limited 2022 collection', 'S', '1670164064.jpg', 'pink', 'Zoo York Limited 2022 collection', 'Zoo York Limited 2022 collection', '200', '1', '2022-12-04 14:27:44', '2022-12-04 14:27:44'),
+(22, '15321', 1, 'Zoo York Limited 2022 collection', 'S', '1670167114.png', 'yellow', 'Zoo York Limited 2022 collection', 'Zoo York Limited 2022 collection', '239', '1', '2022-12-04 15:18:34', '2022-12-04 15:18:34');
 
 -- --------------------------------------------------------
 
@@ -429,31 +444,31 @@ ALTER TABLE `accounts`
 -- AUTO_INCREMENT for table `carts`
 --
 ALTER TABLE `carts`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=80;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=82;
 
 --
 -- AUTO_INCREMENT for table `orders`
 --
 ALTER TABLE `orders`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT for table `order_items`
 --
 ALTER TABLE `order_items`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
 
 --
 -- AUTO_INCREMENT for table `products`
 --
 ALTER TABLE `products`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=66;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=74;
 
 --
 -- AUTO_INCREMENT for table `purchase_orders`
 --
 ALTER TABLE `purchase_orders`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=60;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=73;
 
 --
 -- AUTO_INCREMENT for table `reviews`
@@ -483,7 +498,7 @@ ALTER TABLE `suppliers`
 -- AUTO_INCREMENT for table `supplier_products`
 --
 ALTER TABLE `supplier_products`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
 
 --
 -- AUTO_INCREMENT for table `users`
