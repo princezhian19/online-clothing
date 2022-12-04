@@ -1,37 +1,36 @@
 <?php
 session_start();
-if (!isset($_SESSION["userid"])) {
-    header("Location: index.php");
-    exit();
-}
-if ($_SESSION["verifiedAt"] == null) {
-    header("Location: verification.php");
-    exit();
-}
-if (isset($_SESSION["userid"])) {
-    if ($_SESSION['userrole'] == 0) {
-        header("Location: customerPage.php");
-        exit();
+//if (!isset($_SESSION["userid"])) {
+//    header("Location: index.php");
+//    exit();
+//}
+//if ($_SESSION["verifiedAt"] == null) {
+//    header("Location: verification.php");
+//    exit();
+//}
+include "classes/connectiondb.php";
+include "classes/viewproductModel.php";
+if (isset($_GET['t'])) {
+    $tracking_no = $_GET['t'];
+    $checkTrackingID = new viewproducts();
+    $result = $checkTrackingID->checkTrackingA($tracking_no);
+
+    if ($result->rowCount() < 0) {
+?>
+        <h4>Something went wrong</h4>
+    <?php
+        die();
     }
-}
-if (!isset($_SESSION["userid"])) {
-    $style = "style='display:none;'";
-    $toggle = "";
 } else {
-    $style = "style='display:inline;'";
-    $toggle = "data-toggle='dropdown'";
-
-    include "classes/connectiondb.php";
-    include "classes/viewproductModel.php";
-
-    $count = new viewproducts();
-    $cartCount = $count->cartCount($_SESSION["userid"]);
+    ?>
+    <h4>Something went wrong</h4>
+<?php
+    die();
 }
+$data = $result->fetchAll(PDO::FETCH_ASSOC);
 if ($_SESSION['userrole'] == 1) {
     $styleOrder = "style='display:none;'";
 }
-
-
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -45,7 +44,6 @@ if ($_SESSION['userrole'] == 1) {
     <meta name="author" content="">
 
     <title>View Products</title>
-    <link rel="icon" href="assets/logo.png" type="image/ico">
 
     <!-- Custom fonts for this template -->
     <link href="vendors/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -59,6 +57,8 @@ if ($_SESSION['userrole'] == 1) {
     <script src="https://kit.fontawesome.com/yourcode.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css">
     <link rel="stylesheet" href="styles/viewProduct.css">
+    <link rel="icon" href="assets/logo.png" type="image/ico">
+
 
 </head>
 
@@ -97,6 +97,7 @@ if ($_SESSION['userrole'] == 1) {
             </div>
 
             <!-- Nav Item - Pages Collapse Menu -->
+            
             <?php include 'template/navitem.php'; ?>
 
 
@@ -205,6 +206,7 @@ if ($_SESSION['userrole'] == 1) {
 
 
 
+
                         <!-- Nav Item - User Information -->
                         <li class="nav-item dropdown no-arrow">
                             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -242,81 +244,137 @@ if ($_SESSION['userrole'] == 1) {
                 <div class="container-fluid">
 
                     <!-- Page Heading -->
-                    <h1 class="h3 mb-2 text-gray-800">Order History</h1>
-                    <p class="mb-4">History</p>
+                    <h1 class="h3 mb-2 text-gray-800">Sales</h1>
+                    <p class="mb-4">Transaction Record</p>
 
                     <!-- DataTales Example -->
-
                     <div class="py-5">
                         <div class="container">
-
-                            <div class="card card-body shadow">
-
+                            <div class="card">
                                 <div class="row">
-
-                                    <!--<a href="order-history.php" class="btn btn-info mb-3">Order History</a>-->
                                     <div class="col-md-12">
 
-                                        <table id="dataTable" class="table table-bordered table-striped">
-
-
+                                        <div class="card-header">
+                                            Orders
                                             <a href="orders.php" class="btn btn-sm float-right"><i class="fa fa-reply"></i> Back</a>
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <h4>Delivery Details</h4>
+                                                    <hr>
+                                                    <div class="row">
+                                                        <div class="col-md-12 mb-2">
+                                                            <label class="fw-bold">Name</label>
+                                                            <div class="border p-1">
+                                                                <?= $data[0]["name"]; ?>
+                                                            </div>
 
-                                            <thead>
-                                                <tr>
-                                                    <th>ID</th>
-                                                    <th>User</th>
+                                                        </div>
+                                                        <div class="col-md-12 mb-2">
+                                                            <label class="fw-bold">Email</label>
+                                                            <div class="border p-1">
+                                                                <?= $data[0]["email"]; ?>
+                                                            </div>
 
-                                                    <th>Price</th>
-                                                    <th>Date</th>
-                                                    <th>Action</th>
+                                                        </div>
+                                                        <div class="col-md-12 mb-2">
+                                                            <label class="fw-bold">Phone</label>
+                                                            <div class="border p-1">
+                                                                <?= $data[0]["phone"]; ?>
+                                                            </div>
 
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <?php
-                                                $user_id = $_SESSION["userid"];
-                                                $order = new viewproducts();
-                                                $orderData = $order->getAllOrderHistory();
-                                                if ($orderData->rowCount() > 0) {
-                                                    foreach ($orderData as $items) {
-                                                ?>
-                                                        <tr>
-                                                            <td> <?= $items['id']; ?> </td>
-                                                            <td> <?= $items['name']; ?> </td>
+                                                        </div>
 
-                                                            <td> <?= $items['total_price']; ?> </td>
-                                                            <td> <?= $items['created_at']; ?> </td>
-                                                            <td>
-                                                                <a href="view-orderAdmin.php?t=<?= $items['tracking_id']; ?> " class="btn btn-primary "> View Details </a>
-                                                            </td>
+                                                        <div class="col-md-12 mb-2">
+                                                            <label class="fw-bold">Address</label>
+                                                            <div class="border p-1">
+                                                                <?= $data[0]["address"]; ?>
+                                                            </div>
 
-                                                        </tr>
+                                                        </div>
+                                                        <div class="col-md-12 mb-2">
+                                                            <label class="fw-bold">Pincode</label>
+                                                            <div class="border p-1">
+                                                                <?= $data[0]["pincode"]; ?>
+                                                            </div>
+                                                        </div>
+                                                        <?php if($data[0]["payment_mode"] === 'GCASH') { ?>                               
+                                                            <div class="col-md-12 mb-2">
+                                                                <label class="fw-bold">
+                                                                    Proof of payment
+                                                                </label>
+                                                                <div class="border p-1">
+                                                                    <img src="uploads/<?= $data[0]['proof_of_payment']; ?>" width="300px" height="500px" alt="<?= 'proof of payment'; ?>">
+                                                                </div>
+                                                            </div>
+                                                        <?php } ?>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <h4>Order Details</h4>
+                                                    <hr>
+                                                    <table class="table">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Product</th>
+                                                                <th>Price</th>
+                                                                <th>Quantity</th>
+                                                                <th>Size</th>
 
-                                                    <?php
-                                                    }
-                                                } else {
-                                                    ?>
-                                            
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
 
-                                                <?php
-                                                }
-                                                ?>
 
-                                            </tbody>
-                                            <tfoot>
-                                                <tr>
-                                                    <th>ID</th>
-                                                    <th>User</th>
+                                                            <?php
+                                                            $order = new viewproducts();
+                                                            $userId = $data[0]['user_id'];
+                                                            $orderItems = $order->displayOrderA($tracking_no, $userId);
 
-                                                    <th>Price</th>
-                                                    <th>Date</th>
-                                                    <th>Action</th>
+                                                            if ($orderItems->rowCount() > 0) {
+                                                                foreach ($orderItems as $items) {
 
-                                                </tr>
+                                                            ?>
+                                                                    <tr>
+                                                                        <td class="align-middle">
+                                                                            <img src="uploads/<?= $items['image']; ?>" width="50px" height="50px" alt="<?= $items['name']; ?>">
+                                                                            <?= $items['name']; ?>
+                                                                        </td>
+                                                                        <td class="align-middle">
+                                                                            ₱ <?= $items['price']; ?>
+                                                                        </td>
+                                                                        <td class="align-middle">
+                                                                            <?= $items['qty']; ?>
+                                                                        </td>
+                                                                        <td class="align-middle">
+                                                                            <?= $items['size']; ?>
+                                                                        </td>
 
-                                            </tfoot>
-                                        </table>
+                                                                    </tr>
+                                                            <?php
+                                                                }
+                                                            }
+                                                            ?>
+                                                        </tbody>
+                                                    </table>
+
+                                                    <hr>
+
+                                                    <h4>Total Price: <span class="float-end">₱<?= $data[0]['total_price']; ?></span></h4>
+                                                    <hr>
+                                                    <label class="fw-bold">Payment Mode:</label>
+                                                    <div class="border p-1 mb-3">
+                                                        <?= $data[0]['payment_mode']; ?>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+
+
+
+
 
 
 
@@ -390,7 +448,6 @@ if ($_SESSION['userrole'] == 1) {
 
     <!-- Page level custom scripts -->
     <script src="dashboard/js/demo/datatables-demo.js"></script>
-
 
 
 

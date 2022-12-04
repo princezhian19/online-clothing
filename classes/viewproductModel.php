@@ -155,6 +155,14 @@ class viewproducts extends connection
         $stmt->execute();
         return $stmt;
     }
+    function getAllPassOrders()
+    {
+        
+        $sql = "SELECT * FROM orders WHERE status='1'";
+        $stmt = $this->connect()->prepare($sql);
+        $stmt->execute();
+        return $stmt;
+    }
     function checkTrackingA($tracking_no)
     {
        

@@ -13,6 +13,9 @@ if (isset($_SESSION["userid"])) {
         header("Location: customerPage.php");
         exit();
     }
+    if ($_SESSION['userrole'] == 1) {
+        $styleOrder = "style='display:none;'";
+    }
 }
 if (!isset($_SESSION["userid"])) {
     $style = "style='display:none;'";
@@ -26,9 +29,6 @@ if (!isset($_SESSION["userid"])) {
 
     $count = new viewproducts();
     $cartCount = $count->cartCount($_SESSION["userid"]);
-}
-if ($_SESSION['userrole'] == 1) {
-    $styleOrder = "style='display:none;'";
 }
 
 
@@ -45,7 +45,6 @@ if ($_SESSION['userrole'] == 1) {
     <meta name="author" content="">
 
     <title>View Products</title>
-    <link rel="icon" href="assets/logo.png" type="image/ico">
 
     <!-- Custom fonts for this template -->
     <link href="vendors/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -53,6 +52,7 @@ if ($_SESSION['userrole'] == 1) {
 
     <!-- Custom styles for this template -->
     <link href="dashboard/css/sb-admin-2.min.css" rel="stylesheet">
+    <link rel="icon" href="assets/logo.png" type="image/ico">
 
     <!-- Custom styles for this page -->
     <link href="vendors/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
@@ -97,8 +97,8 @@ if ($_SESSION['userrole'] == 1) {
             </div>
 
             <!-- Nav Item - Pages Collapse Menu -->
+           
             <?php include 'template/navitem.php'; ?>
-
 
 
             <!-- Divider -->
@@ -136,6 +136,7 @@ if ($_SESSION['userrole'] == 1) {
                         </button>
                     </form>
 
+                    <!-- Topbar Search -->
 
 
                     <!-- Topbar Navbar -->
@@ -205,6 +206,7 @@ if ($_SESSION['userrole'] == 1) {
 
 
 
+
                         <!-- Nav Item - User Information -->
                         <li class="nav-item dropdown no-arrow">
                             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -222,7 +224,7 @@ if ($_SESSION['userrole'] == 1) {
                                     Settings
                                 </a>
                                 <a class="dropdown-item" href="#" <?php echo $styleOrder ?>>
-                                    <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
+                                    <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400" <?php echo $styleOrder ?>></i>
                                     My Orders
                                 </a>
                                 <div class="dropdown-divider"></div>
@@ -242,8 +244,8 @@ if ($_SESSION['userrole'] == 1) {
                 <div class="container-fluid">
 
                     <!-- Page Heading -->
-                    <h1 class="h3 mb-2 text-gray-800">Order History</h1>
-                    <p class="mb-4">History</p>
+                    <h1 class="h3 mb-2 text-gray-800">Sales</h1>
+                    <p class="mb-4">View Sales</p>
 
                     <!-- DataTales Example -->
 
@@ -253,15 +255,9 @@ if ($_SESSION['userrole'] == 1) {
                             <div class="card card-body shadow">
 
                                 <div class="row">
-
-                                    <!--<a href="order-history.php" class="btn btn-info mb-3">Order History</a>-->
+                                    <!-- <a href="order-history.php" class="btn btn-info mb-3">Order History</a> -->
                                     <div class="col-md-12">
-
                                         <table id="dataTable" class="table table-bordered table-striped">
-
-
-                                            <a href="orders.php" class="btn btn-sm float-right"><i class="fa fa-reply"></i> Back</a>
-
                                             <thead>
                                                 <tr>
                                                     <th>ID</th>
@@ -277,7 +273,7 @@ if ($_SESSION['userrole'] == 1) {
                                                 <?php
                                                 $user_id = $_SESSION["userid"];
                                                 $order = new viewproducts();
-                                                $orderData = $order->getAllOrderHistory();
+                                                $orderData = $order->getAllPassOrders();
                                                 if ($orderData->rowCount() > 0) {
                                                     foreach ($orderData as $items) {
                                                 ?>
@@ -288,7 +284,7 @@ if ($_SESSION['userrole'] == 1) {
                                                             <td> <?= $items['total_price']; ?> </td>
                                                             <td> <?= $items['created_at']; ?> </td>
                                                             <td>
-                                                                <a href="view-orderAdmin.php?t=<?= $items['tracking_id']; ?> " class="btn btn-primary "> View Details </a>
+                                                                <a href="view-orderAdminSales.php?t=<?= $items['tracking_id']; ?> " class="btn btn-primary "> View Details </a>
                                                             </td>
 
                                                         </tr>
@@ -297,7 +293,7 @@ if ($_SESSION['userrole'] == 1) {
                                                     }
                                                 } else {
                                                     ?>
-                                            
+                                                   
 
                                                 <?php
                                                 }
@@ -390,7 +386,6 @@ if ($_SESSION['userrole'] == 1) {
 
     <!-- Page level custom scripts -->
     <script src="dashboard/js/demo/datatables-demo.js"></script>
-
 
 
 
