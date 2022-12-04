@@ -25,6 +25,24 @@ class deleteProduct extends connection
         return $data;
     }
     
+    function deleteSupplierProduct($id)
+    {
+       
 
+         $sql = "DELETE FROM purchase_orders WHERE id = $id;";
+         $stmt = $this->connect()->prepare($sql);
+         $stmt->execute();
+         return $stmt;  
+
+    }
+    function getSupplierProducts($id)
+    {
+        $sql = "SELECT * FROM purchase_orders WHERE id = $id;";
+        $stmt = $this->connect()->prepare($sql);
+        $stmt->execute();
+        $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        return $data;
+    }
 }
 

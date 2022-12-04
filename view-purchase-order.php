@@ -282,7 +282,7 @@ include "classes/po/viewpurchaseorderModel.php";
                                                     <td>
                                                     <a href="view-purchase-order-receiving.php?poId=<?= $items['code']; ?>&supprodcode=<?= $item['code']; ?>" class="btn btn-sm btn-warning">view</a>
                                                         <input type="hidden" name="supid" value="<?= $items['id']; ?> ">
-                                                        <button name="delete_SupplierItem" type="button" class="btn btn-sm btn-danger deleteProduct" value="<?= $items['id']; ?>">Delete</button>
+                                                        <button name="delete_SupplierItem" type="button" class="btn btn-sm btn-danger deleteSupplierProduct" value="<?= $items['id']; ?>">Delete</button>
                                                     </td>
 
 
