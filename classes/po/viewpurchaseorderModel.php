@@ -72,6 +72,14 @@ class viewpurchaseorder extends connection
 
         return $stmt;
     }
+    function getItemsByIdSizeColorV2($table, $id, $size, $color)
+    {
+        $sql = "SELECT * FROM $table WHERE name = '$id' and size = '$size' and color = '$color'";
+        $stmt = $this->connect()->prepare($sql);
+        $stmt->execute();
+
+        return $stmt;
+    }
     function getSlug($table, $slug)
     {
         $sql = "SELECT * FROM $table WHERE slug = '$slug'";
@@ -219,10 +227,10 @@ class viewpurchaseorder extends connection
         $stmt->execute();
         return $stmt;
     }
-    function updateProductV2($prod_qty, $code, $size, $color)
+    function updateProductV2($prod_qty, $name, $size, $color)
     {
 
-        $sql = "UPDATE products set quantity=$prod_qty WHERE code='$code' and size ='$size' and color='$color'";
+        $sql = "UPDATE products set quantity=$prod_qty WHERE name='$name' and size ='$size' and color='$color'";
         $stmt = $this->connect()->prepare($sql);
         $stmt->execute();
         return $stmt;

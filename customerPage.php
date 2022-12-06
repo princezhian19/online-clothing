@@ -253,12 +253,17 @@ if (!isset($_SESSION["userid"])) {
             <div class="row">
                 <div class="col-md-12">
                     <h4>Available T-shirts</h4>
+                    <?php 
+                        include 'classes/model.php';
+                        $modelA = new Model();
+                        $ps = $modelA->fetchAll('SELECT * FROM products');
+                    ?>
                     <div class="row">
                         <?php
                         $view = new viewproducts();
                         $prod = $view->getAll("products");
                         
-                        if ($prod->rowCount() > 1) {
+                        if (!empty($prod)) {
                             $codes = [];
                             foreach ($prod as $items) {
                                 if(strpos($items["name"], 'custom-') !== false) {
@@ -292,6 +297,7 @@ if (!isset($_SESSION["userid"])) {
                         <?php
                             }
                         } else {
+                            echo json_encode($prod);
                             echo "no products available";
                         }
 

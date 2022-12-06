@@ -329,7 +329,7 @@ include "classes/viewsupplierModel.php";
                                 </div>
                                 <div class="col-md-4">
                                     <label class="mb-0">Upload image</label>
-                                    <input type="file" required name="image" class="form-control mb-2">
+                                    <input type="file" name="image" class="form-control mb-2">
                                 </div>
                                 <div class="col-md-12">
                                     <label class="mb-0">Description</label>
